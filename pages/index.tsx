@@ -1,5 +1,8 @@
+import { Box } from "@chakra-ui/react"
 import { NextPage } from "next"
 import Head from "next/head"
+import React from "react"
+import { DefaultNavbar } from "../components"
 
 const Home: NextPage = () => (
 	<div>
@@ -9,9 +12,9 @@ const Home: NextPage = () => (
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
 
-		<main>
-			<h1>Welcome to myconfig.store</h1>
-		</main>
+		<Box as="main" bg="brand.dark" w="100vw" h="100vh">
+			<DefaultNavbar />
+		</Box>
 	</div>
 )
 
