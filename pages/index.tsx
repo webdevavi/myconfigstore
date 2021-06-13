@@ -1,7 +1,8 @@
-import { Box, Heading } from "@chakra-ui/react"
+import { Box } from "@chakra-ui/react"
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
+import { DefaultNavbar } from "../components"
 
 const Home: NextPage = () => (
 	<div>
@@ -12,9 +13,7 @@ const Home: NextPage = () => (
 		</Head>
 
 		<Box as="main" bg="brand.dark" w="100vw" h="100vh">
-			<Heading fontWeight="black" color="brand.orange" textAlign="center">
-				Welcome to myconfig.store
-			</Heading>
+			<DefaultNavbar />
 		</Box>
 	</div>
 )
