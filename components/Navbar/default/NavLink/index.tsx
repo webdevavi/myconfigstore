@@ -10,6 +10,7 @@ export const NavLink: React.FC<NavLinkProps & LinkProps> = ({ children, href, is
 	return (
 		<NextLink href={href} passHref>
 			<Link
+				zIndex={1}
 				fontWeight="bold"
 				color="brand.orange"
 				opacity={isActive ? 1 : 0.5}
