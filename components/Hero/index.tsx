@@ -4,6 +4,7 @@ import Lottie from "lottie-react"
 import React from "react"
 import heroAnimation from "../../lottie/hero.json"
 import { BrandBlockButton } from "../BrandButton"
+import { AnimatedLogo } from "../Logo"
 
 const MotionBox = motion<Omit<BoxProps, "transition"> & MotionProps>(Box as any)
 const MotionHeading = motion<Omit<HeadingProps, "transition"> & MotionProps>(Heading as any)
@@ -23,22 +24,7 @@ export const Hero: React.FC<unknown> = () => {
 			maxH="container.md"
 		>
 			<VStack pos="relative" align={{ base: "center", md: "flex-start" }} spacing={{ base: "8", md: "12" }}>
-				<MotionHeading
-					fontWeight="black"
-					fontSize={{ base: "5xl", md: "6xl" }}
-					textAlign={{ base: "center", md: "left" }}
-					zIndex="4"
-					initial={{ opacity: 0, translateY: "50%" }}
-					animate={{ opacity: 1, translateY: "0px" }}
-					transition={{ duration: 0.5 }}
-				>
-					<Text as="span" color="brand.orangeDark">
-						my
-					</Text>
-					<Text as="span" color="brand.orange">
-						config
-					</Text>
-				</MotionHeading>
+				<AnimatedLogo />
 				<MotionHeading
 					fontWeight="black"
 					maxW="md"

@@ -8,7 +8,9 @@ export const DefaultNavbar = () => {
 		<Box bg="transparent">
 			<Container as={HStack} maxW="container.xl" py="4" justifyContent="space-between">
 				<TextLogo />
-				<NavLinks />
+				<HStack spacing="6" d={{ base: "none", md: "flex" }}>
+					<NavLinks />
+				</HStack>
 			</Container>
 		</Box>
 	)

@@ -9,7 +9,7 @@ export const NavLinks = () => {
 	const isActive = useCallback((path: string) => new RegExp(`^${pathname}(\/|)$`).test(path), [pathname])
 
 	return (
-		<HStack spacing="6" d={{ base: "none", md: "flex" }}>
+		<HStack spacing="6">
 			<NavLink href="/" isActive={isActive("/")}>
 				Home
 			</NavLink>
@@ -18,6 +18,9 @@ export const NavLinks = () => {
 			</NavLink>
 			<NavLink href="/docs" isActive={isActive("/docs")}>
 				Docs
+			</NavLink>
+			<NavLink href="/auth/signin" isActive={isActive("/auth/signin")}>
+				Sign in
 			</NavLink>
 		</HStack>
 	)
