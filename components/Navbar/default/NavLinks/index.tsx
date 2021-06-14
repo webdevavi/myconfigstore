@@ -9,7 +9,7 @@ export const NavLinks = () => {
 	const isActive = useCallback((path: string) => new RegExp(`^${pathname}(\/|)$`).test(path), [pathname])
 
 	return (
-		<HStack spacing="6">
+		<HStack spacing="6" d={{ base: "none", md: "flex" }}>
 			<NavLink href="/" isActive={isActive("/")}>
 				Home
 			</NavLink>
