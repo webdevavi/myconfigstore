@@ -26,4 +26,9 @@ export default NextAuth({
 		updateAge: 24 * 60 * 60, // 24 hours
 	},
 	adapter: HarperDBAdapter(new HarperDB("dev")),
+	pages: {
+		signIn: "/auth/signin",
+		signOut: "/auth/signout",
+		error: "/auth/error",
+	},
 })
