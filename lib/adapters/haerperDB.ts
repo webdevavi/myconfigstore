@@ -23,13 +23,13 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 
 				async getUser(id) {
 					const users = await db.findByIds<User>([id], { table: "users" })
-					if (users) return new AppUser(users[0])
+					if (users && users[0]) return new AppUser(users[0])
 				},
 
 				async getUserByEmail(email) {
 					if (!email) return null
 					const users = await db.findByValue<User>("email", email, { table: "users" })
-					if (users) return new AppUser(users[0])
+					if (users && users[0]) return new AppUser(users[0])
 				},
 
 				async getUserByProviderAccountId(providerId, providerAccountId) {
@@ -52,7 +52,7 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 					if (!userId) return null
 
 					const users = await db.findByIds<User>([userId], { table: "users" })
-					if (users) return new AppUser(users[0])
+					if (users && users[0]) return new AppUser(users[0])
 				},
 
 				async updateUser(user) {
@@ -103,7 +103,7 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 						}
 					)
 
-					if (!accounts) return null
+					if (!accounts || !accounts?.[0]) return null
 
 					const accountId = accounts[0].id
 
