@@ -19,4 +19,4 @@ const Home: NextPage = () => (
 	</div>
 )
 
-export default WithAuth(Home, { redirect: "onAuth", redirectTo: "/dashboard" })
+export default WithAuth(Home, { redirect: "onAuth", redirectTo: "/user/stores" })

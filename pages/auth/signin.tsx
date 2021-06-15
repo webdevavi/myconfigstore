@@ -83,4 +83,4 @@ const SigninPage: NextPage<unknown> = () => {
 	)
 }
 
-export default WithAuth(SigninPage, { redirect: "onAuth", redirectTo: "/dashboard" })
+export default WithAuth(SigninPage, { redirect: "onAuth", redirectTo: "/user/stores" })
