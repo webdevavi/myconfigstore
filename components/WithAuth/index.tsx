@@ -1,5 +1,7 @@
+import { ServerResponse } from "http"
 import { NextPage } from "next"
-import { useSession } from "next-auth/client"
+import { Session } from "next-auth"
+import { getSession, useSession } from "next-auth/client"
 import { useRouter } from "next/router"
 import React from "react"
 
@@ -11,11 +13,11 @@ type WithAuthOptions = {
 export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions = {}) => {
 	const { redirect = "onUnauth", redirectTo = "/auth/signin" } = options
 
-	const Auth: NextPage = () => {
+	const Auth: NextPage<unknown & { session: Session | null }> = ({ session, ...pageProps }) => {
 		const [isClear, setIsClear] = React.useState(false)
 
-		const [session, loading] = useSession()
-		const isUser = Boolean(session?.user)
+		const [clientSession, loading] = useSession()
+		const isUser = Boolean(session ?? clientSession)
 
 		const { replace } = useRouter()
 
@@ -32,15 +34,34 @@ export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions 
 		}, [isUser, loading])
 
 		if (isClear) {
-			return <Component />
+			return <Component {...pageProps} />
 		}
 
 		return <div>Loading...</div>
 	}
 
 	Auth.getInitialProps = async (ctx) => {
+		const session = await getSession(ctx)
+
+		const { res } = ctx
+
+		const redirectTemporarily = (res: ServerResponse) => {
+			res.writeHead(302, {
+				Location: redirectTo,
+			})
+			res.end()
+		}
+
+		if (res && redirect !== "none") {
+			if (redirect === "onAuth" && session) {
+				redirectTemporarily(res)
+			} else if (redirect === "onUnauth" && !session) {
+				redirectTemporarily(res)
+			}
+		}
+
 		const pageProps = Component.getInitialProps && ((await Component.getInitialProps(ctx)) as object)
-		return { ...pageProps }
+		return { ...pageProps, session }
 	}
 
 	return Auth
