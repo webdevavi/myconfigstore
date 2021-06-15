@@ -36,6 +36,8 @@ export default NextAuth({
 		signingKey: process.env.JWT_SIGNING_KEY,
 		encryption: true,
 		encryptionKey: process.env.JWT_ENCRYPTION_KEY,
+		verificationOptions: {
+			algorithms: ["HS512", "A256GCM"],
+		},
 	},
-	debug: true,
 })
