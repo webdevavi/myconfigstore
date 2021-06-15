@@ -31,4 +31,10 @@ export default NextAuth({
 		signOut: "/auth/signout",
 		error: "/auth/error",
 	},
+	jwt: {
+		secret: process.env.JWT_SECRET,
+		signingKey: process.env.JWT_SIGNING_KEY,
+		encryption: true,
+		encryptionKey: process.env.JWT_ENCRYPTION_KEY,
+	},
 })
