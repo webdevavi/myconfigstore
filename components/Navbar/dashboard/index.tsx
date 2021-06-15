@@ -11,9 +11,9 @@ interface DashboardNavbarProps {
 
 export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ user }) => {
 	return (
-		<Box bg="brand.dark2">
+		<Box bg="brand.dark2" boxShadow="2xl">
 			<Container as={HStack} maxW="container.xl" py="2" justifyContent="space-between">
-				<TextLogo />
+				<TextLogo zIndex="2" />
 				<HStack spacing="6" d={{ base: "none", md: "flex" }}>
 					<BrandTag>FREE</BrandTag>
 					<Heading fontSize="lg" fontWeight="black" color="brand.orange" opacity="0.8">
