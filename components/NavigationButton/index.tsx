@@ -12,18 +12,18 @@ export const NavigationButton: React.FC<NavigationButtonProps & ButtonProps> = (
 		<Button
 			w="full"
 			rounded="none"
-			bg="#392C1D"
+			bg="brand.orangeLightest"
 			color="brand.orange"
 			p="2em"
-			border="2px solid"
-			borderColor={isActive ? "brand.orange" : "#392C1D"}
+			borderLeft="4px solid"
+			borderColor={isActive ? "brand.orange" : "brand.orangeLightest"}
 			_hover={{
-				bg: "#392C1D",
-				borderColor: "brand.orange",
+				bg: "brand.orangeLightest",
+				borderColor: "brand.orangeLight",
 			}}
 			_focus={{
-				bg: "#392C1D",
-				borderColor: "brand.orange",
+				bg: "brand.orangeLightest",
+				borderColor: "brand.orangeLight",
 			}}
 			{...props}
 		>
