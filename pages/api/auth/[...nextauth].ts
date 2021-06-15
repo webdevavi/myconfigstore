@@ -32,11 +32,9 @@ export default NextAuth({
 		error: "/auth/error",
 	},
 	jwt: {
-		secret:
-			"eLghIljF2O4Z1E8t6UyyaU8VetaRinDmziTYD9q3GvXP4bTf4rBhwNocB7CBDeiMQcQSfCnPm60untHy7jy+LHiV78QbjOPPp+MrOxzGk18wogCQi8TqlelnlrTLawj60JyNaZS4NvgtI5Jmqut0ebgArzc4hNw5sV3jRBsIU58=",
-		signingKey: '{"kty":"oct","kid":"ZAJC-QwLXK7Tde_jzwKLo48_-bZC7O2JDs2P1xnZqgk","alg":"HS512","k":"luSiVwDbbTrOvaqDzVu3SVtql_1trH9we0MVFR6ZKpc"}',
+		secret: process.env.JWT_SECRET,
+		signingKey: process.env.JWT_SIGNING_KEY,
 		encryption: true,
-		encryptionKey:
-			'{"kty":"oct","kid":"0jUwdDDn3j0SzLNZrDJI-rS5XaF66w89SFbU2t738w0","alg":"A256GCM","k":"Ypq39CVAnoUVS9qsCHlCSEtHJObbC8BejwgmMfkRgqs"}',
+		encryptionKey: process.env.JWT_ENCRYPTION_KEY,
 	},
 })
