@@ -37,4 +37,5 @@ export default NextAuth({
 		encryption: true,
 		encryptionKey: process.env.JWT_ENCRYPTION_KEY,
 	},
+	debug: true,
 })
