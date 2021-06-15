@@ -10,6 +10,8 @@ const colors: ReturnType<typeof extendTheme>["colors"] = {
 		dark: "#1B1A17",
 		dark2: "#232220",
 		orange: "#FF8303",
+		orangeLightest: "#392C1D",
+		orangeLight: "#98541A",
 		orangeDark: "#A35709",
 		light: "#F0E7C9",
 		success: "#5FDE12",

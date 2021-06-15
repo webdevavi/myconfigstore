@@ -4,7 +4,7 @@ import { Session } from "next-auth"
 import { getSession, useSession } from "next-auth/client"
 import Head from "next/head"
 import React from "react"
-import { DashboardNavbar, NavigationSidebar, WithAuth } from "../../components"
+import { DashboardNavbar, NavigationSidebar, StoresContainer, WithAuth } from "../../components"
 
 interface StoresPageProps {
 	session: Session | null
@@ -27,7 +27,9 @@ const StoresPage: NextPage<StoresPageProps> = ({ stores }) => {
 					<Flex>
 						<NavigationSidebar />
 						<Flex as="main" flex={1} flexDir="column" alignItems="flex-start" w="full" h="full">
-							<Flex w="full" h="full"></Flex>
+							<Flex w="full" h="full" p="4">
+								<StoresContainer stores={stores} />
+							</Flex>
 						</Flex>
 					</Flex>
 				</Container>
