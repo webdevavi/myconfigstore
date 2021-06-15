@@ -33,8 +33,8 @@ export default NextAuth({
 	},
 	jwt: {
 		secret: process.env.JWT_SECRET,
-		signingKey: process.env.JWT_SIGNING_KEY,
+		signingKey: `{"kty":"oct","kid":"${process.env.JWT_SIGNING_KEY_KID}","alg":"HS512","k":"${process.env.JWT_SIGNING_KEY_K}"}`,
 		encryption: true,
-		encryptionKey: process.env.JWT_ENCRYPTION_KEY,
+		encryptionKey: `{"kty":"oct","kid":"${process.env.JWT_ENCRYPTION_KEY_KID}","alg":"A256GCM","k":"${process.env.JWT_ENCRYPTION_KEY_K}"}`,
 	},
 })
