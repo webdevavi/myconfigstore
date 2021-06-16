@@ -28,7 +28,7 @@ export const FieldsContainer: React.FC<FieldsContainerProps> = ({ storeId, produ
 			{fields && fields.length > 0 ? (
 				<Stack w="full">
 					{fields.map((field) => (
-						<FieldContainer field={field} />
+						<FieldContainer field={field} storeId={storeId} productId={productId} />
 					))}
 				</Stack>
 			) : (

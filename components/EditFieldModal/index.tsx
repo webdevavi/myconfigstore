@@ -23,21 +23,10 @@ import {
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
 import React from "react"
 import * as Yup from "yup"
-import { useCreateFieldMutation } from "../../lib/hooks/product"
+import { useEditFieldMutation } from "../../lib/hooks/product"
+import { IField } from "../../lib/models"
 import { FieldError } from "../../lib/types"
 import { Card } from "../Card"
-
-interface CreateFieldFormValues {
-	key: string
-	value: string
-	isEncrypted: boolean
-}
-
-const initialValues: CreateFieldFormValues = {
-	key: "",
-	value: "",
-	isEncrypted: true,
-}
 
 const validationSchema = Yup.object({
 	key: Yup.string()
@@ -47,22 +36,23 @@ const validationSchema = Yup.object({
 	value: Yup.string().required().label("Field Value"),
 })
 
-export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: string; productId: string }> = ({
+export const EditFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: string; productId: string; initialValues: IField }> = ({
 	storeId,
 	productId,
+	initialValues,
 	...props
 }) => {
-	const { mutateAsync } = useCreateFieldMutation({ storeId, productId })
+	const { mutateAsync } = useEditFieldMutation({ storeId, productId, key: initialValues.key })
 
 	const toast = useToast()
 
-	const handleSubmit = async ({ key, value, isEncrypted }: CreateFieldFormValues, helpers: FormikHelpers<CreateFieldFormValues>) => {
+	const handleSubmit = async ({ key, value, isEncrypted }: IField, helpers: FormikHelpers<IField>) => {
 		try {
 			const { status, data } = await mutateAsync({ key, value, isEncrypted })
 
 			if (status === 201 && data.message) {
 				return toast({
-					title: "Create Field",
+					title: "Edit Field",
 					description: data.message,
 					status: "success",
 				})
@@ -76,14 +66,14 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 
 			if (err.response?.data?.error) {
 				return toast({
-					title: "Create Field",
+					title: "Edit Field",
 					description: err.response?.data?.error,
 					status: "error",
 				})
 			}
 
 			return toast({
-				title: "Create Field",
+				title: "Edit Field",
 				description: err.message,
 				status: "error",
 			})
@@ -94,7 +84,7 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Create New Product</ModalHeader>
+				<ModalHeader>Edit Field</ModalHeader>
 				<ModalCloseButton />
 				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
 					{(formikProps) => (
@@ -143,7 +133,7 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 							</ModalBody>
 							<ModalFooter>
 								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Create Field
+									Save
 								</Button>
 							</ModalFooter>
 						</Form>
