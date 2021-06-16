@@ -1,4 +1,4 @@
-import { Box, BoxProps, Container, Heading, HeadingProps, Text, TextProps, VStack } from "@chakra-ui/react"
+import { Box, BoxProps, Button, Container, Heading, HeadingProps, Text, TextProps, VStack } from "@chakra-ui/react"
 import { motion, MotionProps } from "framer-motion"
 import Lottie from "lottie-react"
 import React from "react"
@@ -26,7 +26,6 @@ export const Hero: React.FC<unknown> = () => {
 			<VStack pos="relative" align={{ base: "center", md: "flex-start" }} spacing={{ base: "8", md: "12" }}>
 				<AnimatedLogo />
 				<MotionHeading
-					fontWeight="black"
 					maxW="md"
 					fontSize={{ base: "2xl", md: "3xl" }}
 					color="brand.light"
@@ -96,12 +95,12 @@ export const Hero: React.FC<unknown> = () => {
 					transition={{ duration: 0.5, delay: 3.5 }}
 					zIndex="4"
 				>
-					<BrandBlockButton fontSize={{ base: "2xl", md: "3xl" }}>
+					<Button fontSize={{ base: "2xl", md: "3xl" }}>
 						Try for free
 						<Text as="span" fontSize="lg">
 							*
 						</Text>
-					</BrandBlockButton>
+					</Button>
 					<MotionText
 						fontSize="sm"
 						fontWeight="bold"

@@ -4,8 +4,8 @@ import { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import React from "react"
-import { AnimatedLogo, DefaultNavbar } from "../../components"
 import { stripHtml } from "string-strip-html"
+import { AnimatedLogo, DefaultNavbar } from "../../components"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 
@@ -36,10 +36,8 @@ const AuthErrorPage: NextPage<unknown> = () => {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.5, delay: 0.5 }}
 					>
-						<Heading fontWeight="black" color="red.400">
-							Sign In Error
-						</Heading>
-						<Text fontSize="2xl" color="red.300" mt="4">
+						<Heading color="brand.error">Sign In Error</Heading>
+						<Text fontSize="2xl" color="brand.error" mt="4">
 							&quot;{stripHtml(error as string).result}&quot;
 						</Text>
 					</MotionVStack>

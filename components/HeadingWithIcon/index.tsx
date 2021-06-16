@@ -10,7 +10,7 @@ interface HeadingWithIconProps {
 export const HeadingWithIcon: React.FC<HeadingWithIconProps & StackProps> = ({ icon, children, fontSize = "2xl", ...props }) => (
 	<HStack {...props}>
 		<Icon as={icon} color="brand.orange" fontSize={fontSize} />
-		<Heading fontWeight="black" color="brand.orange" fontSize={fontSize}>
+		<Heading color="brand.orange" fontSize={fontSize}>
 			{children}
 		</Heading>
 	</HStack>
