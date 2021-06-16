@@ -10,8 +10,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method === "POST") {
 		const session = await getSession({ req })
 
-		console.log({ session })
-
 		if (!session?.id || typeof session.id !== "string") {
 			return res.status(403).json({ error: "You are not allowed to perform this action." })
 		}

@@ -1,18 +1,12 @@
 import { Box, Container, Flex } from "@chakra-ui/react"
 import { NextPage } from "next"
-import { Session } from "next-auth"
-import { getSession, useSession } from "next-auth/client"
+import { useSession } from "next-auth/client"
 import Head from "next/head"
 import React from "react"
 import { DashboardNavbar, NavigationSidebar, StoresContainer, WithAuth } from "../../components"
 
-interface StoresPageProps {
-	session: Session | null
-	stores: []
-}
-
-const StoresPage: NextPage<StoresPageProps> = ({ stores }) => {
-	const [session, isLoading] = useSession()
+const StoresPage: NextPage = () => {
+	const [session] = useSession()
 
 	return (
 		<div>
@@ -28,7 +22,7 @@ const StoresPage: NextPage<StoresPageProps> = ({ stores }) => {
 						<NavigationSidebar />
 						<Flex as="main" flex={1} flexDir="column" alignItems="flex-start" w="full" h="full">
 							<Flex w="full" h="full" p="4">
-								<StoresContainer stores={stores} />
+								<StoresContainer />
 							</Flex>
 						</Flex>
 					</Flex>
@@ -38,10 +32,4 @@ const StoresPage: NextPage<StoresPageProps> = ({ stores }) => {
 	)
 }
 
-StoresPage.getInitialProps = async (ctx) => {
-	const session = await getSession(ctx)
-
-	return { session, stores: [] }
-}
-
-export default WithAuth(StoresPage as NextPage<unknown>, { redirect: "onUnauth" })
+export default WithAuth(StoresPage, { redirect: "onUnauth" })
