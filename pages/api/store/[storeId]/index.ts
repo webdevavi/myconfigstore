@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../lib/middlewares"
-import { Store, StoreJSON } from "../../../lib/models"
+import { HarperDB } from "../../../../lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "../../../../lib/middlewares"
+import { Store, StoreJSON } from "../../../../lib/models"
 
 const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	if (req.method === "GET") {
