@@ -3,7 +3,6 @@ import { motion, MotionProps } from "framer-motion"
 import Lottie from "lottie-react"
 import React from "react"
 import heroAnimation from "../../lottie/hero.json"
-import { BrandBlockButton } from "../BrandButton"
 import { AnimatedLogo } from "../Logo"
 
 const MotionBox = motion<Omit<BoxProps, "transition"> & MotionProps>(Box as any)
