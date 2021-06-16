@@ -1,11 +1,11 @@
-import { Box, BoxProps, Container, StackProps, VStack } from "@chakra-ui/react"
+import { Box, BoxProps, Button, Container, StackProps, VStack } from "@chakra-ui/react"
 import { motion, MotionProps } from "framer-motion"
 import { NextPage } from "next"
 import { signIn } from "next-auth/client"
 import Head from "next/head"
 import React from "react"
 import { useMutation } from "react-query"
-import { AnimatedLogo, BrandBlockButton, DefaultNavbar, WithAuth } from "../../components"
+import { AnimatedLogo, DefaultNavbar, WithAuth } from "../../components"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 const MotionBox = motion<Omit<BoxProps, "transition"> & MotionProps>(Box as any)
@@ -38,7 +38,7 @@ const SigninPage: NextPage<unknown> = () => {
 						transition={{ duration: 0.5, delay: 0.5 }}
 					>
 						<MotionBox w="full" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 1 }}>
-							<BrandBlockButton
+							<Button
 								bg="#161B22"
 								color="brand.light"
 								w="full"
@@ -48,10 +48,10 @@ const SigninPage: NextPage<unknown> = () => {
 								isLoading={isLoading}
 							>
 								Sign in with GitHub
-							</BrandBlockButton>
+							</Button>
 						</MotionBox>
 						<MotionBox w="full" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 1.2 }}>
-							<BrandBlockButton
+							<Button
 								bg="facebook.500"
 								color="brand.light"
 								w="full"
@@ -61,10 +61,10 @@ const SigninPage: NextPage<unknown> = () => {
 								isLoading={isLoading}
 							>
 								Sign in with Facebook
-							</BrandBlockButton>
+							</Button>
 						</MotionBox>
 						<MotionBox w="full" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 1.4 }}>
-							<BrandBlockButton
+							<Button
 								bg="#EB5530"
 								color="brand.light"
 								w="full"
@@ -74,7 +74,7 @@ const SigninPage: NextPage<unknown> = () => {
 								isLoading={isLoading}
 							>
 								Sign in with Auth0
-							</BrandBlockButton>
+							</Button>
 						</MotionBox>
 					</MotionVStack>
 				</Container>
