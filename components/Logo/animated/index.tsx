@@ -8,7 +8,6 @@ const MotionHeading = motion<AnimatedHeadingProps>(Heading as any)
 
 export const AnimatedLogo: React.FC<AnimatedHeadingProps> = (props) => (
 	<MotionHeading
-		fontWeight="black"
 		fontSize={{ base: "5xl", md: "6xl" }}
 		textAlign={{ base: "center", md: "left" }}
 		zIndex="4"
