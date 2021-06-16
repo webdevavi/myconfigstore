@@ -90,7 +90,7 @@ export const CreateProductModal: React.FC<Omit<ModalProps, "children"> & { store
 							<ModalBody>
 								<Card>
 									<Field name="productId">
-										{({ field, form }: FieldProps<"productId">) => (
+										{({ field, form }: FieldProps<string>) => (
 											<FormControl isInvalid={Boolean(form.errors.productId)}>
 												<FormLabel htmlFor="productId">Product Id</FormLabel>
 												<InputGroup>

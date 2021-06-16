@@ -92,7 +92,7 @@ export const EditFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: 
 							<ModalBody>
 								<Card as={VStack} alignItems="flex-start">
 									<Field name="key">
-										{({ field, form }: FieldProps<"key">) => (
+										{({ field, form }: FieldProps<string>) => (
 											<FormControl isInvalid={Boolean(form.errors.key && form.touched.key)}>
 												<FormLabel htmlFor="key">Field Key</FormLabel>
 												<Input {...field} id="key" placeholder="eg. first_name" />
@@ -104,7 +104,7 @@ export const EditFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: 
 										)}
 									</Field>
 									<Field name="value">
-										{({ field, form }: FieldProps<"value">) => (
+										{({ field, form }: FieldProps<string>) => (
 											<FormControl isInvalid={Boolean(form.errors.value && form.touched.value)}>
 												<FormLabel htmlFor="value">Field Value</FormLabel>
 												<Input {...field} id="value" placeholder="eg. avinash" />
