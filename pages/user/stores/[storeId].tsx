@@ -2,16 +2,21 @@ import { Box, Container, Flex } from "@chakra-ui/react"
 import { NextPage } from "next"
 import { useSession } from "next-auth/client"
 import Head from "next/head"
+import { useRouter } from "next/router"
 import React from "react"
-import { DashboardNavbar, NavigationSidebar, StoresContainer, WithAuth } from "../../components"
+import { DashboardNavbar, NavigationSidebar, FullStoreContainer, WithAuth } from "../../../components"
 
-const StoresPage: NextPage = () => {
+const StorePage: NextPage = () => {
 	const [session] = useSession()
+
+	const {
+		query: { storeId },
+	} = useRouter()
 
 	return (
 		<div>
 			<Head>
-				<title>Stores | myconfig.store</title>
+				<title>{storeId} - Store | myconfig.store</title>
 				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
@@ -22,7 +27,7 @@ const StoresPage: NextPage = () => {
 						<NavigationSidebar />
 						<Flex as="main" flex={1} flexDir="column" alignItems="flex-start" w="full" h="full">
 							<Flex w="full" h="full" p="4">
-								<StoresContainer />
+								<FullStoreContainer storeId={storeId as string} />
 							</Flex>
 						</Flex>
 					</Flex>
@@ -32,4 +37,4 @@ const StoresPage: NextPage = () => {
 	)
 }
 
-export default WithAuth(StoresPage, { redirect: "onUnauth" })
+export default WithAuth(StorePage, { redirect: "onUnauth" })

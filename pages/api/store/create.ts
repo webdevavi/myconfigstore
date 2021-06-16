@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import { User } from "next-auth"
 import { getSession } from "next-auth/client"
 import { HarperDB } from "../../../lib/harperDB"
 import { Store } from "../../../lib/models"
 import { FieldError } from "../../../lib/types"
+import * as crypto from "crypto"
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 	const fieldErrors: FieldError[] = []
@@ -36,7 +36,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(400).json({ fieldErrors })
 		}
 
-		const store = new Store({ storeId: storeId!, ownerId: session.id })
+		const storeKey = crypto.randomBytes(64).toString("base64")
+
+		const store = new Store({ storeId: storeId!, ownerId: session.id, storeKey })
 
 		try {
 			await db.insert({ table: "stores", records: [store] })

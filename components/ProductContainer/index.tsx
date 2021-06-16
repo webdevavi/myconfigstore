@@ -1,44 +1,34 @@
 import { Heading, HStack, Icon, IconButton, LinkBox, LinkOverlay, Tag, TagLabel, Text, Tooltip, useClipboard, VStack } from "@chakra-ui/react"
 import React from "react"
-import { FaBoxOpen, FaCalendar, FaCopy } from "react-icons/fa"
-import { Store } from "../../lib/models"
+import { FaBoxOpen, FaCalendar, FaCopy, FaGlobe, FaLock, FaWpforms } from "react-icons/fa"
+import { Product } from "../../lib/models"
 import { Card } from "../Card"
 import NextLink from "next/link"
 
-interface StoreContainerProps {
-	store: Store
+interface ProductContainerProps {
+	product: Product
 }
 
-export const StoreContainer: React.FC<StoreContainerProps> = ({ store }) => {
-	const { onCopy, hasCopied } = useClipboard(store.url ?? "", {
+export const ProductContainer: React.FC<ProductContainerProps> = ({ product }) => {
+	const { onCopy, hasCopied } = useClipboard(product.url ?? "", {
 		timeout: 4000,
 	})
 
 	return (
 		<LinkBox w="full">
-			<NextLink href={`/user/stores/${store.storeId}`} passHref>
+			<NextLink href={`/user/stores/${product.storeId}/${product.productId}`} passHref>
 				<LinkOverlay />
 			</NextLink>
 			<Card w="full" as={VStack} alignItems="flex-start">
 				<HStack>
 					<Heading fontSize="2xl" color="brand.orange">
-						{store.storeId}
+						{product.productId}
 					</Heading>
-					<Tag
-						rounded="full"
-						variant="subtle"
-						colorScheme={store.isActive ? "green" : "red"}
-						border="1.5px solid"
-						borderColor={store.isActive ? "brand.success" : "brand.error"}
-					>
-						<TagLabel fontWeight="bold" color={store.isActive ? "brand.success" : "brand.error"}>
-							{store.isActive ? "Active" : "Inactive"}
-						</TagLabel>
-					</Tag>
+					{product.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
 				</HStack>
 				<HStack>
-					<Text fontSize="sm" opacity="0.8">
-						{store.url}
+					<Text fontSize="xs" opacity="0.8">
+						{product.url}
 					</Text>
 					<Tooltip hasArrow label="Copied" isOpen={hasCopied}>
 						<IconButton aria-label="copy url" size="xs" onClick={onCopy}>
@@ -47,21 +37,21 @@ export const StoreContainer: React.FC<StoreContainerProps> = ({ store }) => {
 					</Tooltip>
 				</HStack>
 				<HStack>
-					<Icon as={FaBoxOpen} fontSize="4xl" color="brand.orange" />
+					<Icon as={FaWpforms} fontSize="4xl" color="brand.orange" />
 					<Heading as="span" fontSize="xl" color="brand.orange">
-						{store.products} Products
+						{product.fields?.length ?? 0} Fields
 					</Heading>
 				</HStack>
 				<HStack>
 					<Icon as={FaCalendar} fontSize="md" color="brand.orange" opacity="0.8" />
 					<Text fontSize="sm" color="brand.orange" opacity="0.8">
-						created {store.createdAt}
+						created {product.createdAt}
 					</Text>
 				</HStack>
 				<HStack>
 					<Icon as={FaCalendar} fontSize="md" color="brand.orange" opacity="0.8" />
 					<Text fontSize="sm" color="brand.orange" opacity="0.8">
-						updated {store.updatedAt}
+						updated {product.updatedAt}
 					</Text>
 				</HStack>
 			</Card>
