@@ -94,7 +94,7 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Create New Product</ModalHeader>
+				<ModalHeader>Create New Field</ModalHeader>
 				<ModalCloseButton />
 				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
 					{(formikProps) => (
