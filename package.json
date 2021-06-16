@@ -16,6 +16,7 @@
 		"@fontsource/muli": "^4.1.0",
 		"@fontsource/poppins": "^4.4.5",
 		"axios": "^0.21.1",
+		"formik": "^2.2.9",
 		"framer-motion": "4",
 		"lodash": "^4.17.21",
 		"lottie-react": "^2.1.0",
@@ -25,7 +26,8 @@
 		"react-dom": "17.0.2",
 		"react-icons": "^4.2.0",
 		"react-query": "^3.17.0",
-		"string-strip-html": "^8.3.0"
+		"string-strip-html": "^8.3.0",
+		"yup": "^0.32.9"
 	},
 	"devDependencies": {
 		"@types/node": "15.12.2",

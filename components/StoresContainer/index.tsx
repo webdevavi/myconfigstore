@@ -1,7 +1,8 @@
-import { Button, Center, HStack, VStack } from "@chakra-ui/react"
+import { Button, Center, HStack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaWindowRestore } from "react-icons/fa"
 import { Card } from "../Card"
+import { CreateStoreModal } from "../CreateStoreModal"
 import { HeadingWithIcon } from "../HeadingWithIcon"
 
 interface StoresContainerProps {
@@ -9,11 +10,15 @@ interface StoresContainerProps {
 }
 
 export const StoresContainer: React.FC<StoresContainerProps> = ({ stores }) => {
+	const { getButtonProps, isOpen, onClose } = useDisclosure()
+
 	return (
 		<VStack w="full" alignItems="flex-start" spacing="8">
 			<HStack spacing="6">
 				<HeadingWithIcon icon={FaWindowRestore}>Stores</HeadingWithIcon>
-				<Button fontSize={{ base: "md", md: "lg" }}>New</Button>
+				<Button fontSize={{ base: "md", md: "lg" }} {...getButtonProps()}>
+					New
+				</Button>
 			</HStack>
 			{stores.length > 0 ? (
 				<></>
@@ -22,6 +27,7 @@ export const StoresContainer: React.FC<StoresContainerProps> = ({ stores }) => {
 					You have not created any stores yet.
 				</Card>
 			)}
+			<CreateStoreModal isOpen={isOpen} onClose={onClose} />
 		</VStack>
 	)
 }

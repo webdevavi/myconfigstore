@@ -37,4 +37,10 @@ export default NextAuth({
 		encryption: true,
 		encryptionKey: `{"kty":"oct","kid":"${process.env.JWT_ENCRYPTION_KEY_KID}","alg":"A256GCM","k":"${process.env.JWT_ENCRYPTION_KEY_K}"}`,
 	},
+	callbacks: {
+		session: async (session, user) => {
+			session.id = user.sub
+			return Promise.resolve(session)
+		},
+	},
 })

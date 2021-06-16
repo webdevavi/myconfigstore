@@ -1,5 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react"
-import { Button, Card, Heading } from "./components"
+import { Button, Card, FormError, FormLabel, Heading, Input, Modal } from "./components"
 
 const config: ThemeConfig = {
 	initialColorMode: "dark",
@@ -25,6 +25,6 @@ const fonts: ReturnType<typeof extendTheme>["fonts"] = {
 	body: "Poppins",
 }
 
-const theme = extendTheme({ config, colors, fonts, components: { Button, Card, Heading } })
+const theme = extendTheme({ config, colors, fonts, components: { Button, Card, FormError, FormLabel, Heading, Input, Modal } })
 
 export default theme

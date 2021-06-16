@@ -25,15 +25,10 @@ export class HarperDB {
 			records: options.records.map((record) => omitBy(record, isNil)),
 		})
 
-		try {
-			const {
-				data: { inserted_hashes },
-			} = await this.client({ data })
-			return (inserted_hashes ?? []) as string[]
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		const {
+			data: { inserted_hashes },
+		} = await this.client({ data })
+		return (inserted_hashes ?? []) as string[]
 	}
 
 	async findByIds<T>(ids: string[], options: { table: string; attributes?: string[] }) {
@@ -45,12 +40,7 @@ export class HarperDB {
 			get_attributes: options.attributes ?? ["*"],
 		})
 
-		try {
-			return ((await this.client({ data })) as AxiosResponse<T[]>).data
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		return ((await this.client({ data })) as AxiosResponse<T[]>).data
 	}
 
 	async findByValue<T>(attribute: string, value: string, options: { table: string; attributes?: string[] }) {
@@ -63,12 +53,7 @@ export class HarperDB {
 			get_attributes: options.attributes ?? ["*"],
 		})
 
-		try {
-			return ((await this.client({ data })) as AxiosResponse<T[]>).data
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		return ((await this.client({ data })) as AxiosResponse<T[]>).data
 	}
 
 	async findByConditions<T>(
@@ -91,12 +76,7 @@ export class HarperDB {
 			conditions: conditions.map(({ attribute, type, value }) => ({ search_attribute: attribute, search_type: type, search_value: value })),
 		})
 
-		try {
-			return ((await this.client({ data })) as AxiosResponse<T[]>).data
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		return ((await this.client({ data })) as AxiosResponse<T[]>).data
 	}
 
 	async update<T>(options: { table: string; records: ({ id: string } & T)[] }) {
@@ -107,15 +87,10 @@ export class HarperDB {
 			records: options.records.map((record) => omitBy(record, isNil)),
 		})
 
-		try {
-			const {
-				data: { update_hashes },
-			} = await this.client({ data })
-			return (update_hashes ?? []) as string[]
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		const {
+			data: { update_hashes },
+		} = await this.client({ data })
+		return (update_hashes ?? []) as string[]
 	}
 
 	async upsert<T>(options: { table: string; records: T[] }) {
@@ -126,15 +101,10 @@ export class HarperDB {
 			records: omitBy(options.records, isNil),
 		})
 
-		try {
-			const {
-				data: { upserted_hashes },
-			} = await this.client({ data })
-			return (upserted_hashes ?? []) as string[]
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		const {
+			data: { upserted_hashes },
+		} = await this.client({ data })
+		return (upserted_hashes ?? []) as string[]
 	}
 
 	async delete<T>(ids: string[], options: { table: string }) {
@@ -145,14 +115,9 @@ export class HarperDB {
 			hash_values: ids,
 		})
 
-		try {
-			const {
-				data: { deleted_hashes },
-			} = await this.client({ data })
-			return (deleted_hashes ?? []) as string[]
-		} catch (err) {
-			console.error(err?.response ?? err)
-			return null
-		}
+		const {
+			data: { deleted_hashes },
+		} = await this.client({ data })
+		return (deleted_hashes ?? []) as string[]
 	}
 }

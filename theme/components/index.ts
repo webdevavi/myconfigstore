@@ -1,3 +1,7 @@
 export * from "./Button"
 export * from "./Card"
+export * from "./FormError"
+export * from "./FormLabel"
 export * from "./Heading"
+export * from "./Input"
+export * from "./Modal"
