@@ -1,8 +1,9 @@
-import { VStack, HStack, Checkbox, Heading, IconButton, Icon, Box, Input, Tooltip, useClipboard } from "@chakra-ui/react"
+import { VStack, HStack, Checkbox, Heading, IconButton, Icon, Box, Input, Tooltip, useClipboard, ButtonGroup } from "@chakra-ui/react"
 import React from "react"
-import { FaCog, FaRedo, FaCopy } from "react-icons/fa"
+import { FaCog, FaRedo, FaCopy, FaEdit } from "react-icons/fa"
 import { HeadingWithIcon, Card } from ".."
 import { Product } from "../../lib/models"
+import { EditProductSettingsButton } from "./options/EditProductSettingsButton"
 
 interface ProductSettingsProps {
 	product: Product
@@ -18,7 +19,10 @@ export const ProductSettings: React.FC<ProductSettingsProps> = ({ product }) => 
 			<HeadingWithIcon icon={FaCog} fontSize="xl">
 				Settings
 			</HeadingWithIcon>
-			<Card maxW="4xl">
+			<Card pos="relative" maxW="4xl">
+				<ButtonGroup pos="absolute" top="2" right="2">
+					<EditProductSettingsButton product={product} />
+				</ButtonGroup>
 				<VStack w="full" alignItems="flex-start" spacing="4">
 					<HStack>
 						<Checkbox isChecked={product.isPrivate} isReadOnly />
@@ -26,32 +30,44 @@ export const ProductSettings: React.FC<ProductSettingsProps> = ({ product }) => 
 							Private (Default)
 						</Heading>
 					</HStack>
-					<HStack>
-						<Checkbox isChecked={product.isUsingStoreKey} isReadOnly />
-						<Heading fontSize="lg" color="brand.orange">
-							Use store key only (Default)
-						</Heading>
-					</HStack>
-
-					{!product.isUsingStoreKey && product.productKey && (
-						<VStack w="full" alignItems="flex-start" spacing="4">
+					{product.isPrivate && (
+						<>
 							<HStack>
+								<Checkbox isChecked={product.isUsingStoreKey} isReadOnly />
 								<Heading fontSize="lg" color="brand.orange">
-									Product Key
+									Use store key only (Default)
 								</Heading>
-								<IconButton aria-label="regenerate store key" size="xs">
-									<Icon as={FaRedo} />
-								</IconButton>
 							</HStack>
-							<Box pos="relative" w="full">
-								<Input pr="10" value={product.productKey} isReadOnly />
-								<Tooltip hasArrow label="Copied" isOpen={hasCopied}>
-									<IconButton pos="absolute" top="50%" transform="translateY(-50%)" right="2" aria-label="copy store key" size="xs" onClick={onCopy}>
-										<Icon as={FaCopy} />
-									</IconButton>
-								</Tooltip>
-							</Box>
-						</VStack>
+
+							{!product.isUsingStoreKey && product.productKey && (
+								<VStack w="full" alignItems="flex-start" spacing="4">
+									<HStack>
+										<Heading fontSize="lg" color="brand.orange">
+											Product Key
+										</Heading>
+										<IconButton aria-label="regenerate store key" size="xs">
+											<Icon as={FaRedo} />
+										</IconButton>
+									</HStack>
+									<Box pos="relative" w="full">
+										<Input pr="10" value={product.productKey} isReadOnly />
+										<Tooltip hasArrow label="Copied" isOpen={hasCopied}>
+											<IconButton
+												pos="absolute"
+												top="50%"
+												transform="translateY(-50%)"
+												right="2"
+												aria-label="copy store key"
+												size="xs"
+												onClick={onCopy}
+											>
+												<Icon as={FaCopy} />
+											</IconButton>
+										</Tooltip>
+									</Box>
+								</VStack>
+							)}
+						</>
 					)}
 				</VStack>
 			</Card>
