@@ -51,11 +51,13 @@ export const EditFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: 
 			const { status, data } = await mutateAsync({ key, value, isEncrypted })
 
 			if (status === 201 && data.message) {
-				return toast({
+				toast({
 					title: "Edit Field",
 					description: data.message,
 					status: "success",
 				})
+
+				return props.onClose()
 			}
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {

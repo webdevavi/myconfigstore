@@ -39,11 +39,13 @@ export const EditProductSettingsModal: React.FC<Omit<ModalProps, "children"> & {
 			const { status, data } = await mutateAsync({ isPrivate, isUsingStoreKey })
 
 			if (status === 201 && data.message) {
-				return toast({
+				toast({
 					title: "Product Settings",
 					description: data.message,
 					status: "success",
 				})
+
+				return props.onClose()
 			}
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {

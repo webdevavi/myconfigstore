@@ -56,11 +56,13 @@ export const RemoveFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 			const { status, data } = await mutateAsync()
 
 			if (status === 201 && data.message) {
-				return toast({
+				toast({
 					title: "Remove Field",
 					description: data.message,
 					status: "success",
 				})
+
+				return props.onClose()
 			}
 		} catch (err) {
 			return toast({

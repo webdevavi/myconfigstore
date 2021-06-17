@@ -50,11 +50,13 @@ export const RegenerateProductKeyModal: React.FC<Omit<ModalProps, "children"> & 
 			const { status, data } = await mutateAsync()
 
 			if (status === 201 && data.message) {
-				return toast({
+				toast({
 					title: "Regenerate Key",
 					description: data.message,
 					status: "success",
 				})
+
+				return props.onClose()
 			}
 		} catch (err) {
 			return toast({
