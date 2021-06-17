@@ -6,6 +6,7 @@ import { ProductsContainer } from "../ProductsContainer"
 import { StatusTag } from "../StatusTag"
 import { StoreSettings } from "../StoreSettings"
 import { DeactivateStoreButton } from "./options/DeactivateStoreButton"
+import { DestroyStoreButton } from "./options/DestroyStoreButton"
 import { ReactivateStoreButton } from "./options/ReactivateStoreButton"
 
 interface FullStoreContainerProps {
@@ -25,7 +26,12 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 						</Heading>
 						<StatusTag isActive={store?.isActive} />
 					</HStack>
-					{store && <ButtonGroup>{store.isActive ? <DeactivateStoreButton store={store} /> : <ReactivateStoreButton store={store} />}</ButtonGroup>}
+					{store && (
+						<ButtonGroup>
+							{store.isActive ? <DeactivateStoreButton store={store} /> : <ReactivateStoreButton store={store} />}
+							<DestroyStoreButton store={store} />
+						</ButtonGroup>
+					)}
 				</HStack>
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>
