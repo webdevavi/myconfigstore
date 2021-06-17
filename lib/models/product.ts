@@ -7,6 +7,7 @@ export interface IProduct {
 	storeId: string
 	ownerId: string
 	url?: string
+	isActive?: boolean
 	isPrivate?: boolean
 	isUsingStoreKey?: boolean
 	productKey?: string
@@ -23,6 +24,7 @@ export class Product implements IProduct {
 	storeId: string
 	ownerId: string
 	url?: string | undefined
+	isActive?: boolean | undefined
 	isPrivate?: boolean | undefined
 	isUsingStoreKey?: boolean | undefined
 	productKey?: string | undefined
@@ -30,12 +32,13 @@ export class Product implements IProduct {
 	createdAt?: string | undefined
 	updatedAt?: string | undefined
 
-	constructor({ id, productId, storeId, ownerId, url, isPrivate, isUsingStoreKey, productKey, fields, createdAt, updatedAt }: IProduct) {
+	constructor({ id, productId, storeId, ownerId, url, isActive, isPrivate, isUsingStoreKey, productKey, fields, createdAt, updatedAt }: IProduct) {
 		this.id = id
 		this.productId = productId
 		this.storeId = storeId
 		this.ownerId = ownerId
 		this.url = url
+		this.isActive = isActive
 		this.isPrivate = isPrivate
 		this.isUsingStoreKey = isUsingStoreKey
 		this.productKey = productKey
@@ -49,6 +52,7 @@ export class Product implements IProduct {
 		productId,
 		storeId,
 		ownerId,
+		isActive,
 		isPrivate,
 		isUsingStoreKey,
 		productKey,
@@ -61,6 +65,7 @@ export class Product implements IProduct {
 			productId,
 			storeId,
 			ownerId,
+			isActive,
 			isPrivate,
 			isUsingStoreKey,
 			productKey,
@@ -78,6 +83,7 @@ export class Product implements IProduct {
 			storeId: this.storeId,
 			ownerId: this.ownerId,
 			url: this.url,
+			isActive: this.isActive,
 			fields: this.fields,
 			isPrivate: this.isPrivate,
 			isUsingStoreKey: this.isUsingStoreKey,

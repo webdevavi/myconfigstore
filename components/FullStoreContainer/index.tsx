@@ -3,6 +3,7 @@ import React from "react"
 import { useGetStoreQuery } from "../../lib/hooks/store"
 import { Card } from "../Card"
 import { ProductsContainer } from "../ProductsContainer"
+import { StatusTag } from "../StatusTag"
 import { StoreSettings } from "../StoreSettings"
 
 interface FullStoreContainerProps {
@@ -19,6 +20,7 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 					<Heading fontSize="2xl" color="brand.orange">
 						{storeId}
 					</Heading>
+					<StatusTag isActive={store?.isActive} />
 				</HStack>
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>

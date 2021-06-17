@@ -4,6 +4,7 @@ import { FaCalendar, FaCopy, FaGlobe, FaLock, FaWpforms } from "react-icons/fa"
 import { Product } from "../../lib/models"
 import { Card } from "../Card"
 import NextLink from "next/link"
+import { StatusTag } from "../StatusTag"
 
 interface ProductContainerProps {
 	product: Product
@@ -25,6 +26,7 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({ product }) =
 						{product.productId}
 					</Heading>
 					{product.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
+					<StatusTag isActive={product.isActive} />
 				</HStack>
 				<HStack>
 					<Text fontSize="xs" opacity="0.8">

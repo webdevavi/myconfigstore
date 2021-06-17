@@ -25,6 +25,7 @@ import { FieldsContainer } from "../FieldsContainer"
 import { HeadingWithIcon } from "../HeadingWithIcon"
 import { ProductsContainer } from "../ProductsContainer"
 import { ProductSettings } from "../ProductSettings"
+import { StatusTag } from "../StatusTag"
 
 interface FullProductContainerProps {
 	storeId: string
@@ -44,6 +45,7 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 						{productId}
 					</Heading>
 					{product?.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
+					<StatusTag isActive={product?.isActive} />
 				</HStack>
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>

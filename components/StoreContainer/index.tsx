@@ -4,6 +4,7 @@ import { FaBoxOpen, FaCalendar, FaCopy } from "react-icons/fa"
 import { Store } from "../../lib/models"
 import { Card } from "../Card"
 import NextLink from "next/link"
+import { StatusTag } from "../StatusTag"
 
 interface StoreContainerProps {
 	store: Store
@@ -24,17 +25,7 @@ export const StoreContainer: React.FC<StoreContainerProps> = ({ store }) => {
 					<Heading fontSize="2xl" color="brand.orange">
 						{store.storeId}
 					</Heading>
-					<Tag
-						rounded="full"
-						variant="subtle"
-						colorScheme={store.isActive ? "green" : "red"}
-						border="1.5px solid"
-						borderColor={store.isActive ? "brand.success" : "brand.error"}
-					>
-						<TagLabel fontWeight="bold" color={store.isActive ? "brand.success" : "brand.error"}>
-							{store.isActive ? "Active" : "Inactive"}
-						</TagLabel>
-					</Tag>
+					<StatusTag isActive={store.isActive} />
 				</HStack>
 				<HStack>
 					<Text fontSize="sm" opacity="0.8">
