@@ -25,10 +25,20 @@ const fonts: ReturnType<typeof extendTheme>["fonts"] = {
 	body: "Poppins",
 }
 
+const styles = {
+	global: {
+		body: {
+			bg: "brand.dark",
+			color: "brand.light",
+		},
+	},
+}
+
 const theme = extendTheme({
 	config,
 	colors,
 	fonts,
+	styles,
 	components: { Breadcrumb, Button, Card, Checkbox, FormError, FormLabel, Heading, Input, Modal, Tooltip },
 })
 
