@@ -1,4 +1,4 @@
-import { Button, Center, CircularProgress, Grid, HStack, useDisclosure, VStack } from "@chakra-ui/react"
+import { Button, Center, CircularProgress, Flex, Grid, HStack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaBoxOpen } from "react-icons/fa"
 import { useGetAllProductsQuery } from "../../lib/hooks/product"
@@ -19,11 +19,11 @@ export const ProductsContainer: React.FC<ProductsContainerProps> = ({ storeId })
 
 	return (
 		<VStack w="full" alignItems="flex-start" spacing="8">
-			<HStack spacing="6">
+			<HStack w="full" spacing="6" justifyContent={{ base: "space-between", md: "flex-start" }}>
 				<HeadingWithIcon icon={FaBoxOpen} fontSize="xl">
 					Products
 				</HeadingWithIcon>
-				<Button  fontSize={{ base: "md", md: "lg" }} {...getButtonProps()}>
+				<Button fontSize={{ base: "md", md: "lg" }} {...getButtonProps()}>
 					New
 				</Button>
 			</HStack>
@@ -36,11 +36,11 @@ export const ProductsContainer: React.FC<ProductsContainerProps> = ({ storeId })
 					{(error as any)?.message}
 				</Card>
 			) : products && products.length > 0 ? (
-				<Grid gridTemplateColumns={{ base: "1fr", md: "repeat(3, 1fr)" }} gap="4" w="full" maxW="5xl">
+				<Flex w="full" direction={{ base: "column", sm: "row" }} flexWrap={{ sm: "wrap" }}>
 					{products.map((product) => (
 						<ProductContainer product={product} />
 					))}
-				</Grid>
+				</Flex>
 			) : (
 				<Card as={Center} py="20" maxW="md" alignSelf="center" color="brand.light">
 					You have not created any products yet.

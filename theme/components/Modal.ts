@@ -4,7 +4,7 @@ export const Modal: ReturnType<typeof extendTheme>["components"]["Modal"] = {
 	baseStyle: {
 		header: {
 			textAlign: "center",
-			fontSize: "2xl",
+			fontSize: { base: "xl", md: "2xl" },
 			color: "brand.orange",
 		},
 		dialog: {
@@ -15,8 +15,8 @@ export const Modal: ReturnType<typeof extendTheme>["components"]["Modal"] = {
 		closeButton: {
 			color: "brand.orange",
 			size: "xs",
-			top: "4",
-			fontSize: "xl",
+			top: { base: 3, md: 4 },
+			fontSize: { base: "lg", md: "xl" },
 			_focus: {
 				boxShadow: "none",
 				outlineColor: "brand.orange",

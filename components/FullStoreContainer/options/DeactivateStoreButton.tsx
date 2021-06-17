@@ -12,7 +12,7 @@ export const DeactivateStoreButton: React.FC<DeactivateStoreButtonProps> = ({ st
 
 	return (
 		<>
-			<Button variant="outline" fontSize={{ base: "sm", md: "md" }} {...getButtonProps()}>
+			<Button variant="outline" w={{ base: "full", md: "auto" }} fontSize="md" {...getButtonProps()}>
 				Deactivate
 			</Button>
 			<DeactivateStoreModal storeId={store.storeId} isOpen={isOpen} onClose={onClose} />

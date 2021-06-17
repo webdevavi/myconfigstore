@@ -17,6 +17,8 @@ import {
 	useClipboard,
 	useDisclosure,
 	VStack,
+	Text,
+	useBreakpoint,
 } from "@chakra-ui/react"
 import React from "react"
 import { FaCog, FaCopy, FaGlobe, FaLock, FaRedo } from "react-icons/fa"
@@ -42,8 +44,14 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 
 	const { isLoading, data: product, isError, error } = useGetProductQuery({ storeId, productId })
 
+	const { onCopy, hasCopied } = useClipboard(product?.url ?? "", {
+		timeout: 4000,
+	})
+
+	const breakpoint = useBreakpoint() ?? ""
+
 	return (
-		<VStack w="full" alignItems="flex-start" spacing="8">
+		<VStack w="full" alignItems="flex-start" spacing="8" maxW="4xl">
 			<VStack w="full" alignItems="flex-start" spacing="2">
 				<HStack w="full" justifyContent="space-between">
 					<HStack>
@@ -57,13 +65,14 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 							</>
 						)}
 					</HStack>
-					{product && (
+					{product && !/base|sm/.test(breakpoint) && (
 						<ButtonGroup>
 							{product.isActive ? <DeactivateProductButton product={product} /> : <ReactivateProductButton product={product} />}
 							<DestroyProductButton product={product} />
 						</ButtonGroup>
 					)}
 				</HStack>
+
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>
 						<BreadcrumbLink href="/user/stores">stores</BreadcrumbLink>
@@ -77,7 +86,28 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 						<BreadcrumbLink href={`/user/stores/${storeId}/${productId}`}>{productId}</BreadcrumbLink>
 					</BreadcrumbItem>
 				</Breadcrumb>
+
+				{product && (
+					<HStack>
+						<Text fontSize="sm" opacity="0.8" overflowWrap="anywhere">
+							{product.url}
+						</Text>
+						<Tooltip hasArrow label="Copied" isOpen={hasCopied}>
+							<IconButton aria-label="copy url" size="xs" onClick={onCopy}>
+								<Icon as={FaCopy} fontSize="sm" />
+							</IconButton>
+						</Tooltip>
+					</HStack>
+				)}
 			</VStack>
+
+			{product && /base|sm/.test(breakpoint) && (
+				<ButtonGroup w="full">
+					{product.isActive ? <DeactivateProductButton product={product} /> : <ReactivateProductButton product={product} />}
+					<DestroyProductButton product={product} />
+				</ButtonGroup>
+			)}
+
 			{isLoading ? (
 				<Card as={Center} py="20" maxW="md" alignSelf="center" color="brand.light">
 					<CircularProgress isIndeterminate />
