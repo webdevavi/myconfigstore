@@ -24,7 +24,7 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 						<Heading fontSize="2xl" color="brand.orange">
 							{storeId}
 						</Heading>
-						<StatusTag isActive={store?.isActive} />
+						{store && <StatusTag isActive={store?.isActive} />}
 					</HStack>
 					{store && (
 						<ButtonGroup>

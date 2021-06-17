@@ -50,8 +50,12 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 						<Heading fontSize="2xl" color="brand.orange">
 							{productId}
 						</Heading>
-						{product?.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
-						<StatusTag isActive={product?.isActive} />
+						{product && (
+							<>
+								{product?.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
+								<StatusTag isActive={product?.isActive} />
+							</>
+						)}
 					</HStack>
 					{product && (
 						<ButtonGroup>
