@@ -4,6 +4,7 @@ import { FaCog, FaRedo, FaCopy, FaEdit } from "react-icons/fa"
 import { HeadingWithIcon, Card } from ".."
 import { Product } from "../../lib/models"
 import { EditProductSettingsButton } from "./options/EditProductSettingsButton"
+import { RegenerateProductKeyButton } from "./options/RegenerateProductKeyButton"
 
 interface ProductSettingsProps {
 	product: Product
@@ -45,9 +46,7 @@ export const ProductSettings: React.FC<ProductSettingsProps> = ({ product }) => 
 										<Heading fontSize="lg" color="brand.orange">
 											Product Key
 										</Heading>
-										<IconButton aria-label="regenerate store key" size="xs">
-											<Icon as={FaRedo} />
-										</IconButton>
+										<RegenerateProductKeyButton product={product} />
 									</HStack>
 									<Box pos="relative" w="full">
 										<Input pr="10" value={product.productKey} isReadOnly />
