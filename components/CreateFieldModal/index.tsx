@@ -68,18 +68,10 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 				})
 			}
 		} catch (err) {
-			if (err.response?.data?.fieldErrors && err.response?.data?.fieldErrors.length > 0) {
-				const { fieldErrors } = err.response.data as { fieldErrors: FieldError[] }
+			if (err.fieldErrors && err.fieldErrors.length > 0) {
+				const { fieldErrors } = err as { fieldErrors: FieldError[] }
 
 				return fieldErrors?.map(({ field, error }) => helpers.setFieldError(field, error))
-			}
-
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Create Field",
-					description: err.response?.data?.error,
-					status: "error",
-				})
 			}
 
 			return toast({

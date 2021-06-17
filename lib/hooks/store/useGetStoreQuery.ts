@@ -10,7 +10,16 @@ export const useGetStoreQuery = ({ storeId }: { storeId: string }) => {
 		() => {
 			if (!storeId) return null
 
-			return axios.get<IStore>(`/api/store/${storeId}`).then(({ data: store }) => new Store(store))
+			return axios
+				.get<IStore>(`/api/store/${storeId}`)
+				.then(({ data: store }) => new Store(store))
+				.catch((err) => {
+					if (err.response.data) {
+						throw err.response.data
+					}
+
+					throw err
+				})
 		},
 		{
 			refetchOnMount: false,

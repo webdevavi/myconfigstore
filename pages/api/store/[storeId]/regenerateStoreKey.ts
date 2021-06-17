@@ -21,7 +21,7 @@ const regenerateStoreKey = async (req: NextApiRequestWithAuth, res: NextApiRespo
 			)
 
 			if (!store) {
-				return res.status(404).json({ error: "No store exists with the provided store id." })
+				return res.status(404).json({ message: "No store exists with the provided store id." })
 			}
 
 			const storeKey = crypto.randomBytes(64).toString("base64")
@@ -29,7 +29,7 @@ const regenerateStoreKey = async (req: NextApiRequestWithAuth, res: NextApiRespo
 			await db.update({ table: "stores", records: [{ id: store.id as string, storeKey }] })
 			return res.status(201).json({ message: `Key for store ${storeId} regenerated successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else return res.status(404).end()
 }

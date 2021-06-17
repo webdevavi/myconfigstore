@@ -12,11 +12,11 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const { key, value, isEncrypted } = req.body as IField
 
 		if (!storeId || typeof storeId !== "string") {
-			return res.status(400).json({ error: "A valid store id is required." })
+			return res.status(400).json({ message: "A valid store id is required." })
 		}
 
 		if (!productId || typeof productId !== "string") {
-			return res.status(400).json({ error: "A valid product id is required." })
+			return res.status(400).json({ message: "A valid product id is required." })
 		}
 
 		if (!key) {
@@ -45,7 +45,7 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		)
 
 		if (!product) {
-			return res.status(400).json({ error: "No product exists with the provided product id." })
+			return res.status(400).json({ message: "No product exists with the provided product id." })
 		}
 
 		const index = product.fields?.findIndex((field) => field.key === ogKey)
@@ -84,7 +84,7 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			await db.update({ table: "products", records: [{ id: id as string, fields }] })
 			return res.status(201).json({ message: `Field ${key} updated successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

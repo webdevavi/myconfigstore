@@ -6,6 +6,12 @@ const CREATE_PRODUCT = "createProduct"
 
 export const useCreateProductMutation = ({ storeId }: { storeId: string }) => {
 	return useMutation([CREATE_PRODUCT, storeId], async (product: { productId: IProduct["productId"] }) => {
-		return await axios.post<{ message: string }>(`/api/store/${storeId}/product/create`, product)
+		return await axios.post<{ message: string }>(`/api/store/${storeId}/product/create`, product).catch((err) => {
+			if (err.response.data) {
+				throw err.response.data
+			}
+
+			throw err
+		})
 	})
 }

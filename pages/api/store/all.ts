@@ -12,7 +12,7 @@ const getAllStores = async (req: NextApiRequestWithAuth, res: NextApiResponse) =
 
 			return res.status(200).json(stores.map((store) => Store.fromJSON(store)))
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

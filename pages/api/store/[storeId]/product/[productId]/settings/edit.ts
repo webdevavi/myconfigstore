@@ -10,11 +10,11 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 		const { isPrivate, isUsingStoreKey } = req.body as Pick<IProduct, "isPrivate" | "isUsingStoreKey">
 
 		if (!storeId || typeof storeId !== "string") {
-			return res.status(400).json({ error: "A valid store id is required." })
+			return res.status(400).json({ message: "A valid store id is required." })
 		}
 
 		if (!productId || typeof productId !== "string") {
-			return res.status(400).json({ error: "A valid product id is required." })
+			return res.status(400).json({ message: "A valid product id is required." })
 		}
 
 		const db = new HarperDB("dev")
@@ -31,7 +31,7 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 		)
 
 		if (!product) {
-			return res.status(400).json({ error: "No product exists with the provided product id." })
+			return res.status(400).json({ message: "No product exists with the provided product id." })
 		}
 
 		let productKey = product.productKey
@@ -44,7 +44,7 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 			await db.update({ table: "products", records: [{ id: product.id as string, isPrivate, isUsingStoreKey, productKey }] })
 			return res.status(201).json({ message: `Settings for product ${productId} updated successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

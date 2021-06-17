@@ -22,7 +22,7 @@ const regenerateProductKey = async (req: NextApiRequestWithAuth, res: NextApiRes
 			)
 
 			if (!product) {
-				return res.status(400).json({ error: "No product exists with the provided product id." })
+				return res.status(400).json({ message: "No product exists with the provided product id." })
 			}
 
 			const productKey = crypto.randomBytes(64).toString("base64")
@@ -30,7 +30,7 @@ const regenerateProductKey = async (req: NextApiRequestWithAuth, res: NextApiRes
 			await db.update({ table: "products", records: [{ id: product.id as string, productKey }] })
 			return res.status(201).json({ message: `Key for product ${productId} regenerated successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else return res.status(404).end()
 }

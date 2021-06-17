@@ -6,6 +6,12 @@ const CREATE_STORE = "createStore"
 
 export const useCreateStoreMutation = () => {
 	return useMutation(CREATE_STORE, async (store: { storeId: IStore["storeId"] }) => {
-		return await axios.post<{ message: string }>("/api/store/create", store)
+		return await axios.post<{ message: string }>("/api/store/create", store).catch((err) => {
+			if (err.response.data) {
+				throw err.response.data
+			}
+
+			throw err
+		})
 	})
 }

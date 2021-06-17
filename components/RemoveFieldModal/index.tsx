@@ -63,14 +63,6 @@ export const RemoveFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 				})
 			}
 		} catch (err) {
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Remove Field",
-					description: err.response?.data?.error,
-					status: "error",
-				})
-			}
-
 			return toast({
 				title: "Remove Field",
 				description: err.message,

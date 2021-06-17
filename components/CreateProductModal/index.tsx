@@ -56,18 +56,10 @@ export const CreateProductModal: React.FC<Omit<ModalProps, "children"> & { store
 				})
 			}
 		} catch (err) {
-			if (err.response?.data?.fieldErrors && err.response?.data?.fieldErrors.length > 0) {
-				const { fieldErrors } = err.response.data as { fieldErrors: FieldError[] }
+			if (err.fieldErrors && err.fieldErrors.length > 0) {
+				const { fieldErrors } = err as { fieldErrors: FieldError[] }
 
 				return fieldErrors?.map(({ field, error }) => helpers.setFieldError(field, error))
-			}
-
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Create Product",
-					description: err.response?.data?.error,
-					status: "error",
-				})
 			}
 
 			return toast({

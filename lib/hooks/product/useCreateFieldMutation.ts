@@ -6,6 +6,12 @@ const CREATE_FIELD = "createField"
 
 export const useCreateFieldMutation = ({ storeId, productId }: { storeId: string; productId: string }) => {
 	return useMutation([CREATE_FIELD, storeId, productId], async (field: IField) => {
-		return await axios.post<{ message: string }>(`/api/store/${storeId}/product/${productId}/field/create`, field)
+		return await axios.post<{ message: string }>(`/api/store/${storeId}/product/${productId}/field/create`, field).catch((err) => {
+			if (err.response.data) {
+				throw err.response.data
+			}
+
+			throw err
+		})
 	})
 }

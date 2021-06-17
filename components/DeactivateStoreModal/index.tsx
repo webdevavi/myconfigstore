@@ -55,14 +55,6 @@ export const DeactivateStoreModal: React.FC<Omit<ModalProps, "children"> & { sto
 				return props.onClose()
 			}
 		} catch (err) {
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Deactivate Store",
-					description: err.response?.data?.error,
-					status: "error",
-				})
-			}
-
 			return toast({
 				title: "Deactivate Store",
 				description: err.message,

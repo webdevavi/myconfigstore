@@ -23,7 +23,7 @@ const getAllProducts = async (req: NextApiRequestWithAuth, res: NextApiResponse)
 			return res.status(200).json(products.map((product) => Product.fromJSON(product).toObject()))
 		} catch (err) {
 			console.error(err)
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

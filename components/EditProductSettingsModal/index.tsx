@@ -46,18 +46,10 @@ export const EditProductSettingsModal: React.FC<Omit<ModalProps, "children"> & {
 				})
 			}
 		} catch (err) {
-			if (err.response?.data?.fieldErrors && err.response?.data?.fieldErrors.length > 0) {
-				const { fieldErrors } = err.response.data as { fieldErrors: FieldError[] }
+			if (err.fieldErrors && err.fieldErrors.length > 0) {
+				const { fieldErrors } = err as { fieldErrors: FieldError[] }
 
 				return fieldErrors?.map(({ field, error }) => helpers.setFieldError(field, error))
-			}
-
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Product Settings",
-					description: err.response?.data?.error,
-					status: "error",
-				})
 			}
 
 			return toast({

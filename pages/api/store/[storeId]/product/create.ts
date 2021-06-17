@@ -11,7 +11,7 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 		const { productId } = req.body as { productId: string | undefined }
 
 		if (!storeId || typeof storeId !== "string") {
-			return res.status(400).json({ error: "Store id is required." })
+			return res.status(400).json({ message: "Store id is required." })
 		}
 
 		if (!productId || typeof productId !== "string") {
@@ -35,7 +35,7 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 		)
 
 		if (!store) {
-			return res.status(400).json({ error: "No store exists with the provided store id." })
+			return res.status(400).json({ message: "No store exists with the provided store id." })
 		}
 
 		const products = await db.findByConditions<ProductJSON>(
@@ -70,7 +70,7 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			await db.insert({ table: "products", records: [product] })
 			return res.status(201).json({ message: `Product ${productId} created successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

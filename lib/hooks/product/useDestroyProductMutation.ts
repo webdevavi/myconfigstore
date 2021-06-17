@@ -9,11 +9,20 @@ export const useDestroyProductMutation = ({ storeId, productId }: { storeId: str
 	const queryClient = useQueryClient()
 
 	return useMutation([DESTROY_PRODUCT, storeId, productId], async () => {
-		return await axios.delete<{ message: string }>(`/api/store/${storeId}/product/${productId}`).then(async (res) => {
-			await queryClient.refetchQueries([GET_ALL_PRODUCTS, storeId])
-			await queryClient.invalidateQueries([GET_PRODUCT, storeId, productId])
+		return await axios
+			.delete<{ message: string }>(`/api/store/${storeId}/product/${productId}`)
+			.then(async (res) => {
+				await queryClient.refetchQueries([GET_ALL_PRODUCTS, storeId])
+				await queryClient.invalidateQueries([GET_PRODUCT, storeId, productId])
 
-			return res
-		})
+				return res
+			})
+			.catch((err) => {
+				if (err.response.data) {
+					throw err.response.data
+				}
+
+				throw err
+			})
 	})
 }

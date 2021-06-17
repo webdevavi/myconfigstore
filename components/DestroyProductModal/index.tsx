@@ -63,14 +63,6 @@ export const DestroyProductModal: React.FC<Omit<ModalProps, "children"> & { stor
 				return router.replace(`/user/stores/${storeId}`)
 			}
 		} catch (err) {
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Destroy Product",
-					description: err.response?.data?.error,
-					status: "error",
-				})
-			}
-
 			return toast({
 				title: "Destroy Product",
 				description: err.message,

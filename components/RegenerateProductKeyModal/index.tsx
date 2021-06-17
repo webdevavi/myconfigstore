@@ -57,14 +57,6 @@ export const RegenerateProductKeyModal: React.FC<Omit<ModalProps, "children"> & 
 				})
 			}
 		} catch (err) {
-			if (err.response?.data?.error) {
-				return toast({
-					title: "Regenerate Key",
-					description: err.response?.data?.error,
-					status: "error",
-				})
-			}
-
 			return toast({
 				title: "Regenerate Key",
 				description: err.message,

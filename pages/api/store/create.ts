@@ -11,7 +11,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		const session = await getSession({ req })
 
 		if (!session?.id || typeof session.id !== "string") {
-			return res.status(403).json({ error: "You are not allowed to perform this action." })
+			return res.status(403).json({ message: "You are not allowed to perform this action." })
 		}
 
 		const { storeId } = req.body as { storeId: string | undefined }
@@ -44,7 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 			await db.insert({ table: "stores", records: [store] })
 			return res.status(201).json({ message: `Store ${storeId} created successfully.` })
 		} catch (err) {
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }

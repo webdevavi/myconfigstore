@@ -28,13 +28,13 @@ const setStatus = (isActive: boolean) => async (req: NextApiRequestWithAuth, res
 		)
 
 		if (!product) {
-			return res.status(404).json({ error: "No product exists with the provided product id." })
+			return res.status(404).json({ message: "No product exists with the provided product id." })
 		}
 
 		await db.update({ table: "products", records: [{ id: product.id as string, isActive }] })
 		return res.status(200).json({ message: `Product ${productId} ${isActive ? "re-activated" : "deactivated"} successfully.` })
 	} catch (err) {
-		return res.status(500).json({ error: "Some unexpected error occurred." })
+		return res.status(500).json({ message: "Some unexpected error occurred." })
 	}
 }
 

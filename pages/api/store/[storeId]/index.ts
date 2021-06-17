@@ -20,13 +20,13 @@ const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 			)
 
 			if (!store) {
-				return res.status(404).json({ error: "No store exists with the provided store id." })
+				return res.status(404).json({ message: "No store exists with the provided store id." })
 			}
 
 			return res.status(200).json(Store.fromJSON(store))
 		} catch (err) {
 			console.error(err)
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else if (req.method === "DELETE") {
 		try {
@@ -41,14 +41,14 @@ const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 			)
 
 			if (!store) {
-				return res.status(404).json({ error: "No store exists with the provided store id." })
+				return res.status(404).json({ message: "No store exists with the provided store id." })
 			}
 
 			await db.delete([store.id as string], { table: "stores" })
 			return res.status(200).json({ message: `Store ${storeId} destroyed.` })
 		} catch (err) {
 			console.error(err)
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else return res.status(404).end()
 }
