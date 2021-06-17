@@ -9,7 +9,7 @@ export const Dashboard: React.FC = ({ children }) => {
 	const breakpoint = useBreakpoint() ?? ""
 
 	return (
-		<Box bg="brand.dark" minH="100vh">
+		<Box minH="100vh">
 			<DashboardNavbar user={session?.user} />
 			<Container maxW="1440px" p="0" overflowX="hidden">
 				<Flex w="full" h="full">
