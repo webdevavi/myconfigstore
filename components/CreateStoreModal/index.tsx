@@ -4,6 +4,7 @@ import {
 	FormControl,
 	FormErrorIcon,
 	FormErrorMessage,
+	FormHelperText,
 	FormLabel,
 	Input,
 	InputGroup,
@@ -16,6 +17,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	ModalProps,
+	useBreakpoint,
 	useToast,
 } from "@chakra-ui/react"
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
@@ -77,6 +79,8 @@ export const CreateStoreModal: React.FC<Omit<ModalProps, "children">> = (props) 
 		}
 	}
 
+	const breakpoint = useBreakpoint() ?? ""
+
 	return (
 		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
 			<ModalOverlay />
@@ -93,14 +97,23 @@ export const CreateStoreModal: React.FC<Omit<ModalProps, "children">> = (props) 
 											<FormControl isInvalid={Boolean(form.errors.storeId)}>
 												<FormLabel htmlFor="storeId">Store Id</FormLabel>
 												<InputGroup>
-													<InputLeftAddon fontSize="sm" fontWeight="black">
-														https://
-													</InputLeftAddon>
+													{!/base|sm/.test(breakpoint) && (
+														<InputLeftAddon fontSize="sm" fontWeight="black">
+															https://
+														</InputLeftAddon>
+													)}
 													<Input {...field} id="storeId" placeholder="eg. my_store" />
-													<InputRightAddon fontSize="sm" fontWeight="black">
-														.myconfig.store/api
-													</InputRightAddon>
+													{!/base|sm/.test(breakpoint) && (
+														<InputRightAddon fontSize="sm" fontWeight="black">
+															.myconfig.store/api/v1
+														</InputRightAddon>
+													)}
 												</InputGroup>
+												{/base|sm/.test(breakpoint) && (
+													<FormHelperText fontSize="sm" fontWeight="black">
+														https://{field.value || "{store_id}"}.myconfig.store/api/v1
+													</FormHelperText>
+												)}
 												<FormErrorMessage>
 													<FormErrorIcon />
 													{form.errors.storeId}

@@ -1,4 +1,15 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, ButtonGroup, Center, CircularProgress, Heading, HStack, VStack } from "@chakra-ui/react"
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	ButtonGroup,
+	Center,
+	CircularProgress,
+	Heading,
+	HStack,
+	useBreakpoint,
+	VStack,
+} from "@chakra-ui/react"
 import React from "react"
 import { useGetStoreQuery } from "../../lib/hooks/store"
 import { Card } from "../Card"
@@ -16,8 +27,10 @@ interface FullStoreContainerProps {
 export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId }) => {
 	const { isLoading, data: store, isError, error } = useGetStoreQuery({ storeId })
 
+	const breakpoint = useBreakpoint() ?? ""
+
 	return (
-		<VStack w="full" alignItems="flex-start" spacing="8">
+		<VStack w="full" alignItems="flex-start" spacing="8" maxW="4xl">
 			<VStack w="full" alignItems="flex-start" spacing="2">
 				<HStack w="full" justifyContent="space-between">
 					<HStack spacing="6">
@@ -26,7 +39,7 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 						</Heading>
 						{store && <StatusTag isActive={store?.isActive} />}
 					</HStack>
-					{store && (
+					{store && !/base|sm/.test(breakpoint) && (
 						<ButtonGroup>
 							{store.isActive ? <DeactivateStoreButton store={store} /> : <ReactivateStoreButton store={store} />}
 							<DestroyStoreButton store={store} />
@@ -43,6 +56,14 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 					</BreadcrumbItem>
 				</Breadcrumb>
 			</VStack>
+
+			{store && /base|sm/.test(breakpoint) && (
+				<ButtonGroup w="full">
+					{store.isActive ? <DeactivateStoreButton store={store} /> : <ReactivateStoreButton store={store} />}
+					<DestroyStoreButton store={store} />
+				</ButtonGroup>
+			)}
+
 			{isLoading ? (
 				<Card as={Center} py="20" maxW="md" alignSelf="center" color="brand.light">
 					<CircularProgress isIndeterminate />

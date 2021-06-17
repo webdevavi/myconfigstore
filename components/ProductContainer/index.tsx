@@ -11,12 +11,8 @@ interface ProductContainerProps {
 }
 
 export const ProductContainer: React.FC<ProductContainerProps> = ({ product }) => {
-	const { onCopy, hasCopied } = useClipboard(product.url ?? "", {
-		timeout: 4000,
-	})
-
 	return (
-		<LinkBox w="full">
+		<LinkBox w="full" maxW={{ base: "full", sm: "2xs" }} mx={{ base: 0, sm: 2 }} my="2">
 			<NextLink href={`/user/stores/${product.storeId}/${product.productId}`} passHref>
 				<LinkOverlay />
 			</NextLink>
@@ -28,28 +24,21 @@ export const ProductContainer: React.FC<ProductContainerProps> = ({ product }) =
 					{product.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
 					<StatusTag isActive={product.isActive} />
 				</HStack>
-				<HStack>
-					<Text fontSize="xs" opacity="0.8">
-						{product.url}
-					</Text>
-					<Tooltip hasArrow label="Copied" isOpen={hasCopied}>
-						<IconButton aria-label="copy url" size="xs" onClick={onCopy}>
-							<Icon as={FaCopy} fontSize="sm" />
-						</IconButton>
-					</Tooltip>
-				</HStack>
+
 				<HStack>
 					<Icon as={FaWpforms} fontSize="4xl" color="brand.orange" />
 					<Heading as="span" fontSize="xl" color="brand.orange">
 						{product.fields?.length ?? 0} Fields
 					</Heading>
 				</HStack>
+
 				<HStack>
 					<Icon as={FaCalendar} fontSize="md" color="brand.orange" opacity="0.8" />
 					<Text fontSize="sm" color="brand.orange" opacity="0.8">
 						created {product.createdAt}
 					</Text>
 				</HStack>
+
 				<HStack>
 					<Icon as={FaCalendar} fontSize="md" color="brand.orange" opacity="0.8" />
 					<Text fontSize="sm" color="brand.orange" opacity="0.8">
