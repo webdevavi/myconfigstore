@@ -1,10 +1,12 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Center, CircularProgress, Heading, HStack, VStack } from "@chakra-ui/react"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, ButtonGroup, Center, CircularProgress, Heading, HStack, VStack } from "@chakra-ui/react"
 import React from "react"
 import { useGetStoreQuery } from "../../lib/hooks/store"
 import { Card } from "../Card"
 import { ProductsContainer } from "../ProductsContainer"
 import { StatusTag } from "../StatusTag"
 import { StoreSettings } from "../StoreSettings"
+import { DeactivateStoreButton } from "./options/DeactivateStoreButton"
+import { ReactivateStoreButton } from "./options/ReactivateStoreButton"
 
 interface FullStoreContainerProps {
 	storeId: string
@@ -16,11 +18,14 @@ export const FullStoreContainer: React.FC<FullStoreContainerProps> = ({ storeId 
 	return (
 		<VStack w="full" alignItems="flex-start" spacing="8">
 			<VStack w="full" alignItems="flex-start" spacing="2">
-				<HStack spacing="6">
-					<Heading fontSize="2xl" color="brand.orange">
-						{storeId}
-					</Heading>
-					<StatusTag isActive={store?.isActive} />
+				<HStack w="full" justifyContent="space-between">
+					<HStack spacing="6">
+						<Heading fontSize="2xl" color="brand.orange">
+							{storeId}
+						</Heading>
+						<StatusTag isActive={store?.isActive} />
+					</HStack>
+					{store && <ButtonGroup>{store.isActive ? <DeactivateStoreButton store={store} /> : <ReactivateStoreButton store={store} />}</ButtonGroup>}
 				</HStack>
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>
