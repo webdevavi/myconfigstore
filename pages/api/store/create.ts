@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const storeKey = crypto.randomBytes(64).toString("base64")
 
-		const store = new Store({ storeId: storeId!, ownerId: session.id, storeKey })
+		const store = new Store({ storeId: storeId!, ownerId: session.id, storeKey, isActive: true })
 
 		try {
 			await db.insert({ table: "stores", records: [store] })
