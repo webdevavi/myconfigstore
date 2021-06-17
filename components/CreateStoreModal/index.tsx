@@ -19,6 +19,7 @@ import {
 	useToast,
 } from "@chakra-ui/react"
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
+import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
 import { useCreateStoreMutation } from "../../lib/hooks/store"
@@ -45,16 +46,21 @@ export const CreateStoreModal: React.FC<Omit<ModalProps, "children">> = (props) 
 
 	const toast = useToast()
 
+	const router = useRouter()
+
 	const handleSubmit = async ({ storeId }: CreateStoreFormValues, helpers: FormikHelpers<CreateStoreFormValues>) => {
 		try {
 			const { status, data } = await mutateAsync({ storeId })
 
 			if (status === 201 && data.message) {
-				return toast({
+				toast({
 					title: "Create Store",
 					description: data.message,
 					status: "success",
 				})
+
+				props.onClose()
+				return router.push(`/user/stores/${storeId}`)
 			}
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {
