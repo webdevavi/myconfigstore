@@ -72,7 +72,36 @@ export class Product implements IProduct {
 			fields,
 			createdAt: formatDistanceToNow(new Date(__createdtime__), { addSuffix: true }),
 			updatedAt: formatDistanceToNow(new Date(__updatedtime__), { addSuffix: true }),
-			url: `https://${storeId}.myconfig.store/api/${productId}`,
+			url: `https://${storeId}.myconfig.store/api/v1/${productId}`,
+		})
+	}
+
+	static fromJSONWithRawDates({
+		id,
+		productId,
+		storeId,
+		ownerId,
+		isActive,
+		isPrivate,
+		isUsingStoreKey,
+		productKey,
+		fields,
+		__createdtime__,
+		__updatedtime__,
+	}: ProductJSON) {
+		return new Product({
+			id,
+			productId,
+			storeId,
+			ownerId,
+			isActive,
+			isPrivate,
+			isUsingStoreKey,
+			productKey,
+			fields,
+			createdAt: new Date(__createdtime__).toUTCString(),
+			updatedAt: new Date(__updatedtime__).toUTCString(),
+			url: `https://${storeId}.myconfig.store/api/v1/${productId}`,
 		})
 	}
 
@@ -90,6 +119,25 @@ export class Product implements IProduct {
 			productKey: this.productKey,
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
+		}
+	}
+
+	toJSON() {
+		const data: Record<string, string> = {}
+
+		this.fields
+			?.map((field) => field.decrypted)
+			?.forEach((field) => {
+				data[field.key] = field.value
+			})
+
+		return {
+			productId: this.productId,
+			storeId: this.storeId,
+			url: this.url,
+			createdAt: this.createdAt,
+			updatedAt: this.updatedAt,
+			data,
 		}
 	}
 }

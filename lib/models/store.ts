@@ -47,7 +47,7 @@ export class Store implements IStore {
 			storeKey,
 			createdAt: formatDistanceToNow(new Date(__createdtime__), { addSuffix: true }),
 			updatedAt: formatDistanceToNow(new Date(__updatedtime__), { addSuffix: true }),
-			url: `https://${storeId}.myconfig.store/api`,
+			url: `https://${storeId}.myconfig.store/api/v1`,
 		})
 	}
 }

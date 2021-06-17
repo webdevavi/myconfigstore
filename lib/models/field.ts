@@ -1,3 +1,5 @@
+import { Encrypt } from "../encrypt"
+
 export interface IField {
 	key: string
 	value: string
@@ -20,5 +22,14 @@ export class Field implements IField {
 			...this,
 			value: this.isEncrypted ? Array(20).fill("*").join("") : this.value,
 		})
+	}
+
+	get decrypted(): IField {
+		const encryption = new Encrypt()
+
+		return {
+			key: this.key,
+			value: this.isEncrypted ? encryption.decrypt(this.value) : this.value,
+		}
 	}
 }
