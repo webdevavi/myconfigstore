@@ -4,6 +4,7 @@ import { FaEdit, FaTrash } from "react-icons/fa"
 import { Field } from "../../lib/models"
 import { Card } from "../Card"
 import { EditFieldModal } from "../EditFieldModal"
+import { RemoveFieldButton } from "./options/RemoveFieldButton"
 
 interface FieldContainerProps {
 	field: Field
@@ -21,9 +22,7 @@ export const FieldContainer: React.FC<FieldContainerProps> = ({ field, storeId, 
 					<IconButton aria-label="edit field" size="md" {...getButtonProps()}>
 						<Icon as={FaEdit} />
 					</IconButton>
-					<IconButton aria-label="delete field" size="md">
-						<Icon as={FaTrash} />
-					</IconButton>
+					<RemoveFieldButton fieldKey={field.key} storeId={storeId} productId={productId} />
 				</ButtonGroup>
 				<Stack w="full" direction={{ base: "column", lg: "row" }} alignItems="flex-start">
 					<VStack w="full" alignItems="flex-start">
