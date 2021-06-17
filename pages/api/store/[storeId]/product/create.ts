@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../lib/middlewares"
-import { Product, ProductJSON, StoreJSON } from "../../../../lib/models"
-import { FieldError } from "../../../../lib/types"
+import { HarperDB } from "../../../../../lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "../../../../../lib/middlewares"
+import { Product, ProductJSON, StoreJSON } from "../../../../../lib/models"
+import { FieldError } from "../../../../../lib/types"
 
 const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const fieldErrors: FieldError[] = []
