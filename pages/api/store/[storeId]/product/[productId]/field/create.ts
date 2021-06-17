@@ -1,4 +1,5 @@
 import { NextApiHandler, NextApiResponse } from "next"
+import { Encrypt } from "../../../../../../../lib/encrypt"
 import { HarperDB } from "../../../../../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../../lib/middlewares"
 import { Field, IField, ProductJSON } from "../../../../../../../lib/models"
@@ -55,11 +56,23 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(400).json({ fieldErrors })
 		}
 
-		const field = new Field({
-			key,
-			value,
-			isEncrypted: Boolean(isEncrypted),
-		})
+		let field: Field
+
+		if (isEncrypted) {
+			const encryption = new Encrypt()
+
+			field = new Field({
+				key,
+				value: encryption.encrypt(value),
+				isEncrypted: Boolean(isEncrypted),
+			})
+		} else {
+			field = new Field({
+				key,
+				value,
+				isEncrypted: Boolean(isEncrypted),
+			})
+		}
 
 		if (product.fields?.length && product.fields.length > 0) {
 			product.fields.push(field)

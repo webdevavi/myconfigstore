@@ -42,7 +42,13 @@ export const FieldContainer: React.FC<FieldContainerProps> = ({ field, storeId, 
 					</Heading>
 				</HStack>
 			</Card>
-			<EditFieldModal storeId={storeId} productId={productId} initialValues={field} isOpen={isOpen} onClose={onClose} />
+			<EditFieldModal
+				storeId={storeId}
+				productId={productId}
+				initialValues={{ ...field, value: field.isEncrypted ? "" : field.value }}
+				isOpen={isOpen}
+				onClose={onClose}
+			/>
 		</>
 	)
 }

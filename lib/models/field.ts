@@ -1,3 +1,5 @@
+import { Encrypt } from "../encrypt"
+
 export interface IField {
 	key: string
 	value: string
@@ -11,7 +13,7 @@ export class Field implements IField {
 
 	constructor({ key, value, isEncrypted }: IField) {
 		this.key = key
-		this.value = value
+		this.value = isEncrypted ? Array(value.length).fill("*").join("") : value
 		this.isEncrypted = Boolean(isEncrypted)
 	}
 }
