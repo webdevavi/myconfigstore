@@ -24,7 +24,8 @@ export const ReactivateStoreButton: React.FC<ReactivateStoreButtonProps> = ({ st
 					color: "brand.light",
 				}}
 				variant="outline"
-				fontSize={{ base: "sm", md: "md" }}
+				w={{ base: "full", md: "auto" }}
+				fontSize="md"
 				{...getButtonProps()}
 			>
 				Reactivate

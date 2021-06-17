@@ -24,7 +24,8 @@ export const DestroyProductButton: React.FC<DestroyProductButtonProps> = ({ prod
 					color: "brand.light",
 				}}
 				variant="outline"
-				fontSize={{ base: "sm", md: "md" }}
+				w={{ base: "full", md: "auto" }}
+				fontSize="md"
 				{...getButtonProps()}
 			>
 				Destroy

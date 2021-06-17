@@ -11,15 +11,19 @@ interface DashboardNavbarProps {
 
 export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ user }) => {
 	return (
-		<Box bg="brand.dark2" boxShadow="2xl" pos="sticky" top="0" zIndex="9999999">
-			<Container as={HStack} maxW="container.xl" py="2" justifyContent="space-between">
-				<TextLogo zIndex="2" />
-				<HStack spacing="6" d={{ base: "none", md: "flex" }}>
-					<BrandTag>FREE</BrandTag>
-					<Heading fontSize="lg" fontWeight="black" color="brand.orange" opacity="0.8">
-						{user?.name}
-					</Heading>
-					<UserAvatarMenu user={user} />
+		<Box bg="brand.dark2" boxShadow="2xl" pos="sticky" top="0" zIndex="1399">
+			<Container maxW="container.xl" py="2">
+				<HStack justifyContent="space-between">
+					<TextLogo zIndex="2" />
+					<HStack spacing="6">
+						<Box d={{ base: "none", md: "block" }}>
+							<BrandTag>FREE</BrandTag>
+						</Box>
+						<Heading fontSize="lg" fontWeight="black" color="brand.orange" opacity="0.8" d={{ base: "none", md: "block" }}>
+							{user?.name}
+						</Heading>
+						<UserAvatarMenu user={user} />
+					</HStack>
 				</HStack>
 			</Container>
 		</Box>

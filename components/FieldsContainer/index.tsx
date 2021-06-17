@@ -17,7 +17,7 @@ export const FieldsContainer: React.FC<FieldsContainerProps> = ({ storeId, produ
 
 	return (
 		<VStack w="full" alignItems="flex-start" spacing="8">
-			<HStack spacing="6">
+			<HStack w="full" spacing="6" justifyContent={{ base: "space-between", md: "flex-start" }}>
 				<HeadingWithIcon icon={FaWpforms} fontSize="xl">
 					Fields
 				</HeadingWithIcon>
