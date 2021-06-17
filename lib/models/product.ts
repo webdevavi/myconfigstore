@@ -76,7 +76,7 @@ export class Product implements IProduct {
 		})
 	}
 
-	toObject(): IProduct {
+	toObject({ encrypt }: { encrypt: boolean } = { encrypt: true }): IProduct {
 		return {
 			id: this.id,
 			productId: this.productId,
@@ -84,7 +84,7 @@ export class Product implements IProduct {
 			ownerId: this.ownerId,
 			url: this.url,
 			isActive: this.isActive,
-			fields: this.fields,
+			fields: encrypt ? this.fields?.map((field) => field.encrypted) : this.fields,
 			isPrivate: this.isPrivate,
 			isUsingStoreKey: this.isUsingStoreKey,
 			productKey: this.productKey,
