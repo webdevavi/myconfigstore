@@ -21,13 +21,13 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 			)
 
 			if (!product) {
-				return res.status(400).json({ error: "No product exists with the provided product id." })
+				return res.status(400).json({ message: "No product exists with the provided product id." })
 			}
 
 			return res.status(200).json(Product.fromJSON(product).toObject())
 		} catch (err) {
 			console.error(err)
-			return res.status(500).json({ error: "Some unexpected error occurred." })
+			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else if (req.method === "DELETE") {
 		try {

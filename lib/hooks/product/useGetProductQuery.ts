@@ -10,7 +10,16 @@ export const useGetProductQuery = ({ storeId, productId }: { storeId: string; pr
 		() => {
 			if (!storeId || !productId) return null
 
-			return axios.get<IProduct>(`/api/store/${storeId}/product/${productId}`).then(({ data: product }) => new Product(product))
+			return axios
+				.get<IProduct>(`/api/store/${storeId}/product/${productId}`)
+				.then(({ data: product }) => new Product(product))
+				.catch((err) => {
+					if (err.response.data) {
+						throw err.response.data
+					}
+
+					throw err
+				})
 		},
 		{
 			refetchOnMount: false,
