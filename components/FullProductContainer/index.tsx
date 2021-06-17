@@ -28,7 +28,9 @@ import { HeadingWithIcon } from "../HeadingWithIcon"
 import { ProductsContainer } from "../ProductsContainer"
 import { ProductSettings } from "../ProductSettings"
 import { StatusTag } from "../StatusTag"
+import { DeactivateProductButton } from "./options/DeactivateProductButton"
 import { DestroyProductButton } from "./options/DestroyProductButton"
+import { ReactivateProductButton } from "./options/ReactivateProductButton"
 
 interface FullProductContainerProps {
 	storeId: string
@@ -53,9 +55,7 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 					</HStack>
 					{product && (
 						<ButtonGroup>
-							<Button variant="outline" fontSize={{ base: "sm", md: "md" }}>
-								Deactivate
-							</Button>
+							{product.isActive ? <DeactivateProductButton product={product} /> : <ReactivateProductButton product={product} />}
 							<DestroyProductButton product={product} />
 						</ButtonGroup>
 					)}

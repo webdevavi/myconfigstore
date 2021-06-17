@@ -63,6 +63,7 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			ownerId: req.session.id as string,
 			isPrivate: true,
 			isUsingStoreKey: true,
+			isActive: true,
 		})
 
 		try {
