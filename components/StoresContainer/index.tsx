@@ -22,7 +22,7 @@ export const StoresContainer: React.FC = () => {
 			</HStack>
 			{isLoading ? (
 				<Card as={Center} py="20" maxW="md" alignSelf="center" color="brand.light">
-					<CircularProgress isIndeterminate />
+					<CircularProgress color="brand.orange" trackColor="brand.light" isIndeterminate />
 				</Card>
 			) : isError && error ? (
 				<Card as={Center} py="20" maxW="md" alignSelf="center" color="brand.error">
