@@ -3,6 +3,8 @@ import {
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
+	Button,
+	ButtonGroup,
 	Center,
 	Checkbox,
 	CircularProgress,
@@ -26,6 +28,7 @@ import { HeadingWithIcon } from "../HeadingWithIcon"
 import { ProductsContainer } from "../ProductsContainer"
 import { ProductSettings } from "../ProductSettings"
 import { StatusTag } from "../StatusTag"
+import { DestroyProductButton } from "./options/DestroyProductButton"
 
 interface FullProductContainerProps {
 	storeId: string
@@ -40,12 +43,22 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 	return (
 		<VStack w="full" alignItems="flex-start" spacing="8">
 			<VStack w="full" alignItems="flex-start" spacing="2">
-				<HStack>
-					<Heading fontSize="2xl" color="brand.orange">
-						{productId}
-					</Heading>
-					{product?.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
-					<StatusTag isActive={product?.isActive} />
+				<HStack w="full" justifyContent="space-between">
+					<HStack>
+						<Heading fontSize="2xl" color="brand.orange">
+							{productId}
+						</Heading>
+						{product?.isPrivate ? <Icon as={FaLock} color="brand.orange" /> : <Icon as={FaGlobe} color="brand.orange" />}
+						<StatusTag isActive={product?.isActive} />
+					</HStack>
+					{product && (
+						<ButtonGroup>
+							<Button variant="outline" fontSize={{ base: "sm", md: "md" }}>
+								Deactivate
+							</Button>
+							<DestroyProductButton product={product} />
+						</ButtonGroup>
+					)}
 				</HStack>
 				<Breadcrumb fontWeight="black">
 					<BreadcrumbItem>
