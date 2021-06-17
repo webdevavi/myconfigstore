@@ -1,7 +1,7 @@
 import { Button, useDisclosure } from "@chakra-ui/react"
 import React from "react"
 import { Product } from "../../../lib/models"
-import { DestroyProductModal } from "../../DestroyeProductModal"
+import { DestroyProductModal } from "../../DestroyProductModal"
 
 interface DestroyProductButtonProps {
 	product: Product

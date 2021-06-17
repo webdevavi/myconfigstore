@@ -17,6 +17,7 @@ import {
 	useToast,
 } from "@chakra-ui/react"
 import { Field, FieldProps, Form, Formik } from "formik"
+import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
 import { useDestroyProductMutation } from "../../lib/hooks/product"
@@ -46,16 +47,20 @@ export const DestroyProductModal: React.FC<Omit<ModalProps, "children"> & { stor
 
 	const toast = useToast()
 
+	const router = useRouter()
+
 	const handleSubmit = async () => {
 		try {
 			const { status, data } = await mutateAsync()
 
 			if (status === 200 && data.message) {
-				return toast({
+				toast({
 					title: "Destroy Product",
 					description: data.message,
 					status: "success",
 				})
+				props.onClose()
+				return router.replace(`/user/stores/${storeId}`)
 			}
 		} catch (err) {
 			if (err.response?.data?.error) {
