@@ -1,17 +1,17 @@
-import { NextApiRequest, NextApiResponse } from "next"
-import { getSession } from "next-auth/client"
-import { HarperDB } from "../../../lib/harperDB"
-import { Store } from "../../../lib/models"
-import { FieldError } from "../../../lib/types"
 import * as crypto from "crypto"
+import { NextApiHandler, NextApiResponse } from "next"
+import { HarperDB } from "../../../lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "../../../lib/middlewares"
+import { AppUser, IAppUser, Store } from "../../../lib/models"
+import { FieldError } from "../../../lib/types"
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const fieldErrors: FieldError[] = []
 	if (req.method === "POST") {
-		const session = await getSession({ req })
+		const { user } = req
 
-		if (!session?.id || typeof session.id !== "string") {
-			return res.status(403).json({ message: "You are not allowed to perform this action." })
+		if (!user.canCreateNewStore) {
+			return res.status(403).json({ message: "You have completely consumed your current subscription plan, please upgrade to create more stores." })
 		}
 
 		const { storeId } = req.body as { storeId: string | undefined }
@@ -38,13 +38,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const storeKey = crypto.randomBytes(64).toString("base64")
 
-		const store = new Store({ storeId: storeId!, ownerId: session.id, storeKey, isActive: true })
+		const store = new Store({ storeId: storeId!, ownerId: user.id, storeKey, isActive: true })
 
 		try {
-			await db.insert({ table: "stores", records: [store] })
+			const [newStoreId] = await db.insert({ table: "stores", records: [store] })
+
+			if (!newStoreId) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			await db.update<IAppUser>({
+				table: "users",
+				records: [{ id: user.id, usage: { ...(user.usage ?? {}), stores: (user.usage?.stores ?? 0) + 1 } }],
+			})
+
 			return res.status(201).json({ message: `Store ${storeId} created successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
 }
+
+export default withAuthentication(createStore as NextApiHandler)
