@@ -79,7 +79,7 @@ export class HarperDB {
 		return ((await this.client({ data })) as AxiosResponse<T[]>).data
 	}
 
-	async update<T>(options: { table: string; records: ({ id: string } & T)[] }) {
+	async update<T>(options: { table: string; records: ({ id: string } & Partial<T>)[] }) {
 		const data = JSON.stringify({
 			operation: "update",
 			schema: this.schema,

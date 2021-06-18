@@ -1,10 +1,12 @@
 import { NextApiHandler, NextApiResponse } from "next"
 import { HarperDB } from "../../../../../../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../../../lib/middlewares"
-import { ProductJSON } from "../../../../../../../../lib/models"
+import { IAppUser, ProductJSON } from "../../../../../../../../lib/models"
 
 const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
-	if (req.method === "POST") {
+	const { user, method } = req
+
+	if (method === "POST") {
 		const { storeId, productId, key } = req.query
 
 		if (!storeId || typeof storeId !== "string") {
@@ -28,7 +30,7 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const [product] = await db.findByConditions<ProductJSON>(
 			"and",
 			[
-				{ attribute: "ownerId", type: "equals", value: req.session.id as string },
+				{ attribute: "ownerId", type: "equals", value: user.id },
 				{ attribute: "storeId", type: "equals", value: storeId as string },
 				{ attribute: "productId", type: "equals", value: productId as string },
 			],
@@ -51,7 +53,17 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const { id, fields } = product
 
 		try {
-			await db.update({ table: "products", records: [{ id: id as string, fields }] })
+			const [updatedProductId] = await db.update({ table: "products", records: [{ id: id as string, fields }] })
+
+			if (!updatedProductId) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			await db.update<IAppUser>({
+				table: "users",
+				records: [{ id: user.id, usage: { ...(user.usage ?? {}), fields: (user.usage?.fields ?? 1) - 1 } }],
+			})
+
 			return res.status(201).json({ message: `Field ${key} removed successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })

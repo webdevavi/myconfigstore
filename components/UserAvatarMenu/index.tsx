@@ -11,12 +11,12 @@ import {
 	useBreakpoint,
 	useDisclosure,
 } from "@chakra-ui/react"
-import { User } from "next-auth"
-import React from "react"
 import NextLink from "next/link"
+import React from "react"
+import { AppUser } from "../../lib/models"
 
 interface UserAvatarMenuProps {
-	user: User | undefined
+	user: AppUser | undefined
 }
 
 export const UserAvatarMenu: React.FC<UserAvatarMenuProps> = ({ user }) => {
@@ -75,6 +75,19 @@ export const UserAvatarMenu: React.FC<UserAvatarMenuProps> = ({ user }) => {
 					)}
 
 					<MenuGroup>
+						{/base|sm|md/.test(breakpoint) && (
+							<NextLink href="/user/usage" passHref>
+								<MenuItem
+									as={Link}
+									fontFamily="Muli"
+									fontWeight="black"
+									color="brand.light"
+									_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
+								>
+									Usage
+								</MenuItem>
+							</NextLink>
+						)}
 						<NextLink href="/user/account" passHref>
 							<MenuItem
 								as={Link}

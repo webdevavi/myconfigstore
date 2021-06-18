@@ -1,13 +1,16 @@
-import { Flex, VStack } from "@chakra-ui/react"
+import { Flex, useBreakpoint, VStack } from "@chakra-ui/react"
 import { useRouter } from "next/router"
 import React from "react"
 import { FaCreditCard, FaNewspaper, FaWindowRestore } from "react-icons/fa"
 import { NavigationButton } from "../../NavigationButton"
+import { UsageSummary } from "../../UsageSummary"
 
 export const NavigationSidebar: React.FC<unknown> = () => {
 	const { pathname } = useRouter()
 
 	const isActive = React.useCallback((path: string) => pathname.includes(path), [pathname])
+
+	const breakpoint = useBreakpoint() ?? ""
 
 	return (
 		<Flex as="header" pos="relative" flexDir="column" alignItems="flex-end">
@@ -35,6 +38,7 @@ export const NavigationSidebar: React.FC<unknown> = () => {
 								Docs
 							</NavigationButton>
 						</VStack>
+						{!/base|sm|md/.test(breakpoint) && <UsageSummary />}
 					</Flex>
 				</Flex>
 			</Flex>

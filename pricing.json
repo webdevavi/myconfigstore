@@ -1,0 +1,77 @@
+{
+	"trial": {
+		"label": "TRIAL",
+		"days": 14,
+		"bill": 0,
+		"features": {
+			"stores": 1,
+			"products": 1,
+			"fields": 100,
+			"rateLimit": 60,
+			"support": false
+		},
+		"stripe": {
+			"productId": null
+		}
+	},
+	"hobby": {
+		"label": "HOBBY",
+		"days": 30,
+		"bill": 5,
+		"features": {
+			"stores": 10,
+			"products": 2000,
+			"fields": 10000,
+			"rateLimit": 1000,
+			"support": true
+		},
+		"stripe": {
+			"productId": "prod_JgzXE1Gyfy6NDL"
+		}
+	},
+	"developer": {
+		"label": "DEV",
+		"days": 30,
+		"bill": 25,
+		"features": {
+			"stores": 1000,
+			"products": 200000,
+			"fields": 1000000,
+			"rateLimit": null,
+			"support": true
+		},
+		"stripe": {
+			"productId": "prod_JgzYl6mupU5zRj"
+		}
+	},
+	"developer-annual": {
+		"label": "DEV ANNUAL",
+		"days": 365,
+		"bill": 300,
+		"features": {
+			"stores": 1000,
+			"products": 200000,
+			"fields": 1000000,
+			"rateLimit": null,
+			"support": true
+		},
+		"stripe": {
+			"productId": "prod_JgzZKuhGrE1UtJ"
+		}
+	},
+	"enterprise": {
+		"label": "ENTERPRISE",
+		"days": null,
+		"bill": null,
+		"features": {
+			"stores": null,
+			"products": null,
+			"fields": null,
+			"rateLimit": null,
+			"support": true
+		},
+		"stripe": {
+			"productId": "prod_JgzbNPf1xDOcdp"
+		}
+	}
+}

@@ -1,12 +1,12 @@
 import { Box, Container, Heading, HStack } from "@chakra-ui/react"
-import { User } from "next-auth"
 import React from "react"
+import { AppUser } from "../../../lib/models"
 import { TextLogo } from "../../Logo"
 import { BrandTag } from "../../Tag"
 import { UserAvatarMenu } from "../../UserAvatarMenu"
 
 interface DashboardNavbarProps {
-	user: User | undefined
+	user: AppUser | undefined
 }
 
 export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ user }) => {
@@ -16,9 +16,11 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({ user }) => {
 				<HStack justifyContent="space-between">
 					<TextLogo zIndex="2" />
 					<HStack spacing="6">
-						<Box d={{ base: "none", md: "block" }}>
-							<BrandTag>FREE</BrandTag>
-						</Box>
+						{user?.subscription?.plan && (
+							<Box d={{ base: "none", md: "block" }}>
+								<BrandTag>{user.subscription.plan}</BrandTag>
+							</Box>
+						)}
 						<Heading fontSize="lg" fontWeight="black" color="brand.orange" opacity="0.8" d={{ base: "none", md: "block" }}>
 							{user?.name}
 						</Heading>

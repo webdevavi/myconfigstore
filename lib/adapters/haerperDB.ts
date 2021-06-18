@@ -1,10 +1,13 @@
 import { Account, Profile, User } from "next-auth"
 import { Adapter } from "next-auth/adapters"
 import { HarperDB } from "../harperDB"
-import { AppUser } from "../models"
+import { AppUser, IAppUser, PaymentStatus, Plans } from "../models"
+import { addStripeCustomer, deleteStripeCustomer } from "../subscription"
+import add from "date-fns/add"
+import pricing from "../../pricing.json"
 
 // @ts-expect-error
-export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Profile> = (db) => {
+export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db) => {
 	return {
 		async getAdapter() {
 			return {
@@ -13,27 +16,53 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 				async createUser(profile) {
 					const { name, email, image } = profile
 
-					const userIds = await db.insert<User>({
+					const stripeCustomerId = await addStripeCustomer(name, email)
+
+					const user = {
+						name,
+						email,
+						image,
+						subscription: {
+							stripeCustomerId,
+							plan: Plans.Trial,
+							status: PaymentStatus.Unpaid,
+							expiry: add(new Date(), { days: pricing.trial.days }),
+						},
+					}
+
+					const [userId] = await db.insert<Omit<IAppUser, "id">>({
 						table: "users",
-						records: [{ name, email, image }],
+						records: [user],
 					})
 
-					if (userIds) return new AppUser({ id: userIds[0], name, email, image })
+					if (!userId) {
+						deleteStripeCustomer(stripeCustomerId)
+						return null
+					}
+
+					return new AppUser({ id: userId, ...user })
 				},
 
 				async getUser(id) {
-					const users = await db.findByIds<User>([id], { table: "users" })
-					if (users && users[0]) return new AppUser(users[0])
+					const [user] = await db.findByIds<IAppUser>([id], { table: "users" })
+
+					if (!user) return null
+
+					return new AppUser(user)
 				},
 
 				async getUserByEmail(email) {
 					if (!email) return null
-					const users = await db.findByValue<User>("email", email, { table: "users" })
-					if (users && users[0]) return new AppUser(users[0])
+
+					const [user] = await db.findByValue<IAppUser>("email", email, { table: "users" })
+
+					if (!user) return null
+
+					return new AppUser(user)
 				},
 
 				async getUserByProviderAccountId(providerId, providerAccountId) {
-					const accountSnapshot = await db.findByConditions<Account>(
+					const [accountSnapshot] = await db.findByConditions<Account>(
 						"and",
 						[
 							{ attribute: "providerId", type: "equals", value: providerId },
@@ -47,16 +76,19 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 
 					if (!accountSnapshot) return null
 
-					const userId = accountSnapshot?.[0]?.userId as string
+					const userId = accountSnapshot?.userId as string
 
 					if (!userId) return null
 
-					const users = await db.findByIds<User>([userId], { table: "users" })
-					if (users && users[0]) return new AppUser(users[0])
+					const [user] = await db.findByIds<IAppUser>([userId], { table: "users" })
+
+					if (!user) return null
+
+					return new AppUser(user)
 				},
 
 				async updateUser(user) {
-					await db.update<User>({
+					await db.update<IAppUser>({
 						table: "users",
 						records: [user],
 					})
@@ -65,7 +97,7 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 				},
 
 				async deleteUser(userId) {
-					await db.delete<User>([userId], {
+					await db.delete<IAppUser>([userId], {
 						table: "users",
 					})
 				},
@@ -90,7 +122,7 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 				},
 
 				async unlinkAccount(userId, providerId, providerAccountId) {
-					const accounts = await db.findByConditions<Account>(
+					const [account] = await db.findByConditions<Account>(
 						"and",
 						[
 							{ attribute: "userId", type: "equals", value: userId },
@@ -103,9 +135,9 @@ export const HarperDBAdapter: Adapter<HarperDB, never, User & { id: string }, Pr
 						}
 					)
 
-					if (!accounts || !accounts?.[0]) return null
+					if (!account) return null
 
-					const accountId = accounts[0].id
+					const accountId = account.id
 
 					await db.delete([accountId], { table: "accounts" })
 				},
