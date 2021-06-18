@@ -13,7 +13,7 @@ const getCurrentUser = async (req: NextApiRequestWithAuth, res: NextApiResponse)
 		try {
 			const db = new HarperDB("dev")
 
-			const [user] = await db.findByIds<IAppUser>([id], { table: "users" })
+			const [user] = await db.findByIds<IAppUser>([id as string], { table: "users" })
 
 			if (!user) {
 				return res.status(404).json({ code: 404, message: "User doesn't exist" })
