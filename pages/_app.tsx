@@ -6,7 +6,9 @@ import "@fontsource/poppins/700.css"
 import { NextPage } from "next"
 import { Provider } from "next-auth/client"
 import { AppProps } from "next/dist/next-server/lib/router/router"
+import React from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { ContextProvider } from "../lib/context"
 import theme from "../theme"
 
 const queryClient = new QueryClient()
@@ -15,7 +17,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => (
 	<ChakraProvider theme={theme}>
 		<Provider session={pageProps.session}>
 			<QueryClientProvider client={queryClient}>
-				<Component {...pageProps} />
+				<ContextProvider>
+					<Component {...pageProps} />
+				</ContextProvider>
 			</QueryClientProvider>
 		</Provider>
 	</ChakraProvider>

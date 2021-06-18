@@ -1,18 +1,20 @@
 import { NextApiHandler, NextApiResponse } from "next"
 import { HarperDB } from "../../../../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../lib/middlewares"
-import { Product, ProductJSON } from "../../../../../../lib/models"
+import { IAppUser, IStore, Product, ProductJSON } from "../../../../../../lib/models"
 
 const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { storeId, productId } = req.query
 	const db = new HarperDB("dev")
 
-	if (req.method === "GET") {
+	const { user, method } = req
+
+	if (method === "GET") {
 		try {
 			const [product] = await db.findByConditions<ProductJSON>(
 				"and",
 				[
-					{ attribute: "ownerId", type: "equals", value: req.session.id as string },
+					{ attribute: "ownerId", type: "equals", value: user.id },
 					{ attribute: "storeId", type: "equals", value: storeId as string },
 					{ attribute: "productId", type: "equals", value: productId as string },
 				],
@@ -29,12 +31,12 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 			console.error(err)
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
-	} else if (req.method === "DELETE") {
+	} else if (method === "DELETE") {
 		try {
 			const [product] = await db.findByConditions<ProductJSON>(
 				"and",
 				[
-					{ attribute: "ownerId", type: "equals", value: req.session.id as string },
+					{ attribute: "ownerId", type: "equals", value: user.id },
 					{ attribute: "storeId", type: "equals", value: storeId as string },
 					{ attribute: "productId", type: "equals", value: productId as string },
 				],
@@ -46,7 +48,21 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 				return res.status(400).json({ error: "No product exists with the provided product id." })
 			}
 
-			await db.delete([product.id as string], { table: "products" })
+			const [deletedProductId] = await db.delete([product.id as string], { table: "products" })
+
+			if (!deletedProductId) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			const [store] = await db.findByValue<IStore>("storeId", storeId as string, { table: "stores" })
+
+			if (store) await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 1) - 1 }] })
+
+			await db.update<IAppUser>({
+				table: "users",
+				records: [{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 1) - 1 } }],
+			})
+
 			return res.status(200).json({ message: `Product ${productId} destroyed.` })
 		} catch (err) {
 			console.error(err)

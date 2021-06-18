@@ -6,11 +6,16 @@ import Head from "next/head"
 import React, { useEffect } from "react"
 import { useMutation } from "react-query"
 import { AnimatedLogo, DefaultNavbar, WithAuth } from "../../components"
+import { useCurrentUser } from "../../lib/hooks/session"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 
 const SignoutPage: NextPage<unknown> = () => {
-	const { mutateAsync, isError, error, isLoading } = useMutation("signout", () => signOut())
+	const { removeUser } = useCurrentUser()
+
+	const { mutateAsync, isError, error, isLoading } = useMutation("signout", () => signOut(), {
+		onSuccess: removeUser,
+	})
 
 	const mutateSignOut = () => mutateAsync()
 

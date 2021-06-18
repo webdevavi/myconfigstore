@@ -29,6 +29,7 @@
 		"react-icons": "^4.2.0",
 		"react-query": "^3.17.0",
 		"string-strip-html": "^8.3.0",
+		"stripe": "^8.156.0",
 		"yup": "^0.32.9"
 	},
 	"devDependencies": {

@@ -1,21 +1,22 @@
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
-import { Dashboard, StoresContainer, WithAuth, WithCurrentUser } from "../../../components"
+import { Dashboard, DetailedUsageContainer, WithAuth, WithCurrentUser } from "../../components"
 
-const StoresPage: NextPage = () => {
+const UsagePage: NextPage = () => {
 	return (
 		<div>
 			<Head>
-				<title>Stores | myconfig.store</title>
+				<title>Home | myconfig.store</title>
 				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
+
 			<Dashboard>
-				<StoresContainer />
+				<DetailedUsageContainer />
 			</Dashboard>
 		</div>
 	)
 }
 
-export default WithAuth(WithCurrentUser(StoresPage), { redirect: "onUnauth" })
+export default WithAuth(WithCurrentUser(UsagePage), { redirect: "onUnauth" })

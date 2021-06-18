@@ -1,14 +1,20 @@
 import { NextApiHandler, NextApiResponse } from "next"
 import { HarperDB } from "../../../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../../../lib/middlewares"
-import { Product, ProductJSON, StoreJSON } from "../../../../../lib/models"
+import { IAppUser, IStore, Product, ProductJSON, StoreJSON } from "../../../../../lib/models"
 import { FieldError } from "../../../../../lib/types"
 
 const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
+	const { user } = req
+
 	const fieldErrors: FieldError[] = []
 	if (req.method === "POST") {
 		const { storeId } = req.query
 		const { productId } = req.body as { productId: string | undefined }
+
+		if (!user.canCreateNewProduct) {
+			return res.status(403).json({ message: "You have completely consumed your current subscription plan, please upgrade to create more products." })
+		}
 
 		if (!storeId || typeof storeId !== "string") {
 			return res.status(400).json({ message: "Store id is required." })
@@ -67,7 +73,19 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 		})
 
 		try {
-			await db.insert({ table: "products", records: [product] })
+			const [newProductId] = await db.insert({ table: "products", records: [product] })
+
+			if (!newProductId) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 0) + 1 }] })
+
+			await db.update<IAppUser>({
+				table: "users",
+				records: [{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 0) + 1 } }],
+			})
+
 			return res.status(201).json({ message: `Product ${productId} created successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
