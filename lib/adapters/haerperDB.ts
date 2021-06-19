@@ -1,10 +1,10 @@
-import { Account, Profile, User } from "next-auth"
-import { Adapter } from "next-auth/adapters"
-import { HarperDB } from "../harperDB"
-import { AppUser, IAppUser, PaymentStatus, Plans } from "../models"
-import { addStripeCustomer, deleteStripeCustomer } from "../subscription"
 import add from "date-fns/add"
+import { Account, Profile } from "next-auth"
+import { Adapter } from "next-auth/adapters"
 import pricing from "../../pricing.json"
+import { HarperDB } from "../harperDB"
+import { AppUser, AppUserJSON, IAppUser, PaymentStatus, Plans } from "../models"
+import { addStripeCustomer, deleteStripeCustomer } from "../subscription"
 
 // @ts-expect-error
 export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db) => {
@@ -26,11 +26,11 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 							stripeCustomerId,
 							plan: Plans.Trial,
 							status: PaymentStatus.Unpaid,
-							expiry: add(new Date(), { days: pricing.trial.days }),
+							expiry: add(new Date(), { days: pricing.trial.days }).getTime(),
 						},
 					}
 
-					const [userId] = await db.insert<Omit<IAppUser, "id">>({
+					const [userId] = await db.insert<Omit<AppUserJSON, "id">>({
 						table: "users",
 						records: [user],
 					})
@@ -40,25 +40,25 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 						return null
 					}
 
-					return new AppUser({ id: userId, ...user })
+					return AppUser.fromJSON({ id: userId, ...user })
 				},
 
 				async getUser(id) {
-					const [user] = await db.findByIds<IAppUser>([id], { table: "users" })
+					const [user] = await db.findByIds<AppUserJSON>([id], { table: "users" })
 
 					if (!user) return null
 
-					return new AppUser(user)
+					return AppUser.fromJSON(user)
 				},
 
 				async getUserByEmail(email) {
 					if (!email) return null
 
-					const [user] = await db.findByValue<IAppUser>("email", email, { table: "users" })
+					const [user] = await db.findByValue<AppUserJSON>("email", email, { table: "users" })
 
 					if (!user) return null
 
-					return new AppUser(user)
+					return AppUser.fromJSON(user)
 				},
 
 				async getUserByProviderAccountId(providerId, providerAccountId) {
@@ -80,24 +80,24 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 
 					if (!userId) return null
 
-					const [user] = await db.findByIds<IAppUser>([userId], { table: "users" })
+					const [user] = await db.findByIds<AppUserJSON>([userId], { table: "users" })
 
 					if (!user) return null
 
-					return new AppUser(user)
+					return AppUser.fromJSON(user)
 				},
 
 				async updateUser(user) {
-					await db.update<IAppUser>({
+					await db.update<AppUserJSON>({
 						table: "users",
-						records: [user],
+						records: [new AppUser(user).toJSON()],
 					})
 
 					return user
 				},
 
 				async deleteUser(userId) {
-					await db.delete<IAppUser>([userId], {
+					await db.delete<AppUserJSON>([userId], {
 						table: "users",
 					})
 				},

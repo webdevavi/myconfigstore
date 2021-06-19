@@ -22,13 +22,25 @@ export const UsageSummary: React.FC = () => {
 					<Text textAlign="center" color="brand.orange" fontSize="md">
 						You don't have subscribed for any plan.
 					</Text>
+				) : currentUser.hasPlanExpired ? (
+					<Text textAlign="center" color="brand.orange" fontSize="md">
+						<Text as="span" textTransform="capitalize">
+							{currentUser?.subscription.plan.toLowerCase()}
+						</Text>{" "}
+						{currentUser?.subscription.plan === Plans.Trial ? "" : "plan"} has expired,{" "}
+						<NextLink href="/user/upgrade" passHref>
+							<Link textAlign="center" color="brand.orange">
+								Upgrade
+							</Link>
+						</NextLink>
+						.
+					</Text>
 				) : (
 					<Text textAlign="center" color="brand.orange" fontSize="md">
 						<Text as="span" textTransform="capitalize">
 							{currentUser?.subscription.plan.toLowerCase()}
 						</Text>{" "}
-						{currentUser?.subscription.plan === Plans.Trial ? "" : "plan"} expires in{" "}
-						{formatDistanceToNow(new Date(currentUser?.subscription.expiry ?? new Date().toDateString()))}
+						{currentUser?.subscription.plan === Plans.Trial ? "" : "plan"} expires in {formatDistanceToNow(currentUser?.subscription.expiry)}
 					</Text>
 				)}
 				<Progress value={currentUser?.usageSummary} size="sm" />

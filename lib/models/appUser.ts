@@ -1,6 +1,7 @@
-import { ISubscription, Plans, Subscription } from "./subscription"
+import { ISubscription, Plans, Subscription, SubscriptionJSON } from "./subscription"
 import { IUsage, Usage } from "./usage"
 import pricing from "../../pricing.json"
+import isBefore from "date-fns/isBefore"
 
 export interface IAppUser {
 	id: string
@@ -11,6 +12,8 @@ export interface IAppUser {
 	subscription: ISubscription
 	usage?: IUsage
 }
+
+export type AppUserJSON = Omit<IAppUser, "subscription"> & { subscription: SubscriptionJSON }
 
 export class AppUser implements IAppUser {
 	id: string
@@ -31,6 +34,24 @@ export class AppUser implements IAppUser {
 		this.image = image
 		this.subscription = new Subscription(subscription)
 		this.usage = usage ? new Usage(usage) : undefined
+	}
+
+	static fromJSON(json: AppUserJSON): AppUser {
+		const { subscription, ...rest } = json
+
+		return new AppUser({ ...rest, subscription: Subscription.fromJSON(subscription) })
+	}
+
+	toJSON(): AppUserJSON {
+		return {
+			id: this.id,
+			name: this.name,
+			email: this.email,
+			isEmailVerified: this.isEmailVerified,
+			image: this.image,
+			subscription: this.subscription.toJSON(),
+			usage: this.usage,
+		}
 	}
 
 	private calcPercent = (used: number | undefined | null, total: number | undefined | null) => {
@@ -102,10 +123,18 @@ export class AppUser implements IAppUser {
 		}
 	}
 
+	get hasPlanExpired(): boolean {
+		return isBefore(this.subscription.expiry, new Date())
+	}
+
 	/**
 	 * Can this user can create more stores with the current subscription plan?
 	 */
 	get canCreateNewStore(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -131,6 +160,10 @@ export class AppUser implements IAppUser {
 	 * Can this user can create more products with the current subscription plan?
 	 */
 	get canCreateNewProduct(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -156,6 +189,10 @@ export class AppUser implements IAppUser {
 	 * Can this user can create more fields with the current subscription plan?
 	 */
 	get canCreateNewField(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -175,5 +212,12 @@ export class AppUser implements IAppUser {
 		}
 
 		return true
+	}
+
+	/**
+	 * Can this user use the api endpoints?
+	 */
+	get canUseAPIEndpoints(): boolean {
+		return !this.hasPlanExpired && this.subscription.plan !== Plans.None
 	}
 }

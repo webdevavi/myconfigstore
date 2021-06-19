@@ -1,6 +1,6 @@
 import { NextApiHandler } from "next"
 import { HarperDB } from "../../../../lib/harperDB"
-import { Product, ProductJSON, StoreJSON } from "../../../../lib/models"
+import { AppUser, AppUserJSON, Product, ProductJSON, StoreJSON } from "../../../../lib/models"
 import * as crypto from "crypto"
 
 const handleProduct: NextApiHandler = async (req, res) => {
@@ -36,6 +36,20 @@ const handleProduct: NextApiHandler = async (req, res) => {
 
 			if (!store || !store.isActive) {
 				return res.status(404).json({ code: "404", message: "No store exists with the provided store id or the store might be inactive." })
+			}
+
+			const [user] = await db.findByIds<AppUserJSON>([store.ownerId], { table: "users" })
+
+			if (!user) {
+				return res.status(404).json({ code: "404", message: "The owner of this store does not exist anymore." })
+			}
+
+			const appUser = AppUser.fromJSON(user)
+
+			if (!appUser.canUseAPIEndpoints) {
+				return res
+					.status(403)
+					.json({ code: "403", message: "Your subscription plan has expired, please upgrade / renew your plan to continue using your store." })
 			}
 
 			const [product] = await db.findByConditions<ProductJSON>(
