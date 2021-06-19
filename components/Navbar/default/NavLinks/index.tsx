@@ -1,12 +1,12 @@
 import { HStack } from "@chakra-ui/react"
 import React, { useCallback } from "react"
-import { NavLink } from "../NavLink"
 import { useRouter } from "next/router"
+import { NavLink } from "../NavLink"
 
 export const NavLinks = () => {
 	const { pathname } = useRouter()
 
-	const isActive = useCallback((path: string) => new RegExp(`^${pathname}(\/|)$`).test(path), [pathname])
+	const isActive = useCallback((path: string) => new RegExp(`^${pathname}(/|)$`).test(path), [pathname])
 
 	return (
 		<HStack spacing="6">

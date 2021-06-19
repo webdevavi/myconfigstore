@@ -58,6 +58,12 @@ export const DestroyStoreModal: React.FC<Omit<ModalProps, "children"> & { storeI
 				props.onClose()
 				return router.replace(`/user/stores`)
 			}
+
+			return toast({
+				title: "Destroy Store",
+				description: "Some unexpected error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Destroy Store",

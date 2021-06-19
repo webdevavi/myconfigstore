@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react"
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
-import { DefaultNavbar, Hero, WithAuth } from "../components"
+import { DefaultNavbar, Hero, WithAuth } from "@components"
 
 const Home: NextPage = () => (
 	<div>

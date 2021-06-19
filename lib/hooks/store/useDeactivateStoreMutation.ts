@@ -9,7 +9,7 @@ export const useDeactivateStoreMutation = ({ storeId }: { storeId: string }) => 
 	const queryClient = useQueryClient()
 
 	return useMutation([DEACTIVATE_STORE, storeId], async () => {
-		return await axios
+		return axios
 			.put<{ message: string }>(`/api/store/${storeId}/deactivate`)
 			.then(async (res) => {
 				await queryClient.refetchQueries(GET_STORES)

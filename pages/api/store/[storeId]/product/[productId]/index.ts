@@ -28,7 +28,6 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 
 			return res.status(200).json(Product.fromJSON(product).toObject())
 		} catch (err) {
-			console.error(err)
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else if (method === "DELETE") {
@@ -76,7 +75,6 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 
 			return res.status(200).json({ message: `Product ${productId} destroyed.` })
 		} catch (err) {
-			console.error(err)
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else return res.status(404).end()

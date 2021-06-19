@@ -20,16 +20,27 @@ export type ProductJSON = Omit<IProduct, "url" | "createdAt" | "updatedAt"> & { 
 
 export class Product implements IProduct {
 	id?: string | undefined
+
 	productId: string
+
 	storeId: string
+
 	ownerId: string
+
 	url?: string | undefined
+
 	isActive?: boolean | undefined
+
 	isPrivate?: boolean | undefined
+
 	isUsingStoreKey?: boolean | undefined
+
 	productKey?: string | undefined
+
 	fields?: Field[] | undefined
+
 	createdAt?: string | undefined
+
 	updatedAt?: string | undefined
 
 	constructor({ id, productId, storeId, ownerId, url, isActive, isPrivate, isUsingStoreKey, productKey, fields, createdAt, updatedAt }: IProduct) {
@@ -125,11 +136,13 @@ export class Product implements IProduct {
 	toJSON() {
 		const data: Record<string, string> = {}
 
-		this.fields
-			?.map((field) => field.decrypted)
-			?.forEach((field) => {
-				data[field.key] = field.value
-			})
+		if (this.fields) {
+			this.fields
+				.map((field) => field.decrypted)
+				.forEach((field) => {
+					data[field.key] = field.value
+				})
+		}
 
 		return {
 			productId: this.productId,

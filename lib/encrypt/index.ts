@@ -7,16 +7,13 @@ const bufferEncryption = "utf-8"
 export class Encrypt {
 	private readonly aesKey: string = process.env.AES_KEY ?? ""
 
-	constructor() {}
-
 	encrypt(data: string) {
 		const aesIv = crypto.randomBytes(12).toString(encryptionEncoding)
 
-		let cipher = crypto.createCipheriv(encryptionType, Buffer.from(this.aesKey, bufferEncryption), Buffer.from(aesIv, bufferEncryption))
+		const cipher = crypto.createCipheriv(encryptionType, Buffer.from(this.aesKey, bufferEncryption), Buffer.from(aesIv, bufferEncryption))
 		let encrypted = cipher.update(JSON.stringify(data), bufferEncryption, encryptionEncoding)
 
 		encrypted += cipher.final(encryptionEncoding)
-		console.log({ aesIv, encrypted })
 
 		return aesIv + encrypted
 	}

@@ -1,7 +1,7 @@
 import { NextApiHandler } from "next"
+import * as crypto from "crypto"
 import { HarperDB } from "../../../../lib/harperDB"
 import { AppUser, AppUserJSON, Product, ProductJSON, StoreJSON } from "../../../../lib/models"
-import * as crypto from "crypto"
 
 const handleProduct: NextApiHandler = async (req, res) => {
 	const db = new HarperDB("dev")
@@ -19,13 +19,13 @@ const handleProduct: NextApiHandler = async (req, res) => {
 					return res.status(400).json({ code: "400", message: "Store Id is required" })
 				}
 
-				storeId = splits[0]
+				;[storeId] = splits
 			} else {
 				if (splits.length !== 3) {
 					return res.status(400).json({ code: "400", message: "Store Id is required" })
 				}
 
-				storeId = splits[0]
+				;[storeId] = splits
 			}
 
 			if (!storeId) {
@@ -102,7 +102,6 @@ const handleProduct: NextApiHandler = async (req, res) => {
 
 			return res.status(200).json(productJSON)
 		} catch (err) {
-			console.error(err)
 			return res.status(500).json({ code: "500", message: "Some internal error occurred at the server." })
 		}
 	} else {

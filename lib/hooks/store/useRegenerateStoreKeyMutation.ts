@@ -8,7 +8,7 @@ export const useRegenerateStoreKeyMutation = ({ storeId }: { storeId: string }) 
 	const queryClient = useQueryClient()
 
 	return useMutation([REGENERATE_STORE_KEY, storeId], async () => {
-		return await axios
+		return axios
 			.patch<{ message: string }>(`/api/store/${storeId}/regenerateStoreKey`)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_STORE, storeId])

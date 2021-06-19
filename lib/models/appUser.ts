@@ -1,7 +1,7 @@
+import isBefore from "date-fns/isBefore"
 import { ISubscription, Plans, Subscription, SubscriptionJSON } from "./subscription"
 import { IUsage, Usage } from "./usage"
 import pricing from "../../pricing.json"
-import isBefore from "date-fns/isBefore"
 
 export interface IAppUser {
 	id: string
@@ -17,11 +17,17 @@ export type AppUserJSON = Omit<IAppUser, "subscription"> & { subscription: Subsc
 
 export class AppUser implements IAppUser {
 	id: string
+
 	name?: string | undefined
+
 	email?: string | undefined
+
 	isEmailVerified?: boolean | undefined
+
 	image?: string | undefined
+
 	subscription: Subscription
+
 	usage?: Usage | undefined
 
 	constructor(user: IAppUser) {

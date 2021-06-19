@@ -23,8 +23,11 @@ export type SubscriptionJSON = Omit<ISubscription, "expiry"> & { expiry: number 
 
 export class Subscription implements ISubscription {
 	stripeCustomerId: string
+
 	plan: Plans
+
 	status: PaymentStatus
+
 	expiry: Date
 
 	constructor(subscription: ISubscription) {

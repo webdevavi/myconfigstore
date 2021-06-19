@@ -6,7 +6,9 @@ export interface IUsage {
 
 export class Usage implements IUsage {
 	stores?: number | undefined
+
 	products?: number | undefined
+
 	fields?: number | undefined
 
 	constructor(usage: IUsage) {

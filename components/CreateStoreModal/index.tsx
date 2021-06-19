@@ -64,6 +64,12 @@ export const CreateStoreModal: React.FC<Omit<ModalProps, "children">> = (props) 
 				props.onClose()
 				return router.push(`/user/stores/${storeId}`)
 			}
+
+			return toast({
+				title: "Create Store",
+				description: "Some error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {
 				const { fieldErrors } = err as { fieldErrors: FieldError[] }

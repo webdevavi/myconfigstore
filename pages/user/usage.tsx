@@ -1,7 +1,7 @@
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
-import { Dashboard, DetailedUsageContainer, WithAuth, WithCurrentUser } from "../../components"
+import { Dashboard, DetailedUsageContainer, WithAuth, WithCurrentUser } from "@components"
 
 const UsagePage: NextPage = () => {
 	return (

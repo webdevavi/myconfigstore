@@ -16,11 +16,11 @@ import {
 	ModalProps,
 	useToast,
 } from "@chakra-ui/react"
+import { useDestroyProductMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
-import { useDestroyProductMutation } from "../../lib/hooks/product"
 import { Card } from "../Card"
 
 interface DestroyProductFormValues {
@@ -62,6 +62,11 @@ export const DestroyProductModal: React.FC<Omit<ModalProps, "children"> & { stor
 				props.onClose()
 				return router.replace(`/user/stores/${storeId}`)
 			}
+			return toast({
+				title: "Destroy Product",
+				description: "Some unexpected error occurred.",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Destroy Product",

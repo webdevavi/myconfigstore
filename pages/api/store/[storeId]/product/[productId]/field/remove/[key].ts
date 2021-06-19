@@ -48,7 +48,7 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(400).json({ message: `Value with key ${key} doesn't exist.` })
 		}
 
-		product.fields?.splice(index, 1)
+		if (product.fields) product.fields.splice(index, 1)
 
 		const { id, fields } = product
 
@@ -69,6 +69,7 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
+	return res.status(404).end()
 }
 
 export default withAuthentication(removeField as NextApiHandler)

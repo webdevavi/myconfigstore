@@ -10,7 +10,7 @@ export const useCreateProductMutation = ({ storeId }: { storeId: string }) => {
 	const queryClient = useQueryClient()
 
 	return useMutation([CREATE_PRODUCT, storeId], async (product: { productId: IProduct["productId"] }) => {
-		return await axios
+		return axios
 			.post<{ message: string }>(`/api/store/${storeId}/product/create`, product)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_STORE, storeId])

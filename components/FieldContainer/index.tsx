@@ -1,6 +1,6 @@
 import { ButtonGroup, Checkbox, FormLabel, Heading, HStack, Icon, IconButton, Input, Stack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
-import { FaEdit, FaTrash } from "react-icons/fa"
+import { FaEdit } from "react-icons/fa"
 import { Field } from "../../lib/models"
 import { Card } from "../Card"
 import { EditFieldModal } from "../EditFieldModal"

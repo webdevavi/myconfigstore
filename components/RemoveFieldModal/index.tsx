@@ -4,12 +4,8 @@ import {
 	FormControl,
 	FormErrorIcon,
 	FormErrorMessage,
-	FormHelperText,
 	FormLabel,
 	Input,
-	InputGroup,
-	InputLeftAddon,
-	InputRightAddon,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -19,11 +15,10 @@ import {
 	ModalProps,
 	useToast,
 } from "@chakra-ui/react"
-import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
+import { useRemoveFieldMutation } from "@hooks"
+import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
-import { useRemoveFieldMutation } from "../../lib/hooks/product"
-import { FieldError } from "../../lib/types"
 import { Card } from "../Card"
 
 interface RemoveFieldFormValues {
@@ -64,6 +59,12 @@ export const RemoveFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Remove Field",
+				description: "Some unexpected error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Remove Field",

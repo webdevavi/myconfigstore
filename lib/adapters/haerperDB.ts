@@ -97,7 +97,7 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 				},
 
 				async deleteUser(userId) {
-					await db.delete<AppUserJSON>([userId], {
+					await db.delete([userId], {
 						table: "users",
 					})
 				},
@@ -139,9 +139,14 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 
 					const accountId = account.id
 
-					await db.delete([accountId], { table: "accounts" })
+					return db.delete([accountId], { table: "accounts" })
 				},
 
+				// next-auth throws error if these functions aren't defined
+				// even though we don't need these, since we are using JWT
+				// for session and not database persistence
+
+				/* eslint-disable @typescript-eslint/no-empty-function */
 				async createSession() {},
 				async getSession() {},
 				async updateSession() {},

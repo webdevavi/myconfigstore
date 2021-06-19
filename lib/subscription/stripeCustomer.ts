@@ -1,5 +1,3 @@
-import { HarperDB } from "../harperDB"
-import { IAppUser, PaymentStatus, Plans } from "../models"
 import { stripe } from "./stripe"
 
 /**
