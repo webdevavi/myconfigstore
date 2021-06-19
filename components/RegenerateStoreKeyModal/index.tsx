@@ -15,10 +15,10 @@ import {
 	ModalProps,
 	useToast,
 } from "@chakra-ui/react"
+import { useRegenerateStoreKeyMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
-import { useRegenerateStoreKeyMutation } from "../../lib/hooks/store"
 import { Card } from "../Card"
 
 interface RegenerateStoreKeyFormValues {
@@ -54,6 +54,12 @@ export const RegenerateStoreKeyModal: React.FC<Omit<ModalProps, "children"> & { 
 
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Regenerate Key",
+				description: "Some unexpected error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Regenerate Key",

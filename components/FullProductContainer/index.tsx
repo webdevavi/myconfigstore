@@ -1,33 +1,25 @@
 import {
-	Box,
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
-	Button,
 	ButtonGroup,
 	Center,
-	Checkbox,
 	CircularProgress,
 	Heading,
 	HStack,
 	Icon,
 	IconButton,
-	Input,
-	Tooltip,
-	useClipboard,
-	useDisclosure,
-	VStack,
 	Text,
+	Tooltip,
 	useBreakpoint,
+	useClipboard,
+	VStack,
 } from "@chakra-ui/react"
 import React from "react"
-import { FaCog, FaCopy, FaGlobe, FaLock, FaRedo } from "react-icons/fa"
+import { FaCopy, FaGlobe, FaLock } from "react-icons/fa"
 import { useGetProductQuery } from "../../lib/hooks/product"
 import { Card } from "../Card"
-import { CreateStoreModal } from "../CreateStoreModal"
 import { FieldsContainer } from "../FieldsContainer"
-import { HeadingWithIcon } from "../HeadingWithIcon"
-import { ProductsContainer } from "../ProductsContainer"
 import { ProductSettings } from "../ProductSettings"
 import { StatusTag } from "../StatusTag"
 import { DeactivateProductButton } from "./options/DeactivateProductButton"
@@ -40,8 +32,6 @@ interface FullProductContainerProps {
 }
 
 export const FullProductContainer: React.FC<FullProductContainerProps> = ({ storeId, productId }) => {
-	const { getButtonProps, isOpen, onClose } = useDisclosure()
-
 	const { isLoading, data: product, isError, error } = useGetProductQuery({ storeId, productId })
 
 	const { onCopy, hasCopied } = useClipboard(product?.url ?? "", {
@@ -126,7 +116,6 @@ export const FullProductContainer: React.FC<FullProductContainerProps> = ({ stor
 					We could not find the store.
 				</Card>
 			)}
-			<CreateStoreModal isOpen={isOpen} onClose={onClose} />
 		</VStack>
 	)
 }

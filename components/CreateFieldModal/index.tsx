@@ -8,8 +8,6 @@ import {
 	FormLabel,
 	HStack,
 	Input,
-	InputGroup,
-	InputLeftAddon,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -69,6 +67,12 @@ export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId
 
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Create Field",
+				description: "Some error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {
 				const { fieldErrors } = err as { fieldErrors: FieldError[] }

@@ -16,10 +16,10 @@ import {
 	ModalProps,
 	useToast,
 } from "@chakra-ui/react"
+import { useDeactivateProductMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
-import { useDeactivateProductMutation } from "../../lib/hooks/product"
 import { Card } from "../Card"
 
 interface DeactivateProductFormValues {
@@ -58,6 +58,12 @@ export const DeactivateProductModal: React.FC<Omit<ModalProps, "children"> & { s
 				})
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Deactivate Product",
+				description: "Some unexpected error occurred.",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Deactivate Product",

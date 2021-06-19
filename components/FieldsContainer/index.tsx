@@ -1,4 +1,4 @@
-import { Button, Center, Grid, HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react"
+import { Button, Center, HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaWpforms } from "react-icons/fa"
 import { Card, HeadingWithIcon } from ".."

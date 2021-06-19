@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import { AppUser, IAppUser } from "../../models"
+import { AppUser, AppUserJSON } from "../../models"
 import { useCurrentUser } from "./useCurrentUser"
 
 export const CURRENT_USER = "currentUser"
@@ -13,8 +13,8 @@ export const useCurrentUserQuery = () => {
 		async () => {
 			try {
 				setIsLoading()
-				const { data } = await axios.get<IAppUser>("/api/auth/currentUser")
-				return new AppUser(data)
+				const { data } = await axios.get<AppUserJSON>("/api/auth/currentUser")
+				return AppUser.fromJSON(data)
 			} catch (err) {
 				if (err.response.data) {
 					throw err.response.data

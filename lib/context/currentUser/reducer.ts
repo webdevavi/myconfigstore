@@ -6,8 +6,6 @@ export const initialCurrentUserState: CurrentUserState = {
 }
 
 export const currentUserReducer = (state: CurrentUserState = initialCurrentUserState, action: CurrentUserAction): CurrentUserState => {
-	console.log("currentUserReducer called with action", action.type)
-
 	switch (action.type) {
 		case SET_CURRENT_USER: {
 			const { currentUser } = action.payload as Required<CurrentUserState>

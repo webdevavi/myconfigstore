@@ -39,6 +39,7 @@ export default NextAuth({
 	},
 	callbacks: {
 		session: async (session, user) => {
+			/* eslint-disable no-param-reassign */
 			session.id = user.sub
 			return Promise.resolve(session)
 		},

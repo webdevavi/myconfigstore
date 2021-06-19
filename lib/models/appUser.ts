@@ -1,4 +1,5 @@
-import { ISubscription, Plans, Subscription } from "./subscription"
+import isBefore from "date-fns/isBefore"
+import { ISubscription, Plans, Subscription, SubscriptionJSON } from "./subscription"
 import { IUsage, Usage } from "./usage"
 import pricing from "../../pricing.json"
 
@@ -12,13 +13,21 @@ export interface IAppUser {
 	usage?: IUsage
 }
 
+export type AppUserJSON = Omit<IAppUser, "subscription"> & { subscription: SubscriptionJSON }
+
 export class AppUser implements IAppUser {
 	id: string
+
 	name?: string | undefined
+
 	email?: string | undefined
+
 	isEmailVerified?: boolean | undefined
+
 	image?: string | undefined
+
 	subscription: Subscription
+
 	usage?: Usage | undefined
 
 	constructor(user: IAppUser) {
@@ -33,6 +42,24 @@ export class AppUser implements IAppUser {
 		this.usage = usage ? new Usage(usage) : undefined
 	}
 
+	static fromJSON(json: AppUserJSON): AppUser {
+		const { subscription, ...rest } = json
+
+		return new AppUser({ ...rest, subscription: Subscription.fromJSON(subscription) })
+	}
+
+	toJSON(): AppUserJSON {
+		return {
+			id: this.id,
+			name: this.name,
+			email: this.email,
+			isEmailVerified: this.isEmailVerified,
+			image: this.image,
+			subscription: this.subscription.toJSON(),
+			usage: this.usage,
+		}
+	}
+
 	private calcPercent = (used: number | undefined | null, total: number | undefined | null) => {
 		return ((used ?? 0) / (total ?? 1)) * 100
 	}
@@ -42,11 +69,17 @@ export class AppUser implements IAppUser {
 	}
 
 	/**
+	 * Current plan of this user
+	 */
+	get currentPlan() {
+		return pricing[Object.keys(pricing).find((key) => pricing[key as keyof typeof pricing].label === this.subscription.plan) as keyof typeof pricing]
+	}
+
+	/**
 	 * Available features for current subscription plan
 	 */
 	get features() {
-		return pricing[Object.keys(pricing).find((key) => pricing[key as keyof typeof pricing].label === this.subscription.plan) as keyof typeof pricing]
-			?.features
+		return this.currentPlan?.features
 	}
 
 	/**
@@ -102,10 +135,18 @@ export class AppUser implements IAppUser {
 		}
 	}
 
+	get hasPlanExpired(): boolean {
+		return isBefore(this.subscription.expiry, new Date())
+	}
+
 	/**
 	 * Can this user can create more stores with the current subscription plan?
 	 */
 	get canCreateNewStore(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -131,6 +172,10 @@ export class AppUser implements IAppUser {
 	 * Can this user can create more products with the current subscription plan?
 	 */
 	get canCreateNewProduct(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -156,6 +201,10 @@ export class AppUser implements IAppUser {
 	 * Can this user can create more fields with the current subscription plan?
 	 */
 	get canCreateNewField(): boolean {
+		if (this.hasPlanExpired) {
+			return false
+		}
+
 		if (this.subscription.plan === Plans.Enterprise) {
 			return true
 		}
@@ -175,5 +224,12 @@ export class AppUser implements IAppUser {
 		}
 
 		return true
+	}
+
+	/**
+	 * Can this user use the api endpoints?
+	 */
+	get canUseAPIEndpoints(): boolean {
+		return !this.hasPlanExpired && this.subscription.plan !== Plans.None
 	}
 }

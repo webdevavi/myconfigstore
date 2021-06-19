@@ -8,7 +8,7 @@ export const useRemoveFieldMutation = ({ storeId, productId, key }: { storeId: s
 	const queryClient = useQueryClient()
 
 	return useMutation([REMOVE_FIELD, storeId, productId, key], async () => {
-		return await axios
+		return axios
 			.post<{ message: string }>(`/api/store/${storeId}/product/${productId}/field/remove/${key}`)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_PRODUCT, storeId, productId])

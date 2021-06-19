@@ -1,7 +1,6 @@
-import { IconButton, Icon, useDisclosure } from "@chakra-ui/react"
+import { Icon, IconButton, useDisclosure } from "@chakra-ui/react"
 import React from "react"
 import { FaTrash } from "react-icons/fa"
-import { Field } from "../../../lib/models"
 import { RemoveFieldModal } from "../../RemoveFieldModal"
 
 interface RemoveFieldButtonProps {

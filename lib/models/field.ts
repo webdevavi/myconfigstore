@@ -8,7 +8,9 @@ export interface IField {
 
 export class Field implements IField {
 	key: string
+
 	value: string
+
 	isEncrypted?: boolean | undefined
 
 	constructor({ key, value, isEncrypted }: IField) {

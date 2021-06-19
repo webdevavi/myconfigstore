@@ -47,6 +47,12 @@ export const EditProductSettingsModal: React.FC<Omit<ModalProps, "children"> & {
 
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Product Settings",
+				description: "Some unexpected error occurred.",
+				status: "error",
+			})
 		} catch (err) {
 			if (err.fieldErrors && err.fieldErrors.length > 0) {
 				const { fieldErrors } = err as { fieldErrors: FieldError[] }

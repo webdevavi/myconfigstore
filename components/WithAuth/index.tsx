@@ -40,17 +40,17 @@ export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions 
 		return <div>Loading...</div>
 	}
 
+	const redirectTemporarily = (res: ServerResponse) => {
+		res.writeHead(302, {
+			Location: redirectTo,
+		})
+		res.end()
+	}
+
 	Auth.getInitialProps = async (ctx) => {
 		const session = await getSession(ctx)
 
 		const { res } = ctx
-
-		const redirectTemporarily = (res: ServerResponse) => {
-			res.writeHead(302, {
-				Location: redirectTo,
-			})
-			res.end()
-		}
 
 		if (res && redirect !== "none") {
 			if (redirect === "onAuth" && session) {

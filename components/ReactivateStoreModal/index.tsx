@@ -16,10 +16,10 @@ import {
 	ModalProps,
 	useToast,
 } from "@chakra-ui/react"
+import { useReactivateStoreMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
-import { useReactivateStoreMutation } from "../../lib/hooks/store"
 import { Card } from "../Card"
 
 interface ReactivateStoreFormValues {
@@ -54,6 +54,12 @@ export const ReactivateStoreModal: React.FC<Omit<ModalProps, "children"> & { sto
 				})
 				return props.onClose()
 			}
+
+			return toast({
+				title: "Reactivate Store",
+				description: "Some unexpected error occurred",
+				status: "error",
+			})
 		} catch (err) {
 			return toast({
 				title: "Reactivate Store",
