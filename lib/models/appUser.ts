@@ -69,11 +69,17 @@ export class AppUser implements IAppUser {
 	}
 
 	/**
+	 * Current plan of this user
+	 */
+	get currentPlan() {
+		return pricing[Object.keys(pricing).find((key) => pricing[key as keyof typeof pricing].label === this.subscription.plan) as keyof typeof pricing]
+	}
+
+	/**
 	 * Available features for current subscription plan
 	 */
 	get features() {
-		return pricing[Object.keys(pricing).find((key) => pricing[key as keyof typeof pricing].label === this.subscription.plan) as keyof typeof pricing]
-			?.features
+		return this.currentPlan?.features
 	}
 
 	/**

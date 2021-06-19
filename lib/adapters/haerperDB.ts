@@ -1,10 +1,10 @@
+import { razorpay } from "@lib/razorpay"
 import add from "date-fns/add"
 import { Account, Profile } from "next-auth"
 import { Adapter } from "next-auth/adapters"
 import pricing from "../../pricing.json"
 import { HarperDB } from "../harperDB"
 import { AppUser, AppUserJSON, IAppUser, PaymentStatus, Plans } from "../models"
-import { addStripeCustomer, deleteStripeCustomer } from "../subscription"
 
 // @ts-expect-error
 export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db) => {
@@ -16,14 +16,17 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 				async createUser(profile) {
 					const { name, email, image } = profile
 
-					const stripeCustomerId = await addStripeCustomer(name, email)
+					const { id: razorpayCustomerId } = await razorpay.customers.create({
+						name: name ?? "",
+						email,
+					})
 
-					const user = {
+					const user: Omit<AppUserJSON, "id"> = {
 						name,
 						email,
 						image,
 						subscription: {
-							stripeCustomerId,
+							razorpayCustomerId,
 							plan: Plans.Trial,
 							status: PaymentStatus.Unpaid,
 							expiry: add(new Date(), { days: pricing.trial.days }).getTime(),
@@ -34,11 +37,6 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 						table: "users",
 						records: [user],
 					})
-
-					if (!userId) {
-						deleteStripeCustomer(stripeCustomerId)
-						return null
-					}
 
 					return AppUser.fromJSON({ id: userId, ...user })
 				},

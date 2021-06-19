@@ -13,7 +13,7 @@ export enum PaymentStatus {
 }
 
 export interface ISubscription {
-	stripeCustomerId: string
+	razorpayCustomerId: string
 	plan: Plans
 	status: PaymentStatus
 	expiry: Date
@@ -22,7 +22,7 @@ export interface ISubscription {
 export type SubscriptionJSON = Omit<ISubscription, "expiry"> & { expiry: number }
 
 export class Subscription implements ISubscription {
-	stripeCustomerId: string
+	razorpayCustomerId: string
 
 	plan: Plans
 
@@ -31,9 +31,9 @@ export class Subscription implements ISubscription {
 	expiry: Date
 
 	constructor(subscription: ISubscription) {
-		const { stripeCustomerId, plan, status, expiry } = subscription
+		const { razorpayCustomerId, plan, status, expiry } = subscription
 
-		this.stripeCustomerId = stripeCustomerId
+		this.razorpayCustomerId = razorpayCustomerId
 		this.plan = plan
 		this.status = status
 		this.expiry = expiry
@@ -50,7 +50,7 @@ export class Subscription implements ISubscription {
 
 	toJSON(): SubscriptionJSON {
 		return {
-			stripeCustomerId: this.stripeCustomerId,
+			razorpayCustomerId: this.razorpayCustomerId,
 			plan: this.plan,
 			status: this.status,
 			expiry: this.expiry.getTime(),
