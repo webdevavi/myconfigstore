@@ -5,10 +5,12 @@ import { StoreJSON } from "../../../../lib/models"
 
 const deactivateStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	if (req.method === "PUT") {
-		return await setStatus(false)(req, res)
-	} else if (req.method === "DELETE") {
-		return await setStatus(true)(req, res)
-	} else return res.status(404).end()
+		return setStatus(false)(req, res)
+	}
+	if (req.method === "DELETE") {
+		return setStatus(true)(req, res)
+	}
+	return res.status(404).end()
 }
 
 const setStatus = (isActive: boolean) => async (req: NextApiRequestWithAuth, res: NextApiResponse) => {

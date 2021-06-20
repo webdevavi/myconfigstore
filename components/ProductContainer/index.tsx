@@ -1,9 +1,9 @@
-import { Heading, HStack, Icon, IconButton, LinkBox, LinkOverlay, Tag, TagLabel, Text, Tooltip, useClipboard, VStack } from "@chakra-ui/react"
+import { Heading, HStack, Icon, LinkBox, LinkOverlay, Text, VStack } from "@chakra-ui/react"
+import NextLink from "next/link"
 import React from "react"
-import { FaCalendar, FaCopy, FaGlobe, FaLock, FaWpforms } from "react-icons/fa"
+import { FaCalendar, FaGlobe, FaLock, FaWpforms } from "react-icons/fa"
 import { Product } from "../../lib/models"
 import { Card } from "../Card"
-import NextLink from "next/link"
 import { StatusTag } from "../StatusTag"
 
 interface ProductContainerProps {

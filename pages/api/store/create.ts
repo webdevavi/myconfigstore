@@ -2,7 +2,7 @@ import * as crypto from "crypto"
 import { NextApiHandler, NextApiResponse } from "next"
 import { HarperDB } from "../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../lib/middlewares"
-import { AppUser, IAppUser, Store } from "../../../lib/models"
+import { IAppUser, Store } from "../../../lib/models"
 import { FieldError } from "../../../lib/types"
 
 const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
@@ -57,6 +57,8 @@ const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
+
+	return res.status(404).end()
 }
 
 export default withAuthentication(createStore as NextApiHandler)

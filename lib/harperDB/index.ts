@@ -2,8 +2,10 @@ import axios, { AxiosResponse } from "axios"
 import omitBy from "lodash/omitBy"
 import isNil from "lodash/isNil"
 
+/* eslint-disable camelcase */
 export class HarperDB {
 	private readonly baseURL = process.env.NEXT_PUBLIC_DB_ENDPOINT
+
 	private readonly authToken = process.env.NEXT_PUBLIC_DB_AUTH_TOKEN
 
 	constructor(public readonly schema: string) {}
@@ -107,7 +109,7 @@ export class HarperDB {
 		return (upserted_hashes ?? []) as string[]
 	}
 
-	async delete<T>(ids: string[], options: { table: string }) {
+	async delete(ids: string[], options: { table: string }) {
 		const data = JSON.stringify({
 			operation: "delete",
 			schema: this.schema,

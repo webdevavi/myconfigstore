@@ -9,7 +9,7 @@ export const useCreateFieldMutation = ({ storeId, productId }: { storeId: string
 	const queryClient = useQueryClient()
 
 	return useMutation([CREATE_FIELD, storeId, productId], async (field: IField) => {
-		return await axios
+		return axios
 			.post<{ message: string }>(`/api/store/${storeId}/product/${productId}/field/create`, field)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_PRODUCT, storeId, productId])

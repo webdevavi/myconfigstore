@@ -9,7 +9,7 @@ export const useReactivateProductMutation = ({ storeId, productId }: { storeId: 
 	const queryClient = useQueryClient()
 
 	return useMutation([REACTIVATE_PRODUCT, storeId, productId], async () => {
-		return await axios
+		return axios
 			.delete<{ message: string }>(`/api/store/${storeId}/product/${productId}/deactivate`)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_ALL_PRODUCTS, storeId])

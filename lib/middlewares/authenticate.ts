@@ -28,7 +28,7 @@ const authenticate = async (req: NextApiRequestWithAuth, res: NextApiResponse, n
 	req.session = session
 	req.user = new AppUser(user)
 
-	return await next()
+	return next()
 }
 
 export const withAuthentication = use(authenticate as NextMiddleware)

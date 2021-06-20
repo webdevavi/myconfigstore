@@ -21,6 +21,41 @@
 		"no-param-reassign": 2,
 		"react/prop-types": "off",
 		"react/jsx-filename-extension": "off",
-		"react/jsx-props-no-spreading": "off"
+		"react/jsx-props-no-spreading": "off",
+		"import/prefer-default-export": "off",
+		"import/extensions": "off",
+		"no-use-before-define": "off",
+		"import/no-extraneous-dependencies": "off",
+		"no-nested-ternary": "off",
+		"no-shadow": "off",
+		"@typescript-eslint/no-shadow": ["error"],
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": ["error"],
+		"no-useless-constructor": "off",
+		"@typescript-eslint/no-useless-constructor": ["error"],
+		"no-empty-function": "off",
+		"@typescript-eslint/no-empty-function": ["error"],
+		"global-require": "off",
+		"import/no-dynamic-require": "off"
+	},
+	"settings": {
+		"import/resolver": {
+			"alias": {
+				"map": [
+					["@components", "./components"],
+					["@lib", "./lib"],
+					["@pages", "./pages"],
+					["@theme", "./theme"],
+					["@hooks", "./lib/hooks"],
+					["@hooks/*", "./lib/hooks/*"],
+					["@context", "./lib/context"],
+					["@context/*", "./lib/context/*"],
+					["@models", "./lib/models"],
+					["@models/*", "./lib/models/*"],
+					["@types", "./lib/types"]
+				],
+				"extensions": [".ts", ".tsx", ".json"]
+			}
+		}
 	}
 }

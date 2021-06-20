@@ -28,7 +28,6 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 
 			return res.status(200).json(Product.fromJSON(product).toObject())
 		} catch (err) {
-			console.error(err)
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else if (method === "DELETE") {
@@ -54,18 +53,28 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
+			const deletedFieldsCount = product.fields?.length ?? 0
+
 			const [store] = await db.findByValue<IStore>("storeId", storeId as string, { table: "stores" })
 
 			if (store) await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 1) - 1 }] })
 
 			await db.update<IAppUser>({
 				table: "users",
-				records: [{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 1) - 1 } }],
+				records: [
+					{
+						id: user.id,
+						usage: {
+							...(user.usage ?? {}),
+							products: (user.usage?.products ?? 1) - 1,
+							fields: (user.usage?.fields ?? deletedFieldsCount) - deletedFieldsCount,
+						},
+					},
+				],
 			})
 
 			return res.status(200).json({ message: `Product ${productId} destroyed.` })
 		} catch (err) {
-			console.error(err)
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	} else return res.status(404).end()

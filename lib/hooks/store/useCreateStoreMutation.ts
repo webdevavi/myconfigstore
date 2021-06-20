@@ -9,7 +9,7 @@ export const useCreateStoreMutation = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation(CREATE_STORE, async (store: { storeId: IStore["storeId"] }) => {
-		return await axios
+		return axios
 			.post<{ message: string }>("/api/store/create", store)
 			.then(async (res) => {
 				await queryClient.refetchQueries(GET_STORES)

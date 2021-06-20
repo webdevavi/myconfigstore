@@ -9,7 +9,7 @@ export const useEditProductSettingsMutation = ({ storeId, productId }: { storeId
 	const queryClient = useQueryClient()
 
 	return useMutation([EDIT_PRODUCT_SETTINGS, storeId, productId], async (settings: EditProductSettingsFormValues) => {
-		return await axios
+		return axios
 			.post<{ message: string }>(`/api/store/${storeId}/product/${productId}/settings/edit`, settings)
 			.then(async (res) => {
 				await queryClient.refetchQueries([GET_PRODUCT, storeId, productId])

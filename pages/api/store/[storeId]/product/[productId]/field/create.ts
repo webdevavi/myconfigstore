@@ -105,6 +105,7 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
+	return res.status(404).end()
 }
 
 export default withAuthentication(createField as NextApiHandler)

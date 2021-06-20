@@ -1,4 +1,4 @@
-import { Button, Center, CircularProgress, Flex, Grid, HStack, useDisclosure, VStack } from "@chakra-ui/react"
+import { Button, Center, CircularProgress, Flex, HStack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaBoxOpen } from "react-icons/fa"
 import { useGetAllProductsQuery } from "../../lib/hooks/product"
@@ -6,7 +6,6 @@ import { Card } from "../Card"
 import { CreateProductModal } from "../CreateProductModal"
 import { HeadingWithIcon } from "../HeadingWithIcon"
 import { ProductContainer } from "../ProductContainer"
-import { StoreContainer } from "../StoreContainer"
 
 interface ProductsContainerProps {
 	storeId: string

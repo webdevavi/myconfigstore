@@ -34,7 +34,7 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 			return res.status(400).json({ message: "No product exists with the provided product id." })
 		}
 
-		let productKey = product.productKey
+		let { productKey } = product
 
 		if (isPrivate && !isUsingStoreKey && !productKey) {
 			productKey = crypto.randomBytes(64).toString("base64")
@@ -47,6 +47,7 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
 	}
+	return res.status(404).end()
 }
 
 export default withAuthentication(updateProductSettings as NextApiHandler)
