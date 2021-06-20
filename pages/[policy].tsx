@@ -1,4 +1,4 @@
-import { Box, Container, Heading } from "@chakra-ui/react"
+import { Box, Container, Divider, Heading } from "@chakra-ui/react"
 import { DefaultNavbar, Markdown } from "@components"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Head from "next/head"
@@ -21,10 +21,13 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 			<Box minH="100vh">
 				<DefaultNavbar />
 				<Container maxW="960px" py="8">
-					<Heading as="h1" mb="4">
+					<Heading as="h1" mb="4" color="brand.orange">
 						{title}
 					</Heading>
-					<Markdown>{markdown}</Markdown>
+					<Divider />
+					<Box py="4">
+						<Markdown>{markdown}</Markdown>
+					</Box>
 				</Container>
 			</Box>
 		</div>
@@ -32,7 +35,7 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const arr: string[] = ["terms", "privacy", "refund", "cancellation", "cookies"]
+	const arr: string[] = ["terms", "privacy", "refund", "cookies"]
 	const paths = arr.map((policy) => {
 		return {
 			params: { policy },
@@ -55,11 +58,7 @@ export const getStaticProps: GetStaticProps<TermsPageProps, IParams> = async ({ 
 	}
 
 	if (policy === "refund") {
-		title = "Refund Policy"
-	}
-
-	if (policy === "cancellation") {
-		title = "Cancellation Policy"
+		title = "Refund & Cancellation Policy"
 	}
 
 	if (policy === "cookies") {
