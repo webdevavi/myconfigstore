@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react"
+import { Box, Container, Divider, Heading } from "@chakra-ui/react"
 import { DefaultNavbar, Markdown } from "@components"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Head from "next/head"
@@ -18,16 +18,24 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<DefaultNavbar />
-			<Container maxW="960px">
-				<Markdown>{markdown}</Markdown>
-			</Container>
+			<Box minH="100vh">
+				<DefaultNavbar />
+				<Container maxW="960px" py="8">
+					<Heading as="h1" mb="4" color="brand.orange">
+						{title}
+					</Heading>
+					<Divider />
+					<Box py="4">
+						<Markdown>{markdown}</Markdown>
+					</Box>
+				</Container>
+			</Box>
 		</div>
 	)
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const arr: string[] = ["terms", "privacy", "refund", "cancellation"]
+	const arr: string[] = ["terms", "privacy", "refund", "cookies"]
 	const paths = arr.map((policy) => {
 		return {
 			params: { policy },
@@ -50,11 +58,11 @@ export const getStaticProps: GetStaticProps<TermsPageProps, IParams> = async ({ 
 	}
 
 	if (policy === "refund") {
-		title = "Refund Policy"
+		title = "Refund & Cancellation Policy"
 	}
 
-	if (policy === "cancellation") {
-		title = "Cancellation Policy"
+	if (policy === "cookies") {
+		title = "Cookies Policy"
 	}
 
 	const { default: markdown } = await require(`../policies/${String(policy).toUpperCase()}.md`)
