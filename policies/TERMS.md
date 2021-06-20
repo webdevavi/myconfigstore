@@ -1,5 +1,3 @@
-## Terms
-
 By accessing this Website, accessible from [https://www.myconfig.store](https://www.myconfig.store), you are agreeing to be bound by these Website Terms and Conditions of Use and agree that you are responsible for the agreement with any applicable local laws. If you disagree with any of these terms, you are prohibited from accessing this site. The materials contained in this Website are protected by copyright and trademark law.
 
 ## Use License
@@ -64,6 +62,6 @@ Any discrepancies or grievances concerning content and or comment or breach of t
 
 ## Contact
 
-If you have any questions regarding the Service, please contact myconfig.store at [savinash2608@gmail.com](mailto:savinash2608@gmail.com).
+If you have any questions regarding the Service, please contact myconfig.store at [myconfigstore@gmail.com](mailto:myconfigstore@gmail.com).
 
 ###### `NOTE:` Please note that You shall be required to provide information (including, but not limited to Your email address, contact number or registered mobile number, etc.) if you request verification of Your profile and to take Your service request.
