@@ -1,9 +1,15 @@
 import { NextApiHandler } from "next"
 import * as crypto from "crypto"
+import NextCors from "nextjs-cors"
 import { HarperDB } from "../../../../lib/harperDB"
 import { AppUser, AppUserJSON, Product, ProductJSON, StoreJSON } from "../../../../lib/models"
 
 const handleProduct: NextApiHandler = async (req, res) => {
+	await NextCors(req, res, {
+		methods: ["GET"],
+		origin: "*",
+	})
+
 	const db = new HarperDB("dev")
 	const { productId } = req.query
 
