@@ -21,7 +21,9 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 			<Box minH="100vh">
 				<DefaultNavbar />
 				<Container maxW="960px" py="8">
-					<Heading as="h1">{title}</Heading>
+					<Heading as="h1" mb="4">
+						{title}
+					</Heading>
 					<Markdown>{markdown}</Markdown>
 				</Container>
 			</Box>
