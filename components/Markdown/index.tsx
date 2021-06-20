@@ -86,4 +86,9 @@ const newTheme = {
 			</Text>
 		)
 	},
+	a: (props: any) => {
+		const { children, ...rest } = props
+
+		return <Link {...rest}>{children}</Link>
+	},
 }

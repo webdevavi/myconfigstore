@@ -1,5 +1,5 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react"
-import { Breadcrumb, Button, Card, Checkbox, FormError, FormLabel, Heading, Input, Modal, Progress, Tooltip } from "./components"
+import { Breadcrumb, Button, Card, Checkbox, FormError, FormLabel, Heading, Input, Link, Modal, Progress, Tooltip } from "./components"
 
 const config: ThemeConfig = {
 	initialColorMode: "dark",
@@ -39,7 +39,7 @@ const theme = extendTheme({
 	colors,
 	fonts,
 	styles,
-	components: { Breadcrumb, Button, Card, Checkbox, FormError, FormLabel, Heading, Input, Modal, Progress, Tooltip },
+	components: { Breadcrumb, Button, Card, Checkbox, FormError, FormLabel, Heading, Input, Link, Modal, Progress, Tooltip },
 })
 
 export default theme

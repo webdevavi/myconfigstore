@@ -10,6 +10,8 @@ myconfig.store follows a standard procedure of using log files. These files log 
 
 Like any other website, myconfig.store uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.
 
+Please see our [cookies policy](/cookies) for more details.
+
 ## Privacy Policies
 
 You may consult this list to find the Privacy Policy for each of the advertising partners of myconfig.store.

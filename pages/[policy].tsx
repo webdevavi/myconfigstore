@@ -32,7 +32,7 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const arr: string[] = ["terms", "privacy", "refund", "cancellation"]
+	const arr: string[] = ["terms", "privacy", "refund", "cancellation", "cookies"]
 	const paths = arr.map((policy) => {
 		return {
 			params: { policy },
@@ -60,6 +60,10 @@ export const getStaticProps: GetStaticProps<TermsPageProps, IParams> = async ({ 
 
 	if (policy === "cancellation") {
 		title = "Cancellation Policy"
+	}
+
+	if (policy === "cookies") {
+		title = "Cookies Policy"
 	}
 
 	const { default: markdown } = await require(`../policies/${String(policy).toUpperCase()}.md`)
