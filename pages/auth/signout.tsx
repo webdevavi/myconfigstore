@@ -1,12 +1,12 @@
 import { Box, Container, StackProps, Text, VStack } from "@chakra-ui/react"
+import { AnimatedLogo, DefaultNavbar, Footer, WithAuth } from "@components"
+import { useCurrentUser } from "@hooks"
 import { motion, MotionProps } from "framer-motion"
 import { NextPage } from "next"
 import { signOut } from "next-auth/client"
 import Head from "next/head"
 import React, { useEffect } from "react"
 import { useMutation } from "react-query"
-import { AnimatedLogo, DefaultNavbar, WithAuth } from "../../components"
-import { useCurrentUser } from "../../lib/hooks/session"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 
@@ -50,6 +50,7 @@ const SignoutPage: NextPage<unknown> = () => {
 						</Text>
 					</MotionVStack>
 				</Container>
+				<Footer />
 			</Box>
 		</div>
 	)

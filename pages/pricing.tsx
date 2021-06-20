@@ -1,5 +1,5 @@
 import { Container } from "@chakra-ui/react"
-import { DefaultNavbar, PricingContainer } from "@components"
+import { DefaultNavbar, Footer, PricingContainer } from "@components"
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
@@ -16,6 +16,7 @@ const PricingPage: NextPage = () => {
 			<Container maxW="1280px">
 				<PricingContainer />
 			</Container>
+			<Footer />
 		</div>
 	)
 }

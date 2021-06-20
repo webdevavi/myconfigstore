@@ -1,16 +1,16 @@
-import { Box, Container, Grid, Heading, Text, VStack } from "@chakra-ui/react"
+import { Box, Container, Grid, GridProps, Heading, Text, VStack } from "@chakra-ui/react"
 import { useCurrentUserQuery } from "@hooks"
 import React from "react"
 import { NavLink } from "../Navbar/default/NavLink"
 import { TextLogo } from "../Logo"
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<GridProps> = (props) => {
 	const { data: user, isLoading } = useCurrentUserQuery()
 
 	return (
 		<Box as="footer" id="footer" bg="brand.dark2">
 			<Container maxW="1280px" py="8">
-				<Grid templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" }} gap={{ base: 8, md: 4 }}>
+				<Grid templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" }} gap={{ base: 8, md: 4 }} {...props}>
 					<VStack flex="1" alignItems="flex-start">
 						<TextLogo fontSize="3xl" />
 						<Text>&copy; {new Date().getFullYear()} An Open Source Project</Text>
