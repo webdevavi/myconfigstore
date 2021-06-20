@@ -37,7 +37,7 @@
 			"stores": 1000,
 			"products": 200000,
 			"fields": 1000000,
-			"rateLimit": null,
+			"rateLimit": 10000,
 			"support": true
 		},
 		"stripe": {
@@ -52,7 +52,7 @@
 			"stores": 1000,
 			"products": 200000,
 			"fields": 1000000,
-			"rateLimit": null,
+			"rateLimit": 10000,
 			"support": true
 		},
 		"stripe": {
