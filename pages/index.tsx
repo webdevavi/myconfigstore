@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react"
 import { NextPage } from "next"
 import Head from "next/head"
 import React from "react"
-import { DefaultNavbar, Hero, WithAuth } from "@components"
+import { DefaultNavbar, Footer, Hero, WithAuth } from "@components"
 
 const Home: NextPage = () => (
 	<div>
@@ -15,6 +15,7 @@ const Home: NextPage = () => (
 		<Box as="main" bg="brand.dark">
 			<DefaultNavbar />
 			<Hero />
+			<Footer />
 		</Box>
 	</div>
 )

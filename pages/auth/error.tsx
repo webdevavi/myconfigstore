@@ -1,11 +1,11 @@
 import { Box, Container, Heading, StackProps, Text, VStack } from "@chakra-ui/react"
+import { AnimatedLogo, DefaultNavbar, Footer } from "@components"
 import { motion, MotionProps } from "framer-motion"
 import { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import React from "react"
 import { stripHtml } from "string-strip-html"
-import { AnimatedLogo, DefaultNavbar } from "../../components"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 
@@ -42,6 +42,7 @@ const AuthErrorPage: NextPage<unknown> = () => {
 						</Text>
 					</MotionVStack>
 				</Container>
+				<Footer />
 			</Box>
 		</div>
 	)

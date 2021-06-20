@@ -1,5 +1,5 @@
 import { Box, Container, Divider, Heading } from "@chakra-ui/react"
-import { DefaultNavbar, Markdown } from "@components"
+import { DefaultNavbar, Markdown, Footer } from "@components"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Head from "next/head"
 import { ParsedUrlQuery } from "querystring"
@@ -29,6 +29,7 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 						<Markdown>{markdown}</Markdown>
 					</Box>
 				</Container>
+				<Footer />
 			</Box>
 		</div>
 	)

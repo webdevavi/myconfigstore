@@ -1,11 +1,11 @@
 import { Box, BoxProps, Button, Container, StackProps, VStack } from "@chakra-ui/react"
+import { AnimatedLogo, DefaultNavbar, Footer, WithAuth } from "@components"
 import { motion, MotionProps } from "framer-motion"
 import { NextPage } from "next"
 import { signIn } from "next-auth/client"
 import Head from "next/head"
 import React from "react"
 import { useMutation } from "react-query"
-import { AnimatedLogo, DefaultNavbar, WithAuth } from "../../components"
 
 const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack as any)
 const MotionBox = motion<Omit<BoxProps, "transition"> & MotionProps>(Box as any)
@@ -78,6 +78,7 @@ const SigninPage: NextPage<unknown> = () => {
 						</MotionBox>
 					</MotionVStack>
 				</Container>
+				<Footer />
 			</Box>
 		</div>
 	)
