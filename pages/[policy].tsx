@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react"
+import { Box, Container, Heading } from "@chakra-ui/react"
 import { DefaultNavbar, Markdown } from "@components"
 import { GetStaticPaths, GetStaticProps, NextPage } from "next"
 import Head from "next/head"
@@ -18,10 +18,13 @@ const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
 				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<DefaultNavbar />
-			<Container maxW="960px">
-				<Markdown>{markdown}</Markdown>
-			</Container>
+			<Box minH="100vh">
+				<DefaultNavbar />
+				<Container maxW="960px" py="8">
+					<Heading as="h1">{title}</Heading>
+					<Markdown>{markdown}</Markdown>
+				</Container>
+			</Box>
 		</div>
 	)
 }
