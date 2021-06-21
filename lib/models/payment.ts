@@ -1,4 +1,4 @@
-import formatDistanceToNow from "date-fns/formatDistanceToNow"
+import format from "date-fns/format"
 import { Plans } from "./subscription"
 
 export interface IPayment {
@@ -77,8 +77,8 @@ export class Payment implements IPayment {
 			discount,
 			razorpayOrderId,
 			razorpayPaymentId,
-			createdAt: formatDistanceToNow(new Date(__createdtime__), { addSuffix: true }),
-			updatedAt: formatDistanceToNow(new Date(__updatedtime__), { addSuffix: true }),
+			createdAt: format(new Date(__createdtime__), "dd/MM/yyyy"),
+			updatedAt: format(new Date(__updatedtime__), "dd/MM/yyyy"),
 		})
 	}
 

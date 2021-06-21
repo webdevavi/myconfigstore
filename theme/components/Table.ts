@@ -33,4 +33,7 @@ export const Table: ReturnType<typeof extendTheme>["components"]["Table"] = {
 			},
 		},
 	},
+	defaultProps: {
+		size: "lg",
+	},
 }
