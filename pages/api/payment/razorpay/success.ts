@@ -7,37 +7,38 @@ import { razorpay } from "@lib/razorpay"
 import * as crypto from "crypto"
 import { add } from "date-fns"
 import { NextApiHandler, NextApiResponse } from "next"
+import { IRazorOrderId } from "razorpay-typescript/dist/resources/order"
 import pricing from "../../../../pricing.json"
 
 const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { method, user } = req
 
 	if (method === "POST") {
-		const { plan, amount, currency, couponUsed, discount, orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body as Record<
+		const { plan, amount, currency, notes, orderId, razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body as Record<
 			string,
-			string
+			string | IRazorOrderId["notes"]
 		>
 
 		const pricingPlan = pricing[Object.keys(pricing).find((key) => pricing[key as keyof typeof pricing].label === plan) as keyof typeof pricing]
 
 		const signature = crypto
 			.createHmac("sha256", process.env.RZP_API_SECRET as string)
-			.update(`${orderId}|${razorpay_payment_id}`)
+			.update(`${orderId}|${razorpayPaymentId}`)
 			.digest("hex")
 
-		if (signature !== razorpay_signature) {
+		if (signature !== razorpaySignature) {
 			return res.status(400).json({ message: "Payment couldn't be verified." })
 		}
 
 		const payment: Omit<PaymentJSON, "id" | "__createdtime__" | "__updatedtime__"> = {
 			userId: user.id,
 			plan: plan as Plans,
-			amount: (amount as unknown as number) / 100,
-			currency,
-			couponUsed,
-			discount: discount as unknown as number,
-			razorpayOrderId: razorpay_order_id,
-			razorpayPaymentId: razorpay_payment_id,
+			amount: amount as unknown as number,
+			currency: currency as string,
+			couponUsed: (notes as IRazorOrderId["notes"])?.couponUsed,
+			discount: Number((notes as IRazorOrderId["notes"])?.discount),
+			razorpayOrderId: razorpayOrderId as string,
+			razorpayPaymentId: razorpayPaymentId as string,
 		}
 
 		const db = new HarperDB("dev")
@@ -45,11 +46,11 @@ const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 		const [paymentId] = await db.insert<Omit<PaymentJSON, "id" | "__createdtime__" | "__updatedtime__">>({ table: "payments", records: [payment] })
 
 		if (!paymentId) {
-			await razorpay.payments.payment(razorpay_payment_id).refund({
+			await razorpay.payments.payment(razorpayPaymentId as string).refund({
 				reverse_all: 1,
 			})
 
-			return res.status(500).json({ message: "Something's wrong on our side, your payment will be refunded in 4-5 working days if paid." })
+			return res.status(500).json({ message: "Something went wrong on our side, your payment will be refunded in 4-5 working days if paid." })
 		}
 
 		await db.update<AppUserJSON>({
