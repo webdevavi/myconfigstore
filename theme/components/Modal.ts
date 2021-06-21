@@ -35,6 +35,15 @@ export const Modal: ReturnType<typeof extendTheme>["components"]["Modal"] = {
 			},
 		},
 	},
+	variants: {
+		drawer: {
+			dialogContainer: {
+				height: "auto !important",
+				top: "80px",
+				bottom: "0px",
+			},
+		},
+	},
 	defaultProps: {
 		size: "xl",
 		isCentered: true,

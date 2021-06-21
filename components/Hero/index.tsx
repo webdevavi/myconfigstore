@@ -1,4 +1,5 @@
 import { Box, BoxProps, Button, Container, Heading, HeadingProps, Link, Text, TextProps, VStack } from "@chakra-ui/react"
+import { useDrawer } from "@lib/hooks/drawer"
 import { motion, MotionProps } from "framer-motion"
 import Lottie from "lottie-react"
 import NextLink from "next/link"
@@ -11,6 +12,8 @@ const MotionHeading = motion<Omit<HeadingProps, "transition"> & MotionProps>(Hea
 const MotionText = motion<Omit<TextProps, "transition"> & MotionProps>(Text as any)
 
 export const Hero: React.FC<unknown> = () => {
+	const { isOpen: isDrawerOpen } = useDrawer()
+
 	return (
 		<Container
 			pos="relative"
@@ -123,78 +126,82 @@ export const Hero: React.FC<unknown> = () => {
 						* Free trial for 14 days.
 					</MotionText>
 				</MotionBox>
-				<MotionBox
-					pos="absolute"
-					top="2%"
-					left={["30%", "25%", "2%"]}
-					w={["36", "42", "48"]}
-					h={["36", "42", "48"]}
-					bg="brand.orange"
-					rounded="full"
-					filter="auto"
-					blur="50px"
-					zIndex="1"
-					opacity="0.4"
-					animate={{
-						transform: "auto",
-						translateX: "-50%",
-						translateY: "24px",
-					}}
-					transition={{ ease: "easeOut", duration: 4, repeat: Infinity, repeatType: "reverse", repeatDelay: 1 }}
-				/>
-				<MotionBox
-					pos="absolute"
-					top="0"
-					left="60%"
-					w={["36", "48", "56"]}
-					h={["36", "48", "56"]}
-					bg="brand.orange"
-					rounded="full"
-					filter="auto"
-					blur="50px"
-					zIndex="1"
-					opacity="0.4"
-					animate={{
-						transform: "auto",
-						translateX: "-80%",
-						translateY: "100px",
-					}}
-					transition={{
-						ease: "easeOut",
-						duration: 4,
-						repeat: Infinity,
-						repeatType: "reverse",
-						repeatDelay: 1,
-						delay: 3,
-					}}
-				/>
-				<MotionBox
-					pos="absolute"
-					bottom="0"
-					right="0"
-					w={["48", "56", "64"]}
-					h={["48", "56", "64"]}
-					bg="brand.orangeDark"
-					rounded="full"
-					filter="auto"
-					blur="50px"
-					zIndex="1"
-					opacity="0.4"
-					animate={{
-						transform: "auto",
-						translateX: "-50%",
-						translateY: "-100%",
-						scale: 0.9,
-					}}
-					transition={{
-						ease: "easeOut",
-						duration: 4,
-						repeat: Infinity,
-						repeatType: "reverse",
-						repeatDelay: 1,
-						delay: 2,
-					}}
-				/>
+				{!isDrawerOpen && (
+					<>
+						<MotionBox
+							pos="absolute"
+							top="2%"
+							left={["30%", "25%", "2%"]}
+							w={["36", "42", "48"]}
+							h={["36", "42", "48"]}
+							bg="brand.orange"
+							rounded="full"
+							filter="auto"
+							blur="50px"
+							zIndex="1"
+							opacity="0.4"
+							animate={{
+								transform: "auto",
+								translateX: "-50%",
+								translateY: "24px",
+							}}
+							transition={{ ease: "easeOut", duration: 4, repeat: Infinity, repeatType: "reverse", repeatDelay: 1 }}
+						/>
+						<MotionBox
+							pos="absolute"
+							top="0"
+							left="60%"
+							w={["36", "48", "56"]}
+							h={["36", "48", "56"]}
+							bg="brand.orange"
+							rounded="full"
+							filter="auto"
+							blur="50px"
+							zIndex="1"
+							opacity="0.4"
+							animate={{
+								transform: "auto",
+								translateX: "-80%",
+								translateY: "100px",
+							}}
+							transition={{
+								ease: "easeOut",
+								duration: 4,
+								repeat: Infinity,
+								repeatType: "reverse",
+								repeatDelay: 1,
+								delay: 3,
+							}}
+						/>
+						<MotionBox
+							pos="absolute"
+							bottom="0"
+							right="0"
+							w={["48", "56", "64"]}
+							h={["48", "56", "64"]}
+							bg="brand.orangeDark"
+							rounded="full"
+							filter="auto"
+							blur="50px"
+							zIndex="1"
+							opacity="0.4"
+							animate={{
+								transform: "auto",
+								translateX: "-50%",
+								translateY: "-100%",
+								scale: 0.9,
+							}}
+							transition={{
+								ease: "easeOut",
+								duration: 4,
+								repeat: Infinity,
+								repeatType: "reverse",
+								repeatDelay: 1,
+								delay: 2,
+							}}
+						/>
+					</>
+				)}
 			</VStack>
 			<MotionBox
 				pos="fixed"

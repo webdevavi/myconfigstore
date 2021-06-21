@@ -118,6 +118,7 @@ export const PayButton: React.FC<PayButtonProps> = ({ order, children }) => {
 		if (rzrp) {
 			rzrp.open()
 			rzrp.on("payment.failed", (response: any) => {
+				/* eslint-disable-next-line no-alert */
 				alert(response.error.description)
 
 				setIsProcessing(false)
