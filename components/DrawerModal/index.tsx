@@ -3,7 +3,6 @@ import { useDrawer } from "@lib/hooks/drawer"
 import { useSession } from "next-auth/client"
 import { useRouter } from "next/router"
 import React from "react"
-import { NavLink } from "../Navbar/default/NavLink"
 
 export const DrawerModal: React.FC = () => {
 	const [session] = useSession()
@@ -65,21 +64,18 @@ export const DrawerModal: React.FC = () => {
 					)}
 					<VStack w="full">
 						<Flex justify="center" flexWrap="wrap">
-							<NavLink mx="2" href="/terms">
+							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/terms")}>
 								Terms & Condition
-							</NavLink>
-							<NavLink mx="2" href="/privacy">
+							</Button>
+							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/privacy")}>
 								Privacy Policy
-							</NavLink>
-							<NavLink mx="2" href="/cookies">
+							</Button>
+							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/cookies")}>
 								Cookies Policy
-							</NavLink>
-							<NavLink mx="2" href="/refund">
-								Refund Policy
-							</NavLink>
-							<NavLink mx="2" href="/refund#Cancellation%20Policy">
-								Cancellation Policy
-							</NavLink>
+							</Button>
+							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/refund")}>
+								Refund & Cancellation Policy
+							</Button>
 						</Flex>
 						<Text fontFamily="Muli" fontSize="sm" fontWeight="black" color="brand.orange" opacity="0.6">
 							&copy; {new Date().getFullYear()} My Config Store
