@@ -1,3 +1,4 @@
+import orderBy from "lodash/orderBy"
 import { NextApiHandler, NextApiResponse } from "next"
 import { HarperDB } from "../../../../../lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "../../../../../lib/middlewares"
@@ -20,7 +21,7 @@ const getAllProducts = async (req: NextApiRequestWithAuth, res: NextApiResponse)
 				{ table: "products" }
 			)
 
-			return res.status(200).json(products.map((product) => Product.fromJSON(product).toObject()))
+			return res.status(200).json(orderBy(products, ["__updatedtime__"], ["desc"]).map((product) => Product.fromJSON(product).toObject()))
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}

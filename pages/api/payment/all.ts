@@ -1,6 +1,7 @@
 import { HarperDB } from "@lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
 import { PaymentJSON } from "@lib/models/payment"
+import orderBy from "lodash/orderBy"
 import { NextApiHandler, NextApiResponse } from "next"
 
 const getAllPayments = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
@@ -15,7 +16,7 @@ const getAllPayments = async (req: NextApiRequestWithAuth, res: NextApiResponse)
 			return res.status(404).json({ message: "No payment history found." })
 		}
 
-		res.status(200).json({ payments })
+		res.status(200).json({ payments: orderBy(payments, ["__createdtime__"], ["desc"]) })
 	}
 
 	return res.status(404).end()
