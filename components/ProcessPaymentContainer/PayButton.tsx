@@ -91,7 +91,7 @@ export const PayButton: React.FC<PayButtonProps> = ({ order, children }) => {
 			}
 
 			setIsProcessing(false)
-			return router.replace("/user/billing/payment")
+			router.replace("/user/billing")
 		}
 
 		const theme = {
@@ -121,7 +121,7 @@ export const PayButton: React.FC<PayButtonProps> = ({ order, children }) => {
 				alert(response.error.description)
 
 				setIsProcessing(false)
-				router.replace("/user/billing/payment")
+				router.replace("/user/billing")
 			})
 		}
 
