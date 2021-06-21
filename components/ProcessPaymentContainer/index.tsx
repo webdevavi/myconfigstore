@@ -1,4 +1,4 @@
-import { Center, CircularProgress, Flex, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react"
+import { Box, Center, CircularProgress, Flex, Heading, HStack, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react"
 import { useGetOrderQuery } from "@lib/hooks"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
@@ -58,30 +58,32 @@ export const ProcessPaymentContainer: React.FC = () => {
 									</Text>
 								)}
 							</VStack>
-							<Table>
-								<Thead>
-									<Tr>
-										<Th>Amount</Th>
-										<Th>Paid</Th>
-										<Th>Due</Th>
-										<Th>Created</Th>
-									</Tr>
-								</Thead>
-								<Tbody>
-									<Tr>
-										<Td>
-											{numeral(order.amount / 100).format("0.00a")} {order.currency}
-										</Td>
-										<Td>
-											{numeral(order.amount_paid / 100).format("0.00a")} {order.currency}
-										</Td>
-										<Td>
-											{numeral(order.amount_due / 100).format("0.00a")} {order.currency}
-										</Td>
-										<Td>{getTime(order.created_at)}</Td>
-									</Tr>
-								</Tbody>
-							</Table>
+							<Box w="full" maxW="full" overflowX="auto">
+								<Table>
+									<Thead>
+										<Tr>
+											<Th>Amount</Th>
+											<Th>Paid</Th>
+											<Th>Due</Th>
+											<Th>Created</Th>
+										</Tr>
+									</Thead>
+									<Tbody>
+										<Tr>
+											<Td>
+												{numeral(order.amount / 100).format("0.00a")} {order.currency}
+											</Td>
+											<Td>
+												{numeral(order.amount_paid / 100).format("0.00a")} {order.currency}
+											</Td>
+											<Td>
+												{numeral(order.amount_due / 100).format("0.00a")} {order.currency}
+											</Td>
+											<Td>{getTime(order.created_at)}</Td>
+										</Tr>
+									</Tbody>
+								</Table>
+							</Box>
 							{order.amount_due && (
 								<PayButton order={order}>
 									Confirm & Pay {numeral(order.amount_due / 100).format("0.00a")} {order.currency}

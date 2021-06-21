@@ -1,4 +1,4 @@
-import { Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react"
+import { Box, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react"
 import { Card, HeadingWithIcon } from "@components"
 import { useGetAllPaymentsQuery } from "@lib/hooks"
 import numeral from "numeral"
@@ -23,30 +23,32 @@ export const PaymentHistoryContainer = () => {
 			) : payments?.length && payments.length > 0 ? (
 				<Flex w="full" direction={{ base: "column", sm: "row" }} flexWrap={{ sm: "wrap" }} py="4">
 					<Card maxW="4xl">
-						<Table>
-							<Thead>
-								<Tr>
-									<Th>Amount</Th>
-									<Th>Plan</Th>
-									<Th>Promo Code</Th>
-									<Th>Discount</Th>
-									<Th>Created</Th>
-								</Tr>
-							</Thead>
-							<Tbody>
-								{payments.map((payment) => (
+						<Box w="full" maxW="full" overflowX="auto">
+							<Table>
+								<Thead>
 									<Tr>
-										<Td>
-											{numeral(payment.amount / 100).format("0.00a")} {payment.currency}
-										</Td>
-										<Td>{payment.plan}</Td>
-										<Td>{payment.couponUsed ?? "None"}</Td>
-										<Td>{payment.discount ? `${numeral(payment.discount / 100).format("0.00a")} ${payment.currency}` : "None"}</Td>
-										<Td>{payment.createdAt}</Td>
+										<Th>Amount</Th>
+										<Th>Plan</Th>
+										<Th>Promo Code</Th>
+										<Th>Discount</Th>
+										<Th>Created</Th>
 									</Tr>
-								))}
-							</Tbody>
-						</Table>
+								</Thead>
+								<Tbody>
+									{payments.map((payment) => (
+										<Tr>
+											<Td>
+												{numeral(payment.amount / 100).format("0.00a")} {payment.currency}
+											</Td>
+											<Td>{payment.plan}</Td>
+											<Td>{payment.couponUsed ?? "None"}</Td>
+											<Td>{payment.discount ? `${numeral(payment.discount / 100).format("0.00a")} ${payment.currency}` : "None"}</Td>
+											<Td>{payment.createdAt}</Td>
+										</Tr>
+									))}
+								</Tbody>
+							</Table>
+						</Box>
 					</Card>
 				</Flex>
 			) : (
