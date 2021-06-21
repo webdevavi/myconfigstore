@@ -1,6 +1,7 @@
-import { Box, BoxProps, Button, Container, Heading, HeadingProps, Text, TextProps, VStack } from "@chakra-ui/react"
+import { Box, BoxProps, Button, Container, Heading, HeadingProps, Link, Text, TextProps, VStack } from "@chakra-ui/react"
 import { motion, MotionProps } from "framer-motion"
 import Lottie from "lottie-react"
+import NextLink from "next/link"
 import React from "react"
 import heroAnimation from "../../lottie/hero.json"
 import { AnimatedLogo } from "../Logo"
@@ -94,12 +95,21 @@ export const Hero: React.FC<unknown> = () => {
 					transition={{ duration: 0.5, delay: 3.5 }}
 					zIndex="4"
 				>
-					<Button fontSize={{ base: "2xl", md: "3xl" }}>
-						Try for free
-						<Text as="span" fontSize="lg">
-							*
-						</Text>
-					</Button>
+					<NextLink href="/auth/signin" passHref>
+						<Link
+							as={Button}
+							color="brand.dark"
+							_hover={{ textDecor: "none" }}
+							_focus={{ textDecor: "none" }}
+							href="/auth/signin"
+							fontSize={{ base: "2xl", md: "3xl" }}
+						>
+							Try for free
+							<Text as="span" fontSize="lg">
+								*
+							</Text>
+						</Link>
+					</NextLink>
 					<MotionText
 						fontSize="sm"
 						fontWeight="bold"
