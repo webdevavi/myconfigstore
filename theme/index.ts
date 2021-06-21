@@ -30,6 +30,7 @@ const styles = {
 		body: {
 			bg: "brand.dark",
 			color: "brand.light",
+			marginRight: 0,
 		},
 	},
 }
