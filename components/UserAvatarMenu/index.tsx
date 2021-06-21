@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react"
 import NextLink from "next/link"
 import React from "react"
-import { AppUser } from "../../lib/models"
+import { AppUser } from "@models"
 
 interface UserAvatarMenuProps {
 	user: AppUser | undefined
@@ -31,64 +31,8 @@ export const UserAvatarMenu: React.FC<UserAvatarMenuProps> = ({ user }) => {
 			</MenuButton>
 			{isOpen && (
 				<MenuList bg="brand.dark2">
-					{/base/.test(breakpoint) && (
-						<>
-							<MenuGroup>
-								<NextLink href="/user/stores" passHref>
-									<MenuItem
-										as={Link}
-										fontFamily="Muli"
-										fontWeight="black"
-										color="brand.light"
-										_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
-									>
-										Stores
-									</MenuItem>
-								</NextLink>
-								<NextLink href="/user/billing" passHref>
-									<MenuItem
-										as={Link}
-										fontFamily="Muli"
-										fontWeight="black"
-										color="brand.light"
-										_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
-									>
-										Billing
-									</MenuItem>
-								</NextLink>
-
-								<NextLink href="/docs" passHref>
-									<MenuItem
-										as={Link}
-										fontFamily="Muli"
-										fontWeight="black"
-										color="brand.light"
-										_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
-									>
-										Docs
-									</MenuItem>
-								</NextLink>
-							</MenuGroup>
-
-							<MenuDivider />
-						</>
-					)}
-
 					<MenuGroup>
-						{/base|sm|md/.test(breakpoint) && (
-							<NextLink href="/user/usage" passHref>
-								<MenuItem
-									as={Link}
-									fontFamily="Muli"
-									fontWeight="black"
-									color="brand.light"
-									_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
-								>
-									Usage
-								</MenuItem>
-							</NextLink>
-						)}
-						<NextLink href="/user/account" passHref>
+						<NextLink href="/user/stores" passHref>
 							<MenuItem
 								as={Link}
 								fontFamily="Muli"
@@ -96,7 +40,47 @@ export const UserAvatarMenu: React.FC<UserAvatarMenuProps> = ({ user }) => {
 								color="brand.light"
 								_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
 							>
-								Account
+								Stores
+							</MenuItem>
+						</NextLink>
+
+						<NextLink href="/user/billing" passHref>
+							<MenuItem
+								as={Link}
+								fontFamily="Muli"
+								fontWeight="black"
+								color="brand.light"
+								_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
+							>
+								Billing
+							</MenuItem>
+						</NextLink>
+
+						<NextLink href="https://docs.myconfig.store" passHref>
+							<MenuItem
+								as={Link}
+								fontFamily="Muli"
+								fontWeight="black"
+								color="brand.light"
+								_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
+							>
+								Docs
+							</MenuItem>
+						</NextLink>
+					</MenuGroup>
+
+					<MenuDivider />
+
+					<MenuGroup>
+						<NextLink href="/user/usage" passHref>
+							<MenuItem
+								as={Link}
+								fontFamily="Muli"
+								fontWeight="black"
+								color="brand.light"
+								_focus={{ boxShadow: "none", outlineColor: "brand.orange", textDecor: "none" }}
+							>
+								Usage
 							</MenuItem>
 						</NextLink>
 						<NextLink href="/auth/signout" passHref>

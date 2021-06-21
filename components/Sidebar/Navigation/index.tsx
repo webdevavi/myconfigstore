@@ -26,15 +26,15 @@ export const NavigationSidebar: React.FC<unknown> = () => {
 						bg="brand.dark2"
 					>
 						<VStack w="full" mb="8" pt="24">
-							<NavigationButton icon={FaWindowRestore} isActive={isActive("/user/stores")}>
+							<NavigationButton href="/user/stores" icon={FaWindowRestore} isActive={isActive("/user/stores")}>
 								Stores
 							</NavigationButton>
 
-							<NavigationButton icon={FaCreditCard} isActive={isActive("/user/billing")}>
+							<NavigationButton href="/user/billing" icon={FaCreditCard} isActive={isActive("/user/billing")}>
 								Billing
 							</NavigationButton>
 
-							<NavigationButton icon={FaNewspaper} isActive={isActive("/docs")}>
+							<NavigationButton href="https://docs.myconfig.store" icon={FaNewspaper} isActive={isActive("/docs")}>
 								Docs
 							</NavigationButton>
 						</VStack>
