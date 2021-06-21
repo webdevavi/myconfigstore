@@ -1,28 +1,14 @@
-import {
-	Avatar,
-	IconButton,
-	Link,
-	Menu,
-	MenuButton,
-	MenuDivider,
-	MenuGroup,
-	MenuItem,
-	MenuList,
-	useBreakpoint,
-	useDisclosure,
-} from "@chakra-ui/react"
+import { Avatar, IconButton, Link, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, useDisclosure } from "@chakra-ui/react"
+import { AppUser } from "@models"
 import NextLink from "next/link"
 import React from "react"
-import { AppUser } from "@models"
 
 interface UserAvatarMenuProps {
-	user: AppUser | undefined
+	user?: AppUser
 }
 
 export const UserAvatarMenu: React.FC<UserAvatarMenuProps> = ({ user }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-
-	const breakpoint = useBreakpoint() ?? ""
 
 	return (
 		<Menu isLazy lazyBehavior="unmount" preventOverflow autoSelect={false} onOpen={onOpen} onClose={onClose}>
