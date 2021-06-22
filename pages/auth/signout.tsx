@@ -14,7 +14,7 @@ const SignoutPage: NextPage<unknown> = () => {
 	const { removeUser } = useCurrentUser()
 
 	const { mutateAsync, isError, error, isLoading } = useMutation("signout", () => signOut(), {
-		onSuccess: removeUser,
+		onSuccess: removeUser
 	})
 
 	const mutateSignOut = () => mutateAsync()
@@ -33,7 +33,7 @@ const SignoutPage: NextPage<unknown> = () => {
 
 			<Box as="main" bg="brand.dark" minH="100vh">
 				<DefaultNavbar />
-				<Container as={VStack} maxW="container.sm" spacing="8">
+				<Container as={VStack} maxW="container.sm" spacing="8" pb="16">
 					<AnimatedLogo />
 					<MotionVStack
 						w="full"
@@ -45,7 +45,7 @@ const SignoutPage: NextPage<unknown> = () => {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.5, delay: 0.5 }}
 					>
-						<Text fontSize="2xl" fontWeight="bold" color="brand.light">
+						<Text fontSize="2xl" fontWeight="bold" color="brand.light" textAlign="center">
 							{isLoading ? "You are being signed out..." : isError ? (error as any)?.message : "You have been signed out."}
 						</Text>
 					</MotionVStack>

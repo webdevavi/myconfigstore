@@ -11,7 +11,7 @@ const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack
 
 const AuthErrorPage: NextPage<unknown> = () => {
 	const {
-		query: { error = "Something unexpected occurred!" },
+		query: { error = "Something unexpected occurred!" }
 	} = useRouter()
 
 	return (
@@ -24,7 +24,7 @@ const AuthErrorPage: NextPage<unknown> = () => {
 
 			<Box as="main" bg="brand.dark" minH="100vh">
 				<DefaultNavbar />
-				<Container as={VStack} maxW="container.sm" spacing="8">
+				<Container as={VStack} maxW="container.sm" spacing="8" pb="16">
 					<AnimatedLogo />
 					<MotionVStack
 						w="full"
@@ -37,7 +37,7 @@ const AuthErrorPage: NextPage<unknown> = () => {
 						transition={{ duration: 0.5, delay: 0.5 }}
 					>
 						<Heading color="brand.error">Sign In Error</Heading>
-						<Text fontSize="2xl" color="brand.error" mt="4">
+						<Text fontSize="xl" color="brand.error" mt="4" textAlign="center">
 							&quot;{stripHtml(error as string).result}&quot;
 						</Text>
 					</MotionVStack>
