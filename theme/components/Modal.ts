@@ -39,7 +39,7 @@ export const Modal: ReturnType<typeof extendTheme>["components"]["Modal"] = {
 		drawer: {
 			dialogContainer: {
 				height: "auto !important",
-				top: "80px",
+				top: "60px",
 				bottom: "0px",
 			},
 		},
