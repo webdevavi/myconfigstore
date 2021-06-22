@@ -17,8 +17,8 @@ export const useGetPromoCodesQuery = () => {
 				})
 				.then(({ data }) => PromoCode.fromStore(data))
 				.catch((err) => {
-					if (err.response.data) {
-						throw err.response.data
+					if (err.response.data?.error) {
+						throw err.response.data.error
 					}
 
 					throw err

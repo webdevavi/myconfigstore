@@ -11,7 +11,7 @@ const MotionVStack = motion<Omit<StackProps, "transition"> & MotionProps>(VStack
 
 const AuthErrorPage: NextPage<unknown> = () => {
 	const {
-		query: { error = "Something unexpected occurred!" }
+		query: { error = "Something unexpected occurred!" },
 	} = useRouter()
 
 	return (

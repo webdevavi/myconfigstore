@@ -14,7 +14,7 @@ const SignoutPage: NextPage<unknown> = () => {
 	const { removeUser } = useCurrentUser()
 
 	const { mutateAsync, isError, error, isLoading } = useMutation("signout", () => signOut(), {
-		onSuccess: removeUser
+		onSuccess: removeUser,
 	})
 
 	const mutateSignOut = () => mutateAsync()
