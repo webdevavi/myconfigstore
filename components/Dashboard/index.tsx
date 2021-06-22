@@ -20,7 +20,7 @@ export const Dashboard: React.FC = ({ children }) => {
 						<Flex as="main" flexDir="column" alignItems="flex-start" w="full" h="full" p="4" pb="16">
 							{children}
 						</Flex>
-						<Footer templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)", xl: "repeat(5, 1fr)" }} />
+						<Footer />
 					</VStack>
 				</Flex>
 			</Container>

@@ -11,6 +11,7 @@ export const NavLink: React.FC<NavLinkProps & LinkProps> = ({ children, href, is
 	return (
 		<NextLink href={href} passHref>
 			<Link
+				textAlign="center"
 				zIndex={1}
 				fontWeight="bold"
 				color="brand.orange"

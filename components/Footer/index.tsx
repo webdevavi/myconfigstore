@@ -9,28 +9,24 @@ export const Footer: React.FC<GridProps> = (props) => {
 
 	return (
 		<Box as="footer" id="footer" bg="brand.dark2">
-			<Container maxW="1280px" py="8">
-				<Grid templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(4, 1fr)", lg: "repeat(5, 1fr)" }} gap={{ base: 8, md: 4 }} {...props}>
-					<VStack flex="1" alignItems="flex-start">
-						<TextLogo fontSize="3xl" />
-						<Text>&copy; {new Date().getFullYear()} An Open Source Project</Text>
-					</VStack>
-					<VStack flex="1" alignItems="flex-start">
-						<Heading color="brand.orange" opacity="0.8" fontSize="2xl">
+			<Container as={VStack} alignItems="stretch" maxW="1280px" py="8" spacing="8">
+				<Grid templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)", lg: "repeat(4, 1fr)" }} gap={{ base: 8, md: 4 }} {...props}>
+					<VStack flex="1">
+						<Heading color="brand.orange" opacity="0.8" fontSize="md">
 							Navigation
 						</Heading>
-						<VStack alignItems="flex-start">
+						<VStack>
 							<NavLink href="/">Home</NavLink>
 							<NavLink href="/pricing">Pricing</NavLink>
 							<NavLink href="/docs">Docs</NavLink>
 							{!isLoading && user ? <NavLink href="/user/billing">Billing</NavLink> : <NavLink href="/auth/signin">Sign In</NavLink>}
 						</VStack>
 					</VStack>
-					<VStack flex="1" alignItems="flex-start">
-						<Heading color="brand.orange" opacity="0.8" fontSize="2xl">
+					<VStack flex="1">
+						<Heading color="brand.orange" opacity="0.8" fontSize="md">
 							Terms & Policies
 						</Heading>
-						<VStack alignItems="flex-start">
+						<VStack>
 							<NavLink href="/terms">Terms & Conditions</NavLink>
 							<NavLink href="/privacy">Privacy Policy</NavLink>
 							<NavLink href="/cookies">Cookies Policy</NavLink>
@@ -38,28 +34,34 @@ export const Footer: React.FC<GridProps> = (props) => {
 							<NavLink href="/refund#Cancellation%20Policy">Cancellation Policy</NavLink>
 						</VStack>
 					</VStack>
-					<VStack flex="1" alignItems="flex-start">
-						<Heading color="brand.orange" opacity="0.8" fontSize="2xl">
+					<VStack flex="1">
+						<Heading color="brand.orange" opacity="0.8" fontSize="md">
 							Contact Us
 						</Heading>
 
-						<VStack alignItems="flex-start">
+						<VStack>
 							<NavLink href="https://www.twitter.com/myconfigstore">Twitter</NavLink>
 							<NavLink href="https://www.facebook.com/myconfigstore">Facebook</NavLink>
 						</VStack>
 					</VStack>
-					<VStack flex="1" alignItems="flex-start">
-						<Heading color="brand.orange" opacity="0.8" fontSize="2xl">
+					<VStack flex="1">
+						<Heading color="brand.orange" opacity="0.8" fontSize="md">
 							Contact Me
 						</Heading>
 
-						<VStack alignItems="flex-start">
+						<VStack>
 							<NavLink href="https://www.twitter.com/webdevavi">Twitter</NavLink>
 							<NavLink href="https://www.facebook/com/webdevavi">Facebook</NavLink>
 							<NavLink href="https://www.poly.work/avinash">Polywork</NavLink>
 						</VStack>
 					</VStack>
 				</Grid>
+				<VStack>
+					<TextLogo textAlign="center" />
+					<Text fontSize="sm" textAlign="center" opacity="0.6">
+						&copy; {new Date().getFullYear()} An Open Source Project
+					</Text>
+				</VStack>
 			</Container>
 		</Box>
 	)
