@@ -18,7 +18,7 @@ export const Footer: React.FC<GridProps> = (props) => {
 						<VStack>
 							<NavLink href="/">Home</NavLink>
 							<NavLink href="/pricing">Pricing</NavLink>
-							<NavLink href="/docs">Docs</NavLink>
+							<NavLink href="https://docs.myconfig.store">Docs</NavLink>
 							{!isLoading && user ? <NavLink href="/user/billing">Billing</NavLink> : <NavLink href="/auth/signin">Sign In</NavLink>}
 						</VStack>
 					</VStack>
