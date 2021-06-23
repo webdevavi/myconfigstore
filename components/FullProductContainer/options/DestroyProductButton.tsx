@@ -3,7 +3,7 @@ import React from "react"
 import { Product } from "../../../lib/models"
 import { DestroyProductModal } from "../../DestroyProductModal"
 
-interface DestroyProductButtonProps {
+export interface DestroyProductButtonProps {
 	product: Product
 }
 

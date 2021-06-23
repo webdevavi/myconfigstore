@@ -1,7 +1,10 @@
 import { Icon, IconButton, useDisclosure } from "@chakra-ui/react"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
 import { FaTrash } from "react-icons/fa"
-import { RemoveFieldModal } from "../../RemoveFieldModal"
+import { RemoveFieldModalProps } from "../../RemoveFieldModal"
+
+const RemoveFieldModal = loadDynamicComponent<RemoveFieldModalProps>(() => import("../../RemoveFieldModal").then((mod) => mod.RemoveFieldModal))
 
 interface RemoveFieldButtonProps {
 	fieldKey: string

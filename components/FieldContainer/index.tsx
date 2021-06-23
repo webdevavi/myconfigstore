@@ -1,12 +1,15 @@
 import { ButtonGroup, Checkbox, FormLabel, Heading, HStack, Icon, IconButton, Input, Stack, useDisclosure, VStack } from "@chakra-ui/react"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
 import { FaEdit } from "react-icons/fa"
 import { Field } from "../../lib/models"
 import { Card } from "../Card"
-import { EditFieldModal } from "../EditFieldModal"
+import { EditFieldModalProps } from "../EditFieldModal"
 import { RemoveFieldButton } from "./options/RemoveFieldButton"
 
-interface FieldContainerProps {
+const EditFieldModal = loadDynamicComponent<EditFieldModalProps>(() => import("../EditFieldModal").then((mod) => mod.EditFieldModal))
+
+export interface FieldContainerProps {
 	field: Field
 	storeId: string
 	productId: string
@@ -41,6 +44,7 @@ export const FieldContainer: React.FC<FieldContainerProps> = ({ field, storeId, 
 					</Heading>
 				</HStack>
 			</Card>
+
 			<EditFieldModal
 				storeId={storeId}
 				productId={productId}

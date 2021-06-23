@@ -1,30 +1,57 @@
 import {
+	BoxProps,
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
-	ButtonGroup,
-	Center,
+	ButtonGroupProps,
+	CenterProps,
 	CircularProgress,
+	ComponentWithAs,
 	Heading,
 	HStack,
-	Icon,
-	IconButton,
-	Text,
-	Tooltip,
+	IconButtonProps,
+	IconProps,
+	StackProps,
+	TextProps,
+	TooltipProps,
 	useBreakpoint,
 	useClipboard,
-	VStack,
 } from "@chakra-ui/react"
+import { useGetProductQuery } from "@hooks"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
-import { FaCopy, FaGlobe, FaLock } from "react-icons/fa"
-import { useGetProductQuery } from "../../lib/hooks/product"
-import { Card } from "../Card"
-import { FieldsContainer } from "../FieldsContainer"
-import { ProductSettings } from "../ProductSettings"
-import { StatusTag } from "../StatusTag"
-import { DeactivateProductButton } from "./options/DeactivateProductButton"
-import { DestroyProductButton } from "./options/DestroyProductButton"
-import { ReactivateProductButton } from "./options/ReactivateProductButton"
+import { IconType } from "react-icons/lib"
+import { FieldsContainerProps } from "../FieldsContainer"
+import { ProductSettingsProps } from "../ProductSettings"
+import { StatusTagProps } from "../StatusTag"
+import { DeactivateProductButtonProps } from "./options/DeactivateProductButton"
+import { DestroyProductButtonProps } from "./options/DestroyProductButton"
+import { ReactivateProductButtonProps } from "./options/ReactivateProductButton"
+
+const Icon = loadDynamicComponent<IconProps>(() => import("@chakra-ui/react").then((mod) => mod.Icon)) as ComponentWithAs<"svg", IconProps>
+const FaLock = loadDynamicComponent<IconType>(() => import("react-icons/fa").then((mod) => mod.FaLock))
+const FaGlobe = loadDynamicComponent<IconType>(() => import("react-icons/fa").then((mod) => mod.FaGlobe))
+const FaCopy = loadDynamicComponent<IconType>(() => import("react-icons/fa").then((mod) => mod.FaCopy))
+const StatusTag = loadDynamicComponent<StatusTagProps>(() => import("../StatusTag").then((mod) => mod.StatusTag))
+const ButtonGroup = loadDynamicComponent<ButtonGroupProps>(() => import("@chakra-ui/react").then((mod) => mod.ButtonGroup))
+const Text = loadDynamicComponent<TextProps>(() => import("@chakra-ui/react").then((mod) => mod.Text))
+const Tooltip = loadDynamicComponent<TooltipProps>(() => import("@chakra-ui/react").then((mod) => mod.Tooltip))
+const IconButton = loadDynamicComponent<IconButtonProps>(() => import("@chakra-ui/react").then((mod) => mod.IconButton))
+const Center = loadDynamicComponent<CenterProps>(() => import("@chakra-ui/react").then((mod) => mod.Center))
+const VStack = loadDynamicComponent<StackProps>(() => import("@chakra-ui/react").then((mod) => mod.VStack))
+const Card = loadDynamicComponent<BoxProps>(() => import("../Card").then((mod) => mod.Card))
+const DeactivateProductButton = loadDynamicComponent<DeactivateProductButtonProps>(() =>
+	import("./options/DeactivateProductButton").then((mod) => mod.DeactivateProductButton)
+)
+const DestroyProductButton = loadDynamicComponent<DestroyProductButtonProps>(() =>
+	import("./options/DestroyProductButton").then((mod) => mod.DestroyProductButton)
+)
+const ReactivateProductButton = loadDynamicComponent<ReactivateProductButtonProps>(() =>
+	import("./options/ReactivateProductButton").then((mod) => mod.ReactivateProductButton)
+)
+const ProductSettings = loadDynamicComponent<ProductSettingsProps>(() => import("../ProductSettings").then((mod) => mod.ProductSettings))
+
+const FieldsContainer = loadDynamicComponent<FieldsContainerProps>(() => import("../FieldsContainer").then((mod) => mod.FieldsContainer))
 
 interface FullProductContainerProps {
 	storeId: string

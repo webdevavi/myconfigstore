@@ -1,7 +1,11 @@
-import { IconButtonProps, IconButton, Icon } from "@chakra-ui/react"
+import { Icon, IconButton, IconButtonProps } from "@chakra-ui/react"
 import { useDrawer } from "@hooks/drawer"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
-import { FaTimes, FaBars } from "react-icons/fa"
+import { IconType } from "react-icons/lib"
+
+const FaBars = loadDynamicComponent<IconType>(() => import("react-icons/fa").then((mod) => mod.FaBars))
+const FaTimes = loadDynamicComponent<IconType>(() => import("react-icons/fa").then((mod) => mod.FaTimes))
 
 export const DrawerToggleButton: React.FC<Omit<IconButtonProps, "aria-label">> = ({ children, ...props }) => {
 	const { isOpen, onOpen, onClose } = useDrawer()

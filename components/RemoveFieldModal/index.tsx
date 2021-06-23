@@ -29,12 +29,9 @@ const initialValues: RemoveFieldFormValues = {
 	key: "",
 }
 
-export const RemoveFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: string; productId: string; fieldKey: string }> = ({
-	storeId,
-	productId,
-	fieldKey,
-	...props
-}) => {
+export type RemoveFieldModalProps = Omit<ModalProps, "children"> & { storeId: string; productId: string; fieldKey: string }
+
+export const RemoveFieldModal: React.FC<RemoveFieldModalProps> = ({ storeId, productId, fieldKey, ...props }) => {
 	const validationSchema = Yup.object({
 		key: Yup.string()
 			.matches(new RegExp(`^${fieldKey}$`), "Key doesn't match.")

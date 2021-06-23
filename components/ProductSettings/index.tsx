@@ -6,7 +6,7 @@ import { Product } from "../../lib/models"
 import { EditProductSettingsButton } from "./options/EditProductSettingsButton"
 import { RegenerateProductKeyButton } from "./options/RegenerateProductKeyButton"
 
-interface ProductSettingsProps {
+export interface ProductSettingsProps {
 	product: Product
 }
 

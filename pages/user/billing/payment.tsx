@@ -1,10 +1,13 @@
 /* eslint-disable camelcase */
 
-import { Dashboard, PaymentHistoryContainer, ProcessPaymentContainer, WithAuth, WithCurrentUser } from "@components"
+import { Dashboard, PaymentHistoryContainer, WithAuth, WithCurrentUser } from "@components"
+import { loadDynamicComponent } from "@lib/utils"
 import { NextPage } from "next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import React from "react"
+
+const ProcessPaymentContainer = loadDynamicComponent(() => import("@components").then((mod) => mod.ProcessPaymentContainer))
 
 const PaymentPage: NextPage = () => {
 	const { query } = useRouter()

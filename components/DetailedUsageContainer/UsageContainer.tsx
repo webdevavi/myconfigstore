@@ -1,7 +1,7 @@
 import { Stack, Heading, Progress } from "@chakra-ui/react"
 import React from "react"
 
-interface UsageContainerProps {
+export interface UsageContainerProps {
 	label: string
 	value: number
 	valueToShow?: number | string

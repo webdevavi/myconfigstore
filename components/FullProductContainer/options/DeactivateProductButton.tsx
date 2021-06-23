@@ -3,7 +3,7 @@ import React from "react"
 import { Product } from "../../../lib/models"
 import { DeactivateProductModal } from "../../DeactivateProductModal"
 
-interface DeactivateProductButtonProps {
+export interface DeactivateProductButtonProps {
 	product: Product
 }
 

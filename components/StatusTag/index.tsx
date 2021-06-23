@@ -1,15 +1,15 @@
 import { Tag, TagLabel, TagProps } from "@chakra-ui/react"
 import React from "react"
 
-interface StatusTagProps {
+export type StatusTagProps = {
 	isActive?: boolean
 	activeColor?: string
 	activeColorScheme?: TagProps["colorScheme"]
 	inactiveColor?: string
 	inactiveColorScheme?: TagProps["colorScheme"]
-}
+} & TagProps
 
-export const StatusTag: React.FC<StatusTagProps & TagProps> = ({
+export const StatusTag: React.FC<StatusTagProps> = ({
 	isActive,
 	activeColor,
 	inactiveColor,

@@ -34,12 +34,9 @@ const validationSchema = Yup.object({
 	value: Yup.string().required().label("Field Value"),
 })
 
-export const EditFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: string; productId: string; initialValues: IField }> = ({
-	storeId,
-	productId,
-	initialValues,
-	...props
-}) => {
+export type EditFieldModalProps = Omit<ModalProps, "children"> & { storeId: string; productId: string; initialValues: IField }
+
+export const EditFieldModal: React.FC<EditFieldModalProps> = ({ storeId, productId, initialValues, ...props }) => {
 	const { mutateAsync } = useEditFieldMutation({ storeId, productId, key: initialValues.key })
 
 	const toast = useToast()

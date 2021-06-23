@@ -2,7 +2,7 @@ import { Heading, HStack, Icon, StackProps, TypographyProps } from "@chakra-ui/r
 import React from "react"
 import { IconType } from "react-icons"
 
-interface HeadingWithIconProps {
+export interface HeadingWithIconProps {
 	icon: IconType
 	fontSize?: TypographyProps["fontSize"]
 }

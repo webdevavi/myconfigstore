@@ -3,7 +3,7 @@ import React from "react"
 import { Product } from "../../../lib/models"
 import { ReactivateProductModal } from "../../ReactivateProductModal"
 
-interface ReactivateProductButtonProps {
+export interface ReactivateProductButtonProps {
 	product: Product
 }
 

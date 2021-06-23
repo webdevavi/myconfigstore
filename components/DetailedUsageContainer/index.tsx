@@ -1,10 +1,18 @@
-import { Center, CircularProgress, HStack, VStack } from "@chakra-ui/react"
+import { CenterProps, CircularProgressProps, HStack, StackProps, TagProps } from "@chakra-ui/react"
+import { useCurrentUser } from "@hooks"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
 import { FaChartBar } from "react-icons/fa"
-import { Card, HeadingWithIcon } from ".."
-import { useCurrentUser } from "../../lib/hooks/session"
-import { BrandTag } from "../Tag"
-import { UsageContainer } from "./UsageContainer"
+import { Card } from "../Card"
+import { HeadingWithIconProps } from "../HeadingWithIcon"
+import { UsageContainerProps } from "./UsageContainer"
+
+const BrandTag = loadDynamicComponent<TagProps>(() => import("../Tag").then((mod) => mod.BrandTag))
+const Center = loadDynamicComponent<CenterProps>(() => import("@chakra-ui/react").then((mod) => mod.Center))
+const CircularProgress = loadDynamicComponent<CircularProgressProps>(() => import("@chakra-ui/react").then((mod) => mod.CircularProgress))
+const HeadingWithIcon = loadDynamicComponent<HeadingWithIconProps & StackProps>(() => import("../HeadingWithIcon").then((mod) => mod.HeadingWithIcon))
+const UsageContainer = loadDynamicComponent<UsageContainerProps>(() => import("./UsageContainer").then((mod) => mod.UsageContainer))
+const VStack = loadDynamicComponent<StackProps>(() => import("@chakra-ui/react").then((mod) => mod.VStack))
 
 const getPercentage = (value: number = 1, total: number = 1) => (value / total) * 100
 

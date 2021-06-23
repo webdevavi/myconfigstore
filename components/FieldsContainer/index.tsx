@@ -1,12 +1,18 @@
-import { Button, Center, HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react"
+import { BoxProps, Button, Center, HStack, StackProps, useDisclosure, VStack } from "@chakra-ui/react"
+import { loadDynamicComponent } from "@lib/utils"
+import { Field } from "@models"
 import React from "react"
 import { FaWpforms } from "react-icons/fa"
-import { Card, HeadingWithIcon } from ".."
-import { Field } from "../../lib/models"
-import { CreateFieldModal } from "../CreateFieldModal"
-import { FieldContainer } from "../FieldContainer"
+import { CreateFieldModalProps } from "../CreateFieldModal"
+import { FieldContainerProps } from "../FieldContainer"
+import { HeadingWithIcon } from "../HeadingWithIcon"
 
-interface FieldsContainerProps {
+const Card = loadDynamicComponent<BoxProps>(() => import("../Card").then((mod) => mod.Card))
+const FieldContainer = loadDynamicComponent<FieldContainerProps>(() => import("../FieldContainer").then((mod) => mod.FieldContainer))
+const Stack = loadDynamicComponent<StackProps>(() => import("@chakra-ui/react").then((mod) => mod.Stack))
+const CreateFieldModal = loadDynamicComponent<CreateFieldModalProps>(() => import("../CreateFieldModal").then((mod) => mod.CreateFieldModal))
+
+export interface FieldsContainerProps {
 	storeId: string
 	productId: string
 	fields?: Field[]

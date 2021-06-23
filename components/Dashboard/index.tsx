@@ -1,9 +1,11 @@
 import { Box, Container, Flex, useBreakpoint, VStack } from "@chakra-ui/react"
 import { useCurrentUser } from "@hooks"
+import { loadDynamicComponent } from "@lib/utils"
 import React from "react"
 import { Footer } from "../Footer"
 import { DashboardNavbar } from "../Navbar"
-import { NavigationSidebar } from "../Sidebar"
+
+const NavigationSidebar = loadDynamicComponent(() => import("../Sidebar").then((mod) => mod.NavigationSidebar))
 
 export const Dashboard: React.FC = ({ children }) => {
 	const { currentUser } = useCurrentUser()

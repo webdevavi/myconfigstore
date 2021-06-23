@@ -45,11 +45,9 @@ const validationSchema = Yup.object({
 	value: Yup.string().required().label("Field Value"),
 })
 
-export const CreateFieldModal: React.FC<Omit<ModalProps, "children"> & { storeId: string; productId: string }> = ({
-	storeId,
-	productId,
-	...props
-}) => {
+export type CreateFieldModalProps = Omit<ModalProps, "children"> & { storeId: string; productId: string }
+
+export const CreateFieldModal: React.FC<CreateFieldModalProps> = ({ storeId, productId, ...props }) => {
 	const { mutateAsync } = useCreateFieldMutation({ storeId, productId })
 
 	const toast = useToast()
