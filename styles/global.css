@@ -1,0 +1,15 @@
+.section__header {
+	position: relative;
+}
+
+.section__header::before {
+	content: "";
+	position: absolute;
+	top: -10%;
+	left: -50%;
+	width: 1.5em;
+	height: 1.5em;
+	background-color: currentColor;
+	opacity: 0.15;
+	z-index: -1;
+}
