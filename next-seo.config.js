@@ -17,6 +17,12 @@ const seo = {
 		type: "website",
 		images: [
 			{
+				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/banner.jpg`,
+				alt: "MyConfigStore Banner",
+				height: 876.84,
+				width: 1666,
+			},
+			{
 				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/myconfigstore-logo-512x512.png`,
 				alt: "MyConfigStore Logo",
 				height: 512,
