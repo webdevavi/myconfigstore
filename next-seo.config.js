@@ -7,6 +7,7 @@ const seo = {
 	twitter: {
 		site: "@myconfigstore",
 		handle: "@myconfigstore",
+		cardType: "summary_large_image",
 	},
 	facebook: {
 		appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID ?? "",
@@ -21,18 +22,6 @@ const seo = {
 				alt: "MyConfigStore Banner",
 				height: 876.84,
 				width: 1666,
-			},
-			{
-				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/myconfigstore-logo-512x512.png`,
-				alt: "MyConfigStore Logo",
-				height: 512,
-				width: 512,
-			},
-			{
-				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/myconfigstore-logo-196x196.png`,
-				alt: "MyConfigStore Logo",
-				height: 196,
-				width: 196,
 			},
 		],
 	},
