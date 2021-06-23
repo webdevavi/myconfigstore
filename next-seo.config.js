@@ -17,13 +17,13 @@ const seo = {
 		type: "website",
 		images: [
 			{
-				url: "/myconfigstore-logo-512x512.png",
+				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/myconfigstore-logo-512x512.png`,
 				alt: "MyConfigStore Logo",
 				height: 512,
 				width: 512,
 			},
 			{
-				url: "/myconfigstore-logo-196x196.png",
+				url: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/myconfigstore-logo-196x196.png`,
 				alt: "MyConfigStore Logo",
 				height: 196,
 				width: 196,
