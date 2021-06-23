@@ -1,21 +1,18 @@
 /* eslint-disable camelcase */
 
 import { Dashboard, PaymentHistoryContainer, ProcessPaymentContainer, WithAuth, WithCurrentUser } from "@components"
-import { NextPage } from "next"
+import { NextPageWithSEO } from "@lib/types"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import React from "react"
 
-const PaymentPage: NextPage = () => {
+const PaymentPage: NextPageWithSEO = () => {
 	const { query } = useRouter()
 
 	return (
 		<div>
 			<Head>
 				<script type="text/javascript" src="/js/razorpay.js" />
-				<title>Payments | myconfig.store</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
 			<Dashboard>
@@ -24,6 +21,10 @@ const PaymentPage: NextPage = () => {
 			</Dashboard>
 		</div>
 	)
+}
+
+PaymentPage.seo = {
+	title: "Payments",
 }
 
 export default WithAuth(WithCurrentUser(PaymentPage), { redirect: "onUnauth" })

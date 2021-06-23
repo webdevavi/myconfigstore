@@ -1,26 +1,39 @@
-import { NextPage } from "next"
-import Head from "next/head"
+import { Dashboard, FullStoreContainer, WithAuth, WithCurrentUser } from "@components"
+import { NextPageWithSEO } from "@lib/types"
+import { NextSeo, NextSeoProps } from "next-seo"
 import { useRouter } from "next/router"
 import React from "react"
-import { Dashboard, FullStoreContainer, WithAuth, WithCurrentUser } from "@components"
 
-const StorePage: NextPage = () => {
+interface StorePageProps {
+	seo: NextSeoProps
+}
+
+const StorePage: NextPageWithSEO<StorePageProps> = ({ seo }) => {
 	const {
 		query: { storeId },
 	} = useRouter()
 
 	return (
-		<div>
-			<Head>
-				<title>{storeId} - Store | myconfig.store</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+		<>
+			<NextSeo {...seo} />
 			<Dashboard>
 				<FullStoreContainer storeId={storeId as string} />
 			</Dashboard>
-		</div>
+		</>
 	)
+}
+
+StorePage.getInitialProps = async ({ query }) => {
+	const { storeId } = query
+
+	const seo: NextSeoProps = {
+		title: `${storeId} - Store`,
+		canonical: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/user/stores/${storeId}`,
+	}
+
+	StorePage.seo = seo
+
+	return { seo }
 }
 
 export default WithAuth(WithCurrentUser(StorePage), { redirect: "onUnauth" })

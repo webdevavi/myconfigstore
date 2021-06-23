@@ -28,6 +28,7 @@
 		"next": "10.2.3",
 		"next-api-middleware": "^0.7.1",
 		"next-auth": "^3.26.1",
+		"next-seo": "^4.26.0",
 		"nextjs-cors": "^1.0.5",
 		"numeral": "^2.0.6",
 		"raw-loader": "^4.0.2",
