@@ -1,5 +1,5 @@
+import { NextPageWithSEO } from "@lib/types"
 import { ServerResponse } from "http"
-import { NextPage } from "next"
 import { Session } from "next-auth"
 import { getSession, useSession } from "next-auth/client"
 import { useRouter } from "next/router"
@@ -10,10 +10,10 @@ type WithAuthOptions = {
 	redirectTo?: string
 }
 
-export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions = {}) => {
+export const WithAuth = <T extends object>(Component: NextPageWithSEO<T>, options: WithAuthOptions = {}) => {
 	const { redirect = "onUnauth", redirectTo = "/auth/signin" } = options
 
-	const Auth: NextPage<unknown & { session: Session | null }> = ({ session, ...pageProps }) => {
+	const Auth: NextPageWithSEO<T & { session: Session | null }> = ({ session, ...pageProps }) => {
 		const [isClear, setIsClear] = React.useState(false)
 
 		const [clientSession, loading] = useSession()
@@ -34,7 +34,7 @@ export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions 
 		}, [isUser, loading])
 
 		if (isClear) {
-			return <Component {...pageProps} />
+			return <Component {...(pageProps as T)} />
 		}
 
 		return <div>Loading...</div>
@@ -60,9 +60,12 @@ export const WithAuth = (Component: NextPage<unknown>, options: WithAuthOptions 
 			}
 		}
 
-		const pageProps = Component.getInitialProps && ((await Component.getInitialProps(ctx)) as object)
+		const pageProps = (await Component.getInitialProps?.(ctx)) as object as T
+
 		return { ...pageProps, session }
 	}
+
+	Auth.seo = Component.seo
 
 	return Auth
 }

@@ -1,37 +1,32 @@
 import { Box, Container, Divider, Heading } from "@chakra-ui/react"
-import { DefaultNavbar, Markdown, Footer } from "@components"
-import { GetStaticPaths, GetStaticProps, NextPage } from "next"
-import Head from "next/head"
+import { DefaultNavbar, Footer, Markdown } from "@components"
+import { NextPageWithSEO } from "@lib/types"
+import { GetStaticPaths, GetStaticProps } from "next"
+import { NextSeo, NextSeoProps } from "next-seo"
 import { ParsedUrlQuery } from "querystring"
 import React from "react"
 
 interface TermsPageProps {
 	markdown: string
-	title: string
+	seo: NextSeoProps
 }
 
-const TermsPage: NextPage<TermsPageProps> = ({ markdown, title }) => {
+const TermsPage: NextPageWithSEO<TermsPageProps> = ({ markdown, seo }) => {
 	return (
-		<div>
-			<Head>
-				<title>{title} | myconfig.store</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<Box minH="100vh">
-				<DefaultNavbar />
-				<Container maxW="960px" py="8">
-					<Heading as="h1" mb="4" color="brand.orange">
-						{title}
-					</Heading>
-					<Divider />
-					<Box py="4">
-						<Markdown>{markdown}</Markdown>
-					</Box>
-				</Container>
-				<Footer />
-			</Box>
-		</div>
+		<Box minH="100vh">
+			<NextSeo {...seo} />
+			<DefaultNavbar />
+			<Container maxW="960px" py="8">
+				<Heading as="h1" mb="4" color="brand.orange">
+					{seo.title}
+				</Heading>
+				<Divider />
+				<Box py="4">
+					<Markdown>{markdown}</Markdown>
+				</Box>
+			</Container>
+			<Footer />
+		</Box>
 	)
 }
 
@@ -52,23 +47,28 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps<TermsPageProps, IParams> = async ({ params }) => {
 	const { policy } = params!
 
-	let title = "Terms & Conditions"
+	const seo: NextSeoProps = {
+		title: "Terms & Conditions",
+		canonical: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/${policy}`,
+	}
 
 	if (policy === "privacy") {
-		title = "Privacy Policy"
+		seo.title = "Privacy Policy"
 	}
 
 	if (policy === "refund") {
-		title = "Refund & Cancellation Policy"
+		seo.title = "Refund & Cancellation Policy"
 	}
 
 	if (policy === "cookies") {
-		title = "Cookies Policy"
+		seo.title = "Cookies Policy"
 	}
+
+	TermsPage.seo = seo
 
 	const { default: markdown } = await require(`../policies/${String(policy).toUpperCase()}.md`)
 
-	return { props: { markdown, title } }
+	return { props: { markdown, seo } }
 }
 
 export default TermsPage

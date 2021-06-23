@@ -1,17 +1,11 @@
 import { Container } from "@chakra-ui/react"
 import { DefaultNavbar, Footer, PricingContainer } from "@components"
-import { NextPage } from "next"
-import Head from "next/head"
+import { NextPageWithSEO } from "@lib/types"
 import React from "react"
 
-const PricingPage: NextPage = () => {
+const PricingPage: NextPageWithSEO = () => {
 	return (
 		<div>
-			<Head>
-				<title>Pricing | myconfig.store</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
 			<DefaultNavbar />
 			<Container maxW="1280px">
 				<PricingContainer />
@@ -19,6 +13,11 @@ const PricingPage: NextPage = () => {
 			<Footer />
 		</div>
 	)
+}
+
+PricingPage.seo = {
+	title: "Pricing",
+	canonical: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/pricing`,
 }
 
 export default PricingPage

@@ -1,21 +1,15 @@
-import { NextPage } from "next"
-import Head from "next/head"
-import React from "react"
 import { Dashboard, StoresContainer, WithAuth, WithCurrentUser } from "@components"
+import { NextPageWithSEO } from "@lib/types"
+import React from "react"
 
-const StoresPage: NextPage = () => {
+const StoresPage: NextPageWithSEO = () => {
 	return (
-		<div>
-			<Head>
-				<title>Stores | myconfig.store</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-			<Dashboard>
-				<StoresContainer />
-			</Dashboard>
-		</div>
+		<Dashboard>
+			<StoresContainer />
+		</Dashboard>
 	)
 }
+
+StoresPage.seo = { title: "Stores", canonical: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/user/stores` }
 
 export default WithAuth(WithCurrentUser(StoresPage), { redirect: "onUnauth" })

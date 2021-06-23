@@ -1,28 +1,39 @@
-import { NextPage } from "next"
-import Head from "next/head"
+import { Dashboard, FullProductContainer, WithAuth, WithCurrentUser } from "@components"
+import { NextPageWithSEO } from "@lib/types"
+import { NextSeo, NextSeoProps } from "next-seo"
 import { useRouter } from "next/router"
 import React from "react"
-import { Dashboard, FullProductContainer, WithAuth, WithCurrentUser } from "@components"
 
-const ProductPage: NextPage = () => {
+interface ProductPageProps {
+	seo: NextSeoProps
+}
+
+const ProductPage: NextPageWithSEO<ProductPageProps> = ({ seo }) => {
 	const {
 		query: { storeId, productId },
 	} = useRouter()
 
 	return (
-		<div>
-			<Head>
-				<title>
-					{storeId} / {productId} - Product | myconfig.store
-				</title>
-				<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+		<>
+			<NextSeo {...seo} />
 			<Dashboard>
 				<FullProductContainer storeId={storeId as string} productId={productId as string} />
 			</Dashboard>
-		</div>
+		</>
 	)
+}
+
+ProductPage.getInitialProps = ({ query }) => {
+	const { storeId, productId } = query
+
+	const seo = {
+		title: `${storeId} / ${productId} - Product`,
+		canonical: `${process.env.NEXT_PUBLIC_CANONICAL_URL}/user/stores/${storeId}/${productId}`,
+	}
+
+	ProductPage.seo = seo
+
+	return { seo }
 }
 
 export default WithAuth(WithCurrentUser(ProductPage), { redirect: "onUnauth" })

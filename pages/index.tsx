@@ -1,23 +1,23 @@
 import { Box } from "@chakra-ui/react"
 import { DefaultNavbar, Footer, Hero, WithAuth } from "@components"
-import { NextPage } from "next"
-import Head from "next/head"
+import { NextPageWithSEO } from "@lib/types"
 import React from "react"
 
-const Home: NextPage = () => (
-	<div>
-		<Head>
-			<title>Home | myconfig.store</title>
-			<meta name="description" content="A simple, fast, secure and highly available remote store for all your dynamic configs." />
-			<link rel="icon" href="/favicon.ico" />
-		</Head>
-
+const Home: NextPageWithSEO = () => {
+	return (
 		<Box as="main" bg="brand.dark">
 			<DefaultNavbar />
 			<Hero />
 			<Footer />
 		</Box>
-	</div>
-)
+	)
+}
+
+Home.seo = {
+	title: "Home",
+	twitter: {
+		cardType: "summary_large_image",
+	},
+}
 
 export default WithAuth(Home, { redirect: "onAuth", redirectTo: "/user/stores" })
