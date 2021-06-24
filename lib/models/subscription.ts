@@ -13,7 +13,7 @@ export enum PaymentStatus {
 }
 
 export interface ISubscription {
-	razorpayCustomerId: string
+	razorpayCustomerId?: string
 	plan: Plans
 	status: PaymentStatus
 	expiry: Date
@@ -22,7 +22,7 @@ export interface ISubscription {
 export type SubscriptionJSON = Omit<ISubscription, "expiry"> & { expiry: number }
 
 export class Subscription implements ISubscription {
-	razorpayCustomerId: string
+	razorpayCustomerId?: string | undefined
 
 	plan: Plans
 
