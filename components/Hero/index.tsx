@@ -4,6 +4,7 @@ import { motion, MotionProps } from "framer-motion"
 import Lottie from "lottie-react"
 import NextLink from "next/link"
 import React from "react"
+import { useInView } from "react-intersection-observer"
 import heroAnimation from "../../lottie/hero.json"
 import { AnimatedLogo } from "../Logo"
 
@@ -14,8 +15,11 @@ const MotionText = motion<Omit<TextProps, "transition"> & MotionProps>(Text as a
 export const Hero: React.FC<unknown> = () => {
 	const { isOpen: isDrawerOpen } = useDrawer()
 
+	const { ref, inView } = useInView({ threshold: 0.8 })
+
 	return (
 		<Container
+			ref={ref}
 			pos="relative"
 			maxW="container.xl"
 			as="section"
@@ -214,7 +218,8 @@ export const Hero: React.FC<unknown> = () => {
 				h={{ base: "150vw", md: "75vw" }}
 				bg="brand.orange"
 				rounded="full"
-				opacity="0.1"
+				opacity={inView ? 0.1 : 0}
+				style={{ transition: "opacity 0.2s ease-in-out" }}
 				initial={{ filter: "blur(5px)" }}
 				animate={{ filter: "blur(15px)" }}
 				transition={{ duration: 5, repeat: Infinity, repeatType: "reverse" }}
