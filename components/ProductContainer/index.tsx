@@ -12,12 +12,12 @@ interface ProductContainerProps {
 
 export const ProductContainer: React.FC<ProductContainerProps> = ({ product }) => {
 	return (
-		<LinkBox w="full" maxW={{ base: "full", sm: "2xs" }} mx={{ base: 0, sm: 2 }} my="2">
+		<LinkBox w="full">
 			<NextLink href={`/user/stores/${product.storeId}/${product.productId}`} passHref>
 				<LinkOverlay />
 			</NextLink>
 			<Card w="full" as={VStack} alignItems="flex-start">
-				<HStack>
+				<HStack flexWrap="wrap">
 					<Heading fontSize="2xl" color="brand.orange">
 						{product.productId}
 					</Heading>

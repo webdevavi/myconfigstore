@@ -32,7 +32,7 @@ export const StoresContainer: React.FC = () => {
 			) : stores && stores.length > 0 ? (
 				<Flex w="full" direction={{ base: "column", sm: "row" }} flexWrap={{ sm: "wrap" }}>
 					{stores.map((store) => (
-						<Box key={store.id} minH="200px">
+						<Box key={store.id} minH="200px" w="full" maxW={{ base: "full", sm: "2xs" }} mx={{ base: 0, sm: 2 }} my="2">
 							<Lazyload once throttle={100} height={200}>
 								<StoreContainer store={store} />
 							</Lazyload>
