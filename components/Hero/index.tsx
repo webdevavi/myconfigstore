@@ -219,7 +219,8 @@ export const Hero: React.FC<unknown> = () => {
 				bg="brand.orange"
 				rounded="full"
 				opacity={inView ? 0.1 : 0}
-				style={{ transition: "opacity 0.2s ease-in-out" }}
+				zIndex={inView ? 0 : -1}
+				style={{ transition: "all 0.2s ease-in-out" }}
 				initial={{ filter: "blur(5px)" }}
 				animate={{ filter: "blur(15px)" }}
 				transition={{ duration: 5, repeat: Infinity, repeatType: "reverse" }}
