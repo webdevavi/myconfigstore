@@ -14,6 +14,7 @@ export const colors: ReturnType<typeof extendTheme>["colors"] = {
 		orangeLightest: "#392C1D",
 		orangeLight: "#98541A",
 		orangeDark: "#A35709",
+		orangeDarker: "#322415",
 		light: "#F0E7C9",
 		success: "#5FDE12",
 		error: "#FF6464",
