@@ -9,7 +9,7 @@ const Home: NextPageWithSEO = () => {
 			<DefaultNavbar />
 			<Hero />
 			<Container maxW="1280px">
-				<VStack w="full" alignItems="stretch" spacing={{ base: 8, md: 16 }} py={{ base: 4, md: 8 }}>
+				<VStack w="full" alignItems="stretch" spacing="16" py="8">
 					<DescriptionSection />
 					<UsecasesSection />
 					<InternalUseSection />
