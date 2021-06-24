@@ -5,12 +5,12 @@ import React from "react"
 export const PricingContainer: React.FC = () => {
 	return (
 		<div>
-			<VStack w="full">
+			<VStack w="full" pt="8" pb="24">
 				<Heading color="brand.orange" fontSize={{ base: "4xl", md: "6xl" }}>
 					Our Pricing
 				</Heading>
 				<Text textAlign="center">There are 5 plan models for the usage of myconfig.store.</Text>
-				<Box maxW="full" overflowX="auto">
+				<Box maxW="full" overflowX="auto" py="8">
 					<Table size="lg">
 						<Thead>
 							<Tr>
