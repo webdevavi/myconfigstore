@@ -4,6 +4,7 @@ import { useGetAllPaymentsQuery } from "@lib/hooks"
 import numeral from "numeral"
 import React from "react"
 import { FaCreditCard } from "react-icons/fa"
+import Lazyload from "react-lazyload"
 
 export const PaymentHistoryContainer = () => {
 	const { data: payments, isLoading, isError, error } = useGetAllPaymentsQuery()
@@ -36,15 +37,19 @@ export const PaymentHistoryContainer = () => {
 								</Thead>
 								<Tbody>
 									{payments.map((payment) => (
-										<Tr>
-											<Td>
-												{numeral(payment.amount / 100).format("0.00a")} {payment.currency}
-											</Td>
-											<Td>{payment.plan}</Td>
-											<Td>{payment.couponUsed ?? "None"}</Td>
-											<Td>{payment.discount ? `${numeral(payment.discount / 100).format("0.00a")} ${payment.currency}` : "None"}</Td>
-											<Td>{payment.createdAt}</Td>
-										</Tr>
+										<Box key={payment.id} minH="50px">
+											<Lazyload once throttle={100} height={50}>
+												<Tr>
+													<Td>
+														{numeral(payment.amount / 100).format("0.00a")} {payment.currency}
+													</Td>
+													<Td>{payment.plan}</Td>
+													<Td>{payment.couponUsed ?? "None"}</Td>
+													<Td>{payment.discount ? `${numeral(payment.discount / 100).format("0.00a")} ${payment.currency}` : "None"}</Td>
+													<Td>{payment.createdAt}</Td>
+												</Tr>
+											</Lazyload>
+										</Box>
 									))}
 								</Tbody>
 							</Table>

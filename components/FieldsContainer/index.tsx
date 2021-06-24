@@ -1,6 +1,7 @@
-import { Button, Center, HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, HStack, Stack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaWpforms } from "react-icons/fa"
+import Lazyload from "react-lazyload"
 import { Card, HeadingWithIcon } from ".."
 import { Field } from "../../lib/models"
 import { CreateFieldModal } from "../CreateFieldModal"
@@ -28,7 +29,11 @@ export const FieldsContainer: React.FC<FieldsContainerProps> = ({ storeId, produ
 			{fields && fields.length > 0 ? (
 				<Stack w="full">
 					{fields.map((field) => (
-						<FieldContainer field={field} storeId={storeId} productId={productId} />
+						<Box key={field.key} minH="200px">
+							<Lazyload once throttle={100} height={200}>
+								<FieldContainer field={field} storeId={storeId} productId={productId} />
+							</Lazyload>
+						</Box>
 					))}
 				</Stack>
 			) : (

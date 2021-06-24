@@ -1,6 +1,7 @@
-import { Button, Center, CircularProgress, Flex, HStack, useDisclosure, VStack } from "@chakra-ui/react"
+import { Box, Button, Center, CircularProgress, Flex, HStack, useDisclosure, VStack } from "@chakra-ui/react"
 import React from "react"
 import { FaWindowRestore } from "react-icons/fa"
+import Lazyload from "react-lazyload"
 import { useGetStoresQuery } from "../../lib/hooks/store"
 import { Card } from "../Card"
 import { CreateStoreModal } from "../CreateStoreModal"
@@ -31,7 +32,11 @@ export const StoresContainer: React.FC = () => {
 			) : stores && stores.length > 0 ? (
 				<Flex w="full" direction={{ base: "column", sm: "row" }} flexWrap={{ sm: "wrap" }}>
 					{stores.map((store) => (
-						<StoreContainer store={store} />
+						<Box key={store.id} minH="200px">
+							<Lazyload once throttle={100} height={200}>
+								<StoreContainer store={store} />
+							</Lazyload>
+						</Box>
 					))}
 				</Flex>
 			) : (
