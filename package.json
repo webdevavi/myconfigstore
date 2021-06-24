@@ -12,13 +12,13 @@
 		"prepare": "husky install"
 	},
 	"lint-staged": {
-  "src/**/*.{js,ts,tsx}": [
-    "eslint . --fix", "git add"
-  ],
-  "src/**/*.{js,ts,tsx,json}": [
-    "prettier . -w", "git add"
-  ]
-},
+		"**/*.{js,ts,tsx}": [
+			"eslint . --fix"
+		],
+		"**/*.{js,ts,tsx,json}": [
+			"prettier . -w"
+		]
+	},
 	"dependencies": {
 		"@chakra-ui/react": "1.6.3",
 		"@emotion/react": "11",
