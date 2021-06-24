@@ -1,5 +1,5 @@
 import { Box, Container, VStack } from "@chakra-ui/react"
-import { DefaultNavbar, DescriptionSection, Footer, Hero, InternalUseSection, UsecasesSection, WithAuth } from "@components"
+import { DefaultNavbar, DescriptionSection, Footer, Hero, InternalUseSection, PricingSection, UsecasesSection, WithAuth } from "@components"
 import { NextPageWithSEO } from "@lib/types"
 import React from "react"
 
@@ -13,6 +13,7 @@ const Home: NextPageWithSEO = () => {
 					<DescriptionSection />
 					<UsecasesSection />
 					<InternalUseSection />
+					<PricingSection />
 				</VStack>
 			</Container>
 			<Footer />
