@@ -43,5 +43,14 @@ export default NextAuth({
 			session.id = user.sub
 			return Promise.resolve(session)
 		},
+		signIn: (user, account) => {
+			if (!user.email) {
+				return `/auth/error?error=${encodeURIComponent(
+					`Your ${account.provider} account doesn't have any email address added. Please sign in with an account having a verified email address.`
+				)}`
+			}
+
+			return true
+		},
 	},
 })

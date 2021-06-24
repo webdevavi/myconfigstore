@@ -53,6 +53,17 @@ const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			return res.status(500).json({ message: "Something went wrong on our side, your payment will be refunded in 4-5 working days if paid." })
 		}
 
+		let { razorpayCustomerId } = user.subscription
+
+		if (!razorpayCustomerId) {
+			const { id } = await razorpay.customers.create({
+				name: user.name!,
+				email: user.email,
+			})
+
+			razorpayCustomerId = id
+		}
+
 		await db.update<AppUserJSON>({
 			table: "users",
 			records: [
@@ -60,6 +71,7 @@ const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 					id: user.id,
 					subscription: {
 						...user.subscription,
+						razorpayCustomerId,
 						plan: plan as Plans,
 						expiry: add(new Date(), { days: pricingPlan.days ?? 30 }).getTime(),
 						status: PaymentStatus.Paid,

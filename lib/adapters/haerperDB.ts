@@ -1,4 +1,3 @@
-import { razorpay } from "@lib/razorpay"
 import add from "date-fns/add"
 import { Account, Profile } from "next-auth"
 import { Adapter } from "next-auth/adapters"
@@ -16,17 +15,11 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 				async createUser(profile) {
 					const { name, email, image } = profile
 
-					const { id: razorpayCustomerId } = await razorpay.customers.create({
-						name: name ?? "",
-						email,
-					})
-
 					const user: Omit<AppUserJSON, "id"> = {
 						name,
 						email,
 						image,
 						subscription: {
-							razorpayCustomerId,
 							plan: Plans.Trial,
 							status: PaymentStatus.Unpaid,
 							expiry: add(new Date(), { days: pricing.trial.days }).getTime(),
