@@ -26,6 +26,8 @@ export const useCurrentUserQuery = () => {
 		{
 			refetchOnReconnect: false,
 			refetchOnWindowFocus: false,
+			retry: false,
+			retryOnMount: false,
 			onSuccess: setUser,
 			onError: setIsError,
 		}
