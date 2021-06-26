@@ -17,7 +17,7 @@ export const UsecasesSection: React.FC = () => (
 		<SectionContent>
 			<Text fontWeight="bold" textAlign="center" maxW="3xl" mx="auto" lineHeight="125%" fontSize={{ base: "xl", md: "3xl" }} color="brand.light">
 				<Text as="span" color="brand.orange">
-					myconfigstore
+					myconfig
 				</Text>{" "}
 				can be helpful in a dozen of usecases, let us tell you a few of them...
 			</Text>

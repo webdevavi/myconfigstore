@@ -9,7 +9,7 @@ export const PricingContainer: React.FC = () => {
 				<Heading color="brand.orange" fontSize={{ base: "4xl", md: "6xl" }}>
 					Our Pricing
 				</Heading>
-				<Text textAlign="center">There are 5 plan models for the usage of myconfig.store.</Text>
+				<Text textAlign="center">There are 5 plan models for the usage of myconfig.</Text>
 				<Box maxW="full" overflowX="auto" py="8">
 					<Table size="lg">
 						<Thead>

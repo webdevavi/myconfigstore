@@ -20,9 +20,9 @@ export const TextLogo: React.FC<HeadingProps> = ({ fontSize = "xl", ...props }) 
 
 	return (
 		<HStack>
-			<Img src="/myconfigstore-logo-196x196.png" alt="MyConfigStore Logo" width={imgWidth[fontSize as keyof typeof imgWidth] ?? 12} />
+			<Img src="/myconfigstore-logo-196x196.png" alt="Logo" width={imgWidth[fontSize as keyof typeof imgWidth] ?? 12} />
 			<Heading as="span" color="brand.orange" fontSize={fontSize} {...props}>
-				myconfig.store
+				myconfig
 			</Heading>
 		</HStack>
 	)

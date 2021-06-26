@@ -18,7 +18,7 @@ export const InternalUseSection = () => {
 				<Text fontWeight="bold" textAlign="center" maxW="3xl" mx="auto" lineHeight="125%" fontSize={{ base: "xl", md: "3xl" }} color="brand.light">
 					we are using{" "}
 					<Text as="span" color="brand.orange">
-						myconfigstore
+						myconfig
 					</Text>{" "}
 					internally for many usecases including the ones mentioned above, one of which is for promo codes. We have a dedicated store for this and
 					multiple private and one public product.

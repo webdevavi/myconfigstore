@@ -1,11 +1,11 @@
 [
 	{
 		"label": "versioning",
-		"description": "Suppose you are showing a version tag in the header or footer of your static or any kind of website and you just deployed a new version of it but forgot to update the version. What are you gonna do now? Use myconfigstore and keep updating your version just with one click!"
+		"description": "Suppose you are showing a version tag in the header or footer of your static or any kind of website and you just deployed a new version of it but forgot to update the version. What are you gonna do now? Use myconfig and keep updating your version just with one click!"
 	},
 	{
 		"label": "server status",
-		"description": "You are showing your users the running status of your server in your app. What when your server itself goes down... where will you pull the status info from now? Use myconfigstore and store the info away from your servers and keep updating it accordingly to help your users know what’s going on."
+		"description": "You are showing your users the running status of your server in your app. What when your server itself goes down... where will you pull the status info from now? Use myconfig and store the info away from your servers and keep updating it accordingly to help your users know what’s going on."
 	},
 	{
 		"label": "remote config",
@@ -13,6 +13,6 @@
 	},
 	{
 		"label": "beta features",
-		"description": "You want to roll out a new app feature but don’t want to release it to all your users at the same time, rather make it available first to users at a certain location or age group, or whatever. Store your conditional configuration at myconfigstore and give your users a smooth feature update."
+		"description": "You want to roll out a new app feature but don’t want to release it to all your users at the same time, rather make it available first to users at a certain location or age group, or whatever. Store your conditional configuration at myconfig and give your users a smooth feature update."
 	}
 ]

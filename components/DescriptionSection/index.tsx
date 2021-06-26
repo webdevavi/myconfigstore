@@ -17,7 +17,7 @@ export const DescriptionSection = () => {
 			<SectionContent>
 				<Text fontWeight="bold" textAlign="center" maxW="3xl" mx="auto" lineHeight="125%" fontSize={{ base: "xl", md: "3xl" }} color="brand.light">
 					<Text as="span" color="brand.orange">
-						myconfigstore
+						myconfig
 					</Text>{" "}
 					is a secure database which lets you store simple key-value pair config variables in the cloud and securely access it with a REST API
 					endpoint uniquely generated just for you.
