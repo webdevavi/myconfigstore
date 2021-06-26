@@ -30,7 +30,7 @@ export class PromoCode implements IPromoCode {
 	static fromStore(storeJSON: StoreDataJSON): PromoCode[] {
 		const { data } = storeJSON
 
-		const codes: PromoCodeJSON[] = Object.keys(data).map((code) => ({ code, discount: data[code] }))
+		const codes: PromoCodeJSON[] = Object.keys(data).map((code) => ({ code, discount: data[code as keyof typeof data] }))
 
 		return codes.map((code) => PromoCode.fromJSON(code))
 	}
