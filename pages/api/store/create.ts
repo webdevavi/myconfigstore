@@ -47,12 +47,12 @@ const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
-			await db.update<IAppUser>({
+			res.status(201).json({ message: `Store ${storeId} created successfully.` })
+
+			return await db.update<IAppUser>({
 				table: "users",
 				records: [{ id: user.id, usage: { ...(user.usage ?? {}), stores: (user.usage?.stores ?? 0) + 1 } }],
 			})
-
-			return res.status(201).json({ message: `Store ${storeId} created successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}

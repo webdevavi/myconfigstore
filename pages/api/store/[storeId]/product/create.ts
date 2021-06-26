@@ -79,14 +79,14 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
+			res.status(201).json({ message: `Product ${productId} created successfully.` })
+
 			await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 0) + 1 }] })
 
-			await db.update<IAppUser>({
+			return await db.update<IAppUser>({
 				table: "users",
 				records: [{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 0) + 1 } }],
 			})
-
-			return res.status(201).json({ message: `Product ${productId} created successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}
