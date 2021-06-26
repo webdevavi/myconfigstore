@@ -84,7 +84,7 @@ export const DrawerModal: React.FC = () => {
 							</Button>
 						</Flex>
 						<Text fontFamily="Muli" fontSize="sm" fontWeight="black" color="brand.orange" opacity="0.6">
-							&copy; {new Date().getFullYear()} My Config Store
+							&copy; {new Date().getFullYear()} myconfig
 						</Text>
 					</VStack>
 				</ModalBody>
