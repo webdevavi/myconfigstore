@@ -1,11 +1,14 @@
-import { Box, Container, Grid, GridProps, Heading, Text, VStack } from "@chakra-ui/react"
-import { useCurrentUserQuery } from "@hooks"
+import { Box, Container, Grid, GridProps, Heading, HStack, Text, VStack } from "@chakra-ui/react"
+import { useGetAppDataQuery } from "@hooks"
+import { useSession } from "next-auth/client"
 import React from "react"
-import { NavLink } from "../Navbar/default/NavLink"
 import { TextLogo } from "../Logo"
+import { NavLink } from "../Navbar/default/NavLink"
 
 export const Footer: React.FC<GridProps> = (props) => {
-	const { data: user, isLoading } = useCurrentUserQuery()
+	const [session, isLoading] = useSession()
+
+	const { data: appData } = useGetAppDataQuery()
 
 	return (
 		<Box as="footer" id="footer" bg="brand.dark2">
@@ -20,7 +23,7 @@ export const Footer: React.FC<GridProps> = (props) => {
 							<NavLink href="/pricing">Pricing</NavLink>
 							<NavLink href="https://docs.myconfig.store">Docs</NavLink>
 							<NavLink href="/about">About Us</NavLink>
-							{!isLoading && user ? <NavLink href="/user/billing">Billing</NavLink> : <NavLink href="/auth/signin">Sign In</NavLink>}
+							{!isLoading && session ? <NavLink href="/user/billing">Billing</NavLink> : <NavLink href="/auth/signin">Sign In</NavLink>}
 						</VStack>
 					</VStack>
 					<VStack flex="1">
@@ -64,6 +67,25 @@ export const Footer: React.FC<GridProps> = (props) => {
 						&copy; {new Date().getFullYear()} An Open Source Project
 					</Text>
 				</VStack>
+				{appData && (
+					<HStack w="full" justifyContent="center" color="brand.orange">
+						{appData.version && (
+							<Text>
+								<Text as="span">Version</Text>
+								<Text as="span"> - </Text>
+								<Text as="strong">{appData?.version}</Text>
+							</Text>
+						)}
+						<Text as="span"> | </Text>
+						{appData.server && (
+							<Text>
+								<Text as="span">Server</Text>
+								<Text as="span"> - </Text>
+								<Text as="strong">{appData?.server}</Text>
+							</Text>
+						)}
+					</HStack>
+				)}
 			</Container>
 		</Box>
 	)

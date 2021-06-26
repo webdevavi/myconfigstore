@@ -1,4 +1,4 @@
-export interface IStoreData<T extends Record<string, string>> {
+export interface IStoreData<T extends Object> {
 	productId: string
 	storeId: string
 	url: string
@@ -7,12 +7,12 @@ export interface IStoreData<T extends Record<string, string>> {
 	data: T
 }
 
-export type StoreDataJSON<T extends Record<string, string> = Record<string, string>> = Omit<IStoreData<T>, "createdAt" | "updatedAt"> & {
+export type StoreDataJSON<T extends Object = object> = Omit<IStoreData<T>, "createdAt" | "updatedAt"> & {
 	createdAt: string
 	updatedAt: string
 }
 
-export class StoreData<T extends Record<string, string> = Record<string, string>> implements IStoreData<T> {
+export class StoreData<T extends Object = object> implements IStoreData<T> {
 	productId: string
 
 	storeId: string
@@ -36,7 +36,7 @@ export class StoreData<T extends Record<string, string> = Record<string, string>
 		this.data = data
 	}
 
-	static fromJSON<T extends Record<string, string> = Record<string, string>>(json: StoreDataJSON<T>): StoreData<T> {
+	static fromJSON<T extends Object = Object>(json: StoreDataJSON<T>): StoreData<T> {
 		const { createdAt, updatedAt, ...rest } = json
 
 		return new StoreData<T>({
