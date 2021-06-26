@@ -10,7 +10,7 @@ export const useGetAppDataQuery = () => {
 		axios
 			.get<StoreDataJSON<IAppData>>("https://official.myconfig.store/api/v1/app", {
 				headers: {
-					Authorization: "Bearer 0769d0e49fba68ab0dfe33a742be5148",
+					Authorization: `Bearer ${process.env.NEXT_PUBLIC_APP_DATA_STORE_KEY}`,
 				},
 			})
 			.then(({ data }) => new AppData(data.data))
