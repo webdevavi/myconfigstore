@@ -40,7 +40,7 @@ export const Hero: React.FC<unknown> = () => {
 					zIndex="4"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.5 }}
+					transition={{ duration: 0.4 }}
 				>
 					A{" "}
 					<MotionText
@@ -48,7 +48,7 @@ export const Hero: React.FC<unknown> = () => {
 						color="brand.orange"
 						initial={{ opacity: 0, translateY: "50%" }}
 						animate={{ opacity: 1, translateY: "0px" }}
-						transition={{ duration: 0.5, delay: 1 }}
+						transition={{ duration: 0.4, delay: 0.4 }}
 					>
 						simple
 					</MotionText>
@@ -58,7 +58,7 @@ export const Hero: React.FC<unknown> = () => {
 						color="brand.orange"
 						initial={{ opacity: 0, translateY: "50%" }}
 						animate={{ opacity: 1, translateY: "0px" }}
-						transition={{ duration: 0.5, delay: 1.5 }}
+						transition={{ duration: 0.4, delay: 0.8 }}
 					>
 						fast
 					</MotionText>
@@ -68,38 +68,17 @@ export const Hero: React.FC<unknown> = () => {
 						color="brand.orange"
 						initial={{ opacity: 0, translateY: "50%" }}
 						animate={{ opacity: 1, translateY: "0px" }}
-						transition={{ duration: 0.5, delay: 2 }}
+						transition={{ duration: 0.4, delay: 1.2 }}
 					>
 						{" "}
 						secure
 					</MotionText>{" "}
-					and{" "}
-					<MotionText
-						as="span"
-						color="brand.orange"
-						initial={{ opacity: 0, translateY: "50%" }}
-						animate={{ opacity: 1, translateY: "0px" }}
-						transition={{ duration: 0.5, delay: 2.5 }}
-					>
-						highly available
-					</MotionText>{" "}
-					remote store for all your{" "}
-					<MotionText
-						as="span"
-						color="brand.orange"
-						initial={{ opacity: 0, translateY: "50%" }}
-						animate={{ opacity: 1, translateY: "0px" }}
-						transition={{ duration: 0.5, delay: 3 }}
-					>
-						{" "}
-						dynamic configs
-					</MotionText>
-					.
+					and highly available remote store for all your dynamic configs.
 				</MotionHeading>
 				<MotionBox
 					initial={{ opacity: 0, translateY: "50%" }}
 					animate={{ opacity: 1, translateY: "0px" }}
-					transition={{ duration: 0.5, delay: 3.5 }}
+					transition={{ duration: 0.4, delay: 1.6 }}
 					zIndex="4"
 				>
 					<NextLink href="/auth/signin" passHref>
@@ -125,7 +104,7 @@ export const Hero: React.FC<unknown> = () => {
 						textAlign={{ base: "center", md: "left" }}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 0.6 }}
-						transition={{ duration: 0.5, delay: 4.5 }}
+						transition={{ duration: 0.4, delay: 2.4 }}
 					>
 						* Free trial for 14 days.
 					</MotionText>
@@ -229,9 +208,9 @@ export const Hero: React.FC<unknown> = () => {
 				w={{ base: "auto", md: "50%" }}
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
-				transition={{ duration: 0.5, ease: "easeIn", delay: 3.5 }}
+				transition={{ duration: 0.4, ease: "easeIn", delay: 2 }}
 			>
-				<Box as={Lottie} animationData={heroAnimation} w="full" />
+				<Box as={Lottie} animationData={heroAnimation} loop={false} w="full" />
 			</MotionBox>
 		</Container>
 	)
