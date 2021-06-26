@@ -34,8 +34,8 @@ export const Footer: React.FC<GridProps> = (props) => {
 							<NavLink href="/terms">Terms & Conditions</NavLink>
 							<NavLink href="/privacy">Privacy Policy</NavLink>
 							<NavLink href="/cookies">Cookies Policy</NavLink>
-							<NavLink href="/refund#Refund%20Policy">Refund Policy</NavLink>
-							<NavLink href="/refund#Cancellation%20Policy">Cancellation Policy</NavLink>
+							<NavLink href="/refund#refund-policy">Refund Policy</NavLink>
+							<NavLink href="/refund#cancellation-policy">Cancellation Policy</NavLink>
 						</VStack>
 					</VStack>
 					<VStack flex="1">
