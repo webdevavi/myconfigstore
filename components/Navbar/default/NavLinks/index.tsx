@@ -19,6 +19,9 @@ export const NavLinks = () => {
 			<NavLink href="/docs" isActive={isActive("/docs")}>
 				Docs
 			</NavLink>
+			<NavLink href="/about" isActive={isActive("/about")}>
+				About
+			</NavLink>
 			<NavLink href="/contact" isActive={isActive("/contact")}>
 				Contact
 			</NavLink>
