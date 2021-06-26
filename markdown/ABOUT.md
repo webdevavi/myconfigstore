@@ -24,27 +24,27 @@ You created a firebase project and you have to use the same config over multiple
 
 You want to roll out a new app feature but don’t want to release it to all your users at the same time, rather make it available first to users at a certain location or age group, or whatever. Store your conditional configuration at myconfig.store and give your users a smooth feature update.
 
-### Products we offer
+## Products we offer
 
 There are five products you can choose among-
 
-#### Trial
+### Trial
 
 You can click on the Get Started button and start using our services right away! With this free plan, we provide you with 1 store, 1 product and 100 fields to use! This plan is valid for 14 days! You can upgrade the plan to continue using our services.
 
-#### Hobby
+### Hobby
 
 If programming is your hobby, this plan is made just for you! At just $5.00, you get 10 stores, 2k products and 10k fields to use for a whole month!!
 
-#### Dev
+### Dev
 
 A full-time developer looking for an affordable config store? You've come to the right place! With 1k stores, 200k products and 1M fields to use for a whole month, just for $25.00, we can say with certainty that you've found a winner!
 
-#### Dev Annual
+### Dev Annual
 
 A full-time developer looking for affordable, long term config store plans? This is the plan for you! For just $300.00 per annum, you get to use 1k stores, 200k products and 1M fields for a whole year! Now you can enjoy our services without worrying about expiry date before you can use up all the features!
 
-#### Enterprise
+### Enterprise
 
 If you're looking for customized plans for your company, we got you! You pay for what you use! No wastage, no worries of renewals! Contact us and list out all your requirements to avail our services.
 
