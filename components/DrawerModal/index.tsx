@@ -64,6 +64,9 @@ export const DrawerModal: React.FC = () => {
 					)}
 					<VStack w="full">
 						<Flex justify="center" flexWrap="wrap">
+							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/contact")}>
+								Contact Us
+							</Button>
 							<Button variant="link" mx="2" fontSize="md" opacity="0.6" onClick={push("/terms")}>
 								Terms & Condition
 							</Button>

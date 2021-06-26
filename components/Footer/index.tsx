@@ -40,6 +40,7 @@ export const Footer: React.FC<GridProps> = (props) => {
 						</Heading>
 
 						<VStack>
+							<NavLink href="/contact">Contact</NavLink>
 							<NavLink href="https://www.twitter.com/myconfigstore">Twitter</NavLink>
 							<NavLink href="https://www.facebook.com/myconfigstore">Facebook</NavLink>
 						</VStack>
