@@ -1,7 +1,7 @@
+import { HarperDBAdapter } from "@lib/adapters/haerperDB"
+import { harperdb } from "@lib/harperDB"
 import NextAuth from "next-auth"
 import Providers from "next-auth/providers"
-import { HarperDBAdapter } from "../../../lib/adapters/haerperDB"
-import { HarperDB } from "../../../lib/harperDB"
 
 export default NextAuth({
 	providers: [
@@ -25,7 +25,7 @@ export default NextAuth({
 		maxAge: 30 * 24 * 60 * 60, // 30 days
 		updateAge: 24 * 60 * 60, // 24 hours
 	},
-	adapter: HarperDBAdapter(new HarperDB("dev")),
+	adapter: HarperDBAdapter(harperdb),
 	pages: {
 		signIn: "/auth/signin",
 		signOut: "/auth/signout",

@@ -1,9 +1,9 @@
 import formatDistanceToNow from "date-fns/formatDistanceToNow"
 
 export interface IStore {
-	id?: string
-	ownerId: string
-	storeId: string
+	id?: string | number
+	ownerId: string | number
+	storeId: string | number
 	url?: string
 	products?: number
 	isActive?: boolean
@@ -15,11 +15,11 @@ export interface IStore {
 export type StoreJSON = Omit<IStore, "url" | "createdAt" | "updatedAt"> & { __createdtime__: string; __updatedtime__: string }
 
 export class Store implements IStore {
-	id?: string | undefined
+	id?: string | number | undefined
 
-	ownerId: string
+	ownerId: string | number
 
-	storeId: string
+	storeId: string | number
 
 	url?: string | undefined
 

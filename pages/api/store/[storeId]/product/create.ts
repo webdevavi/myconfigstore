@@ -1,8 +1,8 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { ProductJSON, StoreJSON } from "@models"
+import { FieldError } from "@types"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../lib/middlewares"
-import { IAppUser, IStore, Product, ProductJSON, StoreJSON } from "../../../../../lib/models"
-import { FieldError } from "../../../../../lib/types"
 
 const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { user } = req
@@ -28,32 +28,28 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			fieldErrors.push({ field: "productId", error: "Only alphabets, numbers and underscore is allowed." })
 		}
 
-		const db = new HarperDB("dev")
-
-		const [store] = await db.findByConditions<StoreJSON>(
-			"and",
+		const {
+			records: [store],
+		} = (await harperdb.searchByConditions(
 			[
-				{ attribute: "ownerId", type: "equals", value: req.session.id as string },
-				{ attribute: "storeId", type: "equals", value: storeId },
+				{ searchAttribute: "ownerId", searchType: "equals", searchValue: req.session.id as string },
+				{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId },
 			],
-
-			{ table: "stores" }
-		)
+			{ schema: "dev", table: "stores" }
+		)) as unknown as { records: StoreJSON[] }
 
 		if (!store) {
 			return res.status(400).json({ message: "No store exists with the provided store id." })
 		}
 
-		const products = await db.findByConditions<ProductJSON>(
-			"and",
+		const { records: products } = (await harperdb.searchByConditions(
 			[
-				{ attribute: "ownerId", type: "equals", value: req.session.id as string },
-				{ attribute: "storeId", type: "equals", value: storeId },
-				{ attribute: "productId", type: "equals", value: productId as string },
+				{ searchAttribute: "ownerId", searchType: "equals", searchValue: req.session.id as string },
+				{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId },
+				{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 			],
-
-			{ table: "products" }
-		)
+			{ schema: "dev", table: "products" }
+		)) as unknown as { records: ProductJSON[] }
 
 		if (products && products.length > 0) {
 			fieldErrors.push({ field: "productId", error: "This product id is not available." })
@@ -63,30 +59,33 @@ const createProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			return res.status(400).json({ fieldErrors })
 		}
 
-		const product = new Product({
+		const product = {
 			productId: productId as string,
 			storeId: storeId as string,
-			ownerId: req.session.id as string,
+			ownerId: user.id as string,
 			isPrivate: true,
 			isUsingStoreKey: true,
 			isActive: true,
-		})
+		}
 
 		try {
-			const [newProductId] = await db.insert({ table: "products", records: [product] })
+			const { inserted_hashes } = await harperdb.insert(product, { schema: "dev", table: "products" })
 
-			if (!newProductId) {
+			if (!inserted_hashes || !inserted_hashes[0]) {
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
 			res.status(201).json({ message: `Product ${productId} created successfully.` })
 
-			await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 0) + 1 }] })
+			await harperdb.updateOne({ id: store.id as string, products: (store?.products ?? 0) + 1 }, { schema: "dev", table: "stores" })
 
-			return await db.update<IAppUser>({
-				table: "users",
-				records: [{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 0) + 1 } }],
-			})
+			return await harperdb.updateOne(
+				{ id: user.id, usage: { ...(user.usage ?? {}), products: (user.usage?.products ?? 0) + 1 } },
+				{
+					schema: "dev",
+					table: "users",
+				}
+			)
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { HarperDB } from "@lib/harperDB"
+import { harperdb } from "@lib/harperDB"
 import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
 import { AppUserJSON, PaymentStatus, Plans } from "@lib/models"
 import { PaymentJSON } from "@lib/models/payment"
@@ -41,9 +41,18 @@ const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			razorpayPaymentId: razorpayPaymentId as string,
 		}
 
-		const db = new HarperDB("dev")
+		const { inserted_hashes } = await harperdb.insert<Omit<PaymentJSON, "id" | "__createdtime__" | "__updatedtime__">>(payment, {
+			schema: "dev",
+			table: "payments",
+		})
 
-		const [paymentId] = await db.insert<Omit<PaymentJSON, "id" | "__createdtime__" | "__updatedtime__">>({ table: "payments", records: [payment] })
+		if (!inserted_hashes?.[0]) {
+			await razorpay.payments.payment(razorpayPaymentId as string).refund({
+				reverse_all: 1,
+			})
+		}
+
+		const paymentId = inserted_hashes?.[0]
 
 		if (!paymentId) {
 			await razorpay.payments.payment(razorpayPaymentId as string).refund({
@@ -64,21 +73,22 @@ const handleSuccess = async (req: NextApiRequestWithAuth, res: NextApiResponse) 
 			razorpayCustomerId = id
 		}
 
-		await db.update<AppUserJSON>({
-			table: "users",
-			records: [
-				{
-					id: user.id,
-					subscription: {
-						...user.subscription,
-						razorpayCustomerId,
-						plan: plan as Plans,
-						expiry: add(new Date(), { days: pricingPlan.days ?? 30 }).getTime(),
-						status: PaymentStatus.Paid,
-					},
+		await harperdb.updateOne<AppUserJSON>(
+			{
+				id: user.id,
+				subscription: {
+					...user.subscription,
+					razorpayCustomerId,
+					plan: plan as Plans,
+					expiry: add(new Date(), { days: pricingPlan.days ?? 30 }).getTime(),
+					status: PaymentStatus.Paid,
 				},
-			],
-		})
+			},
+			{
+				schema: "dev",
+				table: "users",
+			}
+		)
 
 		return res.status(200).json({ message: `Thanks for subscribing for ${plan} plan` })
 	}

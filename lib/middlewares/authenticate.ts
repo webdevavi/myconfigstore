@@ -2,8 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 import { NextMiddleware, use } from "next-api-middleware"
 import { Session } from "next-auth"
 import { getSession } from "next-auth/client"
-import { HarperDB } from "../harperDB"
-import { AppUser, IAppUser } from "../models"
+import { harperdb } from "../harperDB"
+import { AppUser, AppUserJSON } from "../models"
 
 export type NextApiRequestWithAuth = NextApiRequest & {
 	session: Session
@@ -17,16 +17,16 @@ const authenticate = async (req: NextApiRequestWithAuth, res: NextApiResponse, n
 		return res.status(403).json({ message: "You are not allowed to perform this action." })
 	}
 
-	const db = new HarperDB("dev")
-
-	const [user] = await db.findByIds<IAppUser>([session.id], { table: "users" })
+	const {
+		records: [user],
+	} = (await harperdb.searchByHash([session.id], { schema: "dev", table: "users" })) as unknown as { records: AppUserJSON[] }
 
 	if (!user) {
 		return res.status(403).json({ message: "You are not allowed to perform this action." })
 	}
 
 	req.session = session
-	req.user = new AppUser(user)
+	req.user = AppUser.fromJSON(user)
 
 	return next()
 }

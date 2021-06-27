@@ -2,15 +2,15 @@ import format from "date-fns/format"
 import { Plans } from "./subscription"
 
 export interface IPayment {
-	id: string
-	userId: string
+	id: string | number
+	userId: string | number
 	plan: Plans
 	amount: number
 	currency: string
 	couponUsed?: string
 	discount?: number
-	razorpayOrderId: string
-	razorpayPaymentId: string
+	razorpayOrderId: string | number
+	razorpayPaymentId: string | number
 	createdAt?: string
 	updatedAt?: string
 }
@@ -18,9 +18,9 @@ export interface IPayment {
 export type PaymentJSON = Omit<IPayment, "createdAt" | "updatedAt"> & { __createdtime__: string; __updatedtime__: string }
 
 export class Payment implements IPayment {
-	id: string
+	id: string | number
 
-	userId: string
+	userId: string | number
 
 	plan: Plans
 
@@ -32,9 +32,9 @@ export class Payment implements IPayment {
 
 	discount?: number | undefined
 
-	razorpayOrderId: string
+	razorpayOrderId: string | number
 
-	razorpayPaymentId: string
+	razorpayPaymentId: string | number
 
 	createdAt?: string | undefined
 

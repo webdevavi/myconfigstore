@@ -1,9 +1,9 @@
+import { Encrypt } from "@lib/encrypt"
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { Field, IField, ProductJSON } from "@models"
+import { FieldError } from "@types"
 import { NextApiHandler, NextApiResponse } from "next"
-import { Encrypt } from "../../../../../../../../lib/encrypt"
-import { HarperDB } from "../../../../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../../../lib/middlewares"
-import { Field, IField, ProductJSON } from "../../../../../../../../lib/models"
-import { FieldError } from "../../../../../../../../lib/types"
 
 const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const fieldErrors: FieldError[] = []
@@ -31,18 +31,16 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			fieldErrors.push({ field: "value", error: "Field value is required" })
 		}
 
-		const db = new HarperDB("dev")
-
-		const [product] = await db.findByConditions<ProductJSON>(
-			"and",
+		const {
+			records: [product],
+		} = (await harperdb.searchByConditions(
 			[
-				{ attribute: "ownerId", type: "equals", value: req.session.id as string },
-				{ attribute: "storeId", type: "equals", value: storeId as string },
-				{ attribute: "productId", type: "equals", value: productId as string },
+				{ searchAttribute: "ownerId", searchType: "equals", searchValue: req.session.id as string },
+				{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+				{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 			],
-
-			{ table: "products" }
-		)
+			{ schema: "dev", table: "products" }
+		)) as unknown as { records: ProductJSON[] }
 
 		if (!product) {
 			return res.status(400).json({ message: "No product exists with the provided product id." })
@@ -81,7 +79,7 @@ const createField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const { id, fields } = product
 
 		try {
-			await db.update({ table: "products", records: [{ id: id as string, fields }] })
+			await harperdb.updateOne({ id: id as string, fields }, { schema: "dev", table: "products" })
 			return res.status(201).json({ message: `Field ${key} updated successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })

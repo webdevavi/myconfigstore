@@ -1,25 +1,21 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { Product, ProductJSON } from "@models"
 import orderBy from "lodash/orderBy"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../lib/middlewares"
-import { Product, ProductJSON } from "../../../../../lib/models"
 
 const getAllProducts = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	if (req.method === "GET") {
 		const { storeId } = req.query
 
-		const db = new HarperDB("dev")
-
 		try {
-			const products = await db.findByConditions<ProductJSON>(
-				"and",
+			const { records: products } = (await harperdb.searchByConditions(
 				[
-					{ attribute: "ownerId", type: "equals", value: req.session.id as string },
-					{ attribute: "storeId", type: "equals", value: storeId as string },
+					{ searchAttribute: "ownerId", searchType: "equals", searchValue: req.session.id as string },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
 				],
-
-				{ table: "products" }
-			)
+				{ schema: "dev", table: "products" }
+			)) as unknown as { records: ProductJSON[] }
 
 			return res.status(200).json(orderBy(products, ["__updatedtime__"], ["desc"]).map((product) => Product.fromJSON(product).toObject()))
 		} catch (err) {

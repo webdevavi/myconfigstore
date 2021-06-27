@@ -1,7 +1,7 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { ProductJSON } from "@models"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../../../lib/middlewares"
-import { IAppUser, ProductJSON } from "../../../../../../../../lib/models"
 
 const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { user, method } = req
@@ -25,18 +25,16 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			return res.status(400).json({ message: "Only alphabets, numbers and underscore is allowed." })
 		}
 
-		const db = new HarperDB("dev")
-
-		const [product] = await db.findByConditions<ProductJSON>(
-			"and",
+		const {
+			records: [product],
+		} = (await harperdb.searchByConditions(
 			[
-				{ attribute: "ownerId", type: "equals", value: user.id },
-				{ attribute: "storeId", type: "equals", value: storeId as string },
-				{ attribute: "productId", type: "equals", value: productId as string },
+				{ searchAttribute: "ownerId", searchType: "equals", searchValue: user.id },
+				{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+				{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 			],
-
-			{ table: "products" }
-		)
+			{ schema: "dev", table: "products" }
+		)) as unknown as { records: ProductJSON[] }
 
 		if (!product) {
 			return res.status(400).json({ message: "No product exists with the provided product id." })
@@ -53,16 +51,19 @@ const removeField = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const { id, fields } = product
 
 		try {
-			const [updatedProductId] = await db.update({ table: "products", records: [{ id: id as string, fields }] })
+			const { update_hashes } = await harperdb.updateOne({ id: id as string, fields }, { schema: "dev", table: "products" })
 
-			if (!updatedProductId) {
+			if (!update_hashes || !update_hashes[0]) {
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
-			await db.update<IAppUser>({
-				table: "users",
-				records: [{ id: user.id, usage: { ...(user.usage ?? {}), fields: (user.usage?.fields ?? 1) - 1 } }],
-			})
+			await harperdb.updateOne(
+				{ id: user.id, usage: { ...(user.usage ?? {}), fields: (user.usage?.fields ?? 1) - 1 } },
+				{
+					schema: "dev",
+					table: "users",
+				}
+			)
 
 			return res.status(201).json({ message: `Field ${key} removed successfully.` })
 		} catch (err) {
