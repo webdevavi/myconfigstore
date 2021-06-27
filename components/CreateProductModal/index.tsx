@@ -1,4 +1,3 @@
-import { ModalContent } from "@chakra-ui/modal"
 import {
 	Button,
 	FormControl,
@@ -9,22 +8,18 @@ import {
 	Input,
 	InputGroup,
 	InputLeftAddon,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	ModalProps,
-	useBreakpoint,
+	useBreakpointValue,
 	useToast,
+	VStack,
 } from "@chakra-ui/react"
+import { useCreateProductMutation } from "@hooks"
+import { FieldError } from "@lib/types"
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
 import React from "react"
 import * as Yup from "yup"
-import { useCreateProductMutation } from "../../lib/hooks/product"
-import { FieldError } from "../../lib/types"
+import { BottomPaper } from "../BottomPaper"
 import { Card } from "../Card"
 
 interface CreateProductFormValues {
@@ -84,54 +79,45 @@ export const CreateProductModal: React.FC<Omit<ModalProps, "children"> & { store
 		}
 	}
 
-	const breakpoint = useBreakpoint() ?? ""
+	const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
 	return (
-		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Create New Product</ModalHeader>
-				<ModalCloseButton />
-				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-					{(formikProps) => (
-						<Form>
-							<ModalBody>
-								<Card>
-									<Field name="productId">
-										{({ field, form }: FieldProps<string>) => (
-											<FormControl isInvalid={Boolean(form.errors.productId)}>
-												<FormLabel htmlFor="productId">Product Id</FormLabel>
-												<InputGroup>
-													{!/base|sm/.test(breakpoint) && (
-														<InputLeftAddon fontSize="sm" fontWeight="black">
-															https://{storeId}.myconfig.store/api/v1/
-														</InputLeftAddon>
-													)}
-													<Input {...field} id="productId" placeholder="eg. my_product" />
-												</InputGroup>
-												{/base|sm/.test(breakpoint) && (
-													<FormHelperText fontSize="sm" fontWeight="black">
-														https://{storeId}.myconfig.store/api/v1/{field.value || "{product_id}"}
-													</FormHelperText>
-												)}
-												<FormErrorMessage>
-													<FormErrorIcon />
-													{form.errors.productId}
-												</FormErrorMessage>
-											</FormControl>
+		<BottomPaper title="Create New Product" {...props}>
+			<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+				{(formikProps) => (
+					<VStack as={Form} w="full" spacing="8" px="2">
+						<Card maxW="">
+							<Field name="productId">
+								{({ field, form }: FieldProps<string>) => (
+									<FormControl isInvalid={Boolean(form.errors.productId)}>
+										<FormLabel htmlFor="productId">Product Id</FormLabel>
+										<InputGroup>
+											{!isSmallScreen && (
+												<InputLeftAddon fontSize="sm" fontWeight="black">
+													https://{storeId}.myconfig.store/api/v1/
+												</InputLeftAddon>
+											)}
+											<Input {...field} id="productId" placeholder="eg. my_product" autoComplete="off" />
+										</InputGroup>
+										{isSmallScreen && (
+											<FormHelperText fontSize="sm" fontWeight="black" wordBreak="break-all">
+												https://{storeId}.myconfig.store/api/v1/{field.value || "{product_id}"}
+											</FormHelperText>
 										)}
-									</Field>
-								</Card>
-							</ModalBody>
-							<ModalFooter>
-								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Create Product
-								</Button>
-							</ModalFooter>
-						</Form>
-					)}
-				</Formik>
-			</ModalContent>
-		</Modal>
+										<FormErrorMessage>
+											<FormErrorIcon />
+											{form.errors.productId}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</Card>
+						<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
+							Create Product
+						</Button>
+					</VStack>
+				)}
+			</Formik>
+		</BottomPaper>
 	)
 }

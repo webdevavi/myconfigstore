@@ -1,24 +1,9 @@
-import { ModalContent } from "@chakra-ui/modal"
-import {
-	Button,
-	FormControl,
-	FormErrorIcon,
-	FormErrorMessage,
-	FormLabel,
-	Input,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	ModalProps,
-	useToast,
-} from "@chakra-ui/react"
+import { Button, FormControl, FormErrorIcon, FormErrorMessage, FormLabel, Input, ModalProps, useToast, VStack } from "@chakra-ui/react"
 import { useRegenerateProductKeyMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
+import { BottomPaper } from "../BottomPaper"
 import { Card } from "../Card"
 
 interface RegenerateProductKeyFormValues {
@@ -73,41 +58,32 @@ export const RegenerateProductKeyModal: React.FC<Omit<ModalProps, "children"> & 
 	}
 
 	return (
-		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Regenerate Product Key</ModalHeader>
-				<ModalCloseButton />
-				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-					{(formikProps) => (
-						<Form>
-							<ModalBody>
-								<Card>
-									<Field name="productId">
-										{({ field, form }: FieldProps<string>) => (
-											<FormControl isInvalid={Boolean(form.errors.productId)}>
-												<FormLabel htmlFor="productId">
-													Type <code>&quot;{productId}&quot;</code> to regenerate key for this product.
-												</FormLabel>
-												<Input {...field} id="productId" />
-												<FormErrorMessage>
-													<FormErrorIcon />
-													{form.errors.productId}
-												</FormErrorMessage>
-											</FormControl>
-										)}
-									</Field>
-								</Card>
-							</ModalBody>
-							<ModalFooter>
-								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Regenerate Key
-								</Button>
-							</ModalFooter>
-						</Form>
-					)}
-				</Formik>
-			</ModalContent>
-		</Modal>
+		<BottomPaper title="Regenerate Product Settings" {...props}>
+			<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+				{(formikProps) => (
+					<VStack as={Form} w="full" spacing="8" px="2">
+						<Card>
+							<Field name="productId">
+								{({ field, form }: FieldProps<string>) => (
+									<FormControl isInvalid={Boolean(form.errors.productId)}>
+										<FormLabel htmlFor="productId">
+											Type <code>&quot;{productId}&quot;</code> to regenerate key for this product.
+										</FormLabel>
+										<Input {...field} id="productId" autoComplete="off" />
+										<FormErrorMessage>
+											<FormErrorIcon />
+											{form.errors.productId}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</Card>
+						<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
+							Regenerate Key
+						</Button>
+					</VStack>
+				)}
+			</Formik>
+		</BottomPaper>
 	)
 }

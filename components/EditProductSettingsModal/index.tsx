@@ -1,27 +1,10 @@
-import { ModalContent } from "@chakra-ui/modal"
-import {
-	Button,
-	Checkbox,
-	FormControl,
-	FormErrorIcon,
-	FormErrorMessage,
-	FormLabel,
-	HStack,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	ModalProps,
-	useToast,
-	VStack,
-} from "@chakra-ui/react"
+import { Button, Checkbox, FormControl, FormErrorIcon, FormErrorMessage, FormLabel, HStack, ModalProps, useToast, VStack } from "@chakra-ui/react"
+import { useEditProductSettingsMutation } from "@hooks"
+import { IProduct } from "@models"
+import { FieldError } from "@types"
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
 import React from "react"
-import { useEditProductSettingsMutation } from "../../lib/hooks/product"
-import { IProduct } from "../../lib/models"
-import { FieldError } from "../../lib/types"
+import { BottomPaper } from "../BottomPaper"
 import { Card } from "../Card"
 
 export type EditProductSettingsFormValues = Pick<IProduct, "isPrivate" | "isUsingStoreKey">
@@ -74,57 +57,48 @@ export const EditProductSettingsModal: React.FC<Omit<ModalProps, "children"> & {
 	}
 
 	return (
-		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Edit Product Settings</ModalHeader>
-				<ModalCloseButton />
-				<Formik initialValues={initialValues} onSubmit={handleSubmit}>
-					{(formikProps) => (
-						<Form>
-							<ModalBody>
-								<Card as={VStack} alignItems="flex-start">
-									<Field name="isPrivate">
-										{({ field, form }: FieldProps<boolean>) => (
-											<FormControl isInvalid={Boolean(form.errors.isPrivate && form.touched.isPrivate)}>
-												<HStack>
-													<Checkbox onChange={field.onChange} onBlur={field.onBlur} isChecked={field.value} id="isPrivate" />
-													<FormLabel htmlFor="isPrivate">Private (Default)</FormLabel>
-												</HStack>
-												<FormErrorMessage>
-													<FormErrorIcon />
-													{form.errors.isPrivate}
-												</FormErrorMessage>
-											</FormControl>
-										)}
-									</Field>
-									<Field name="isUsingStoreKey">
-										{({ field, form }: FieldProps<boolean>) =>
-											form.values.isPrivate && (
-												<FormControl isInvalid={Boolean(form.errors.isUsingStoreKey && form.touched.isUsingStoreKey)}>
-													<HStack>
-														<Checkbox onChange={field.onChange} onBlur={field.onBlur} isChecked={field.value} id="isUsingStoreKey" />
-														<FormLabel htmlFor="isUsingStoreKey">Use only store key (Default)</FormLabel>
-													</HStack>
-													<FormErrorMessage>
-														<FormErrorIcon />
-														{form.errors.isUsingStoreKey}
-													</FormErrorMessage>
-												</FormControl>
-											)
-										}
-									</Field>
-								</Card>
-							</ModalBody>
-							<ModalFooter>
-								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Save Settings
-								</Button>
-							</ModalFooter>
-						</Form>
-					)}
-				</Formik>
-			</ModalContent>
-		</Modal>
+		<BottomPaper title="Edit Product Settings" {...props}>
+			<Formik initialValues={initialValues} onSubmit={handleSubmit}>
+				{(formikProps) => (
+					<VStack as={Form} w="full" spacing="8" px="2">
+						<Card as={VStack} alignItems="flex-start">
+							<Field name="isPrivate">
+								{({ field, form }: FieldProps<boolean>) => (
+									<FormControl isInvalid={Boolean(form.errors.isPrivate && form.touched.isPrivate)}>
+										<HStack>
+											<Checkbox onChange={field.onChange} onBlur={field.onBlur} isChecked={field.value} id="isPrivate" />
+											<FormLabel htmlFor="isPrivate">Private (Default)</FormLabel>
+										</HStack>
+										<FormErrorMessage>
+											<FormErrorIcon />
+											{form.errors.isPrivate}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+							<Field name="isUsingStoreKey">
+								{({ field, form }: FieldProps<boolean>) =>
+									form.values.isPrivate && (
+										<FormControl isInvalid={Boolean(form.errors.isUsingStoreKey && form.touched.isUsingStoreKey)}>
+											<HStack>
+												<Checkbox onChange={field.onChange} onBlur={field.onBlur} isChecked={field.value} id="isUsingStoreKey" />
+												<FormLabel htmlFor="isUsingStoreKey">Use only store key (Default)</FormLabel>
+											</HStack>
+											<FormErrorMessage>
+												<FormErrorIcon />
+												{form.errors.isUsingStoreKey}
+											</FormErrorMessage>
+										</FormControl>
+									)
+								}
+							</Field>
+						</Card>
+						<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
+							Save Settings
+						</Button>
+					</VStack>
+				)}
+			</Formik>
+		</BottomPaper>
 	)
 }

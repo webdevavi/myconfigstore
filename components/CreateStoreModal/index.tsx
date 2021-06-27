@@ -1,4 +1,3 @@
-import { ModalContent } from "@chakra-ui/modal"
 import {
 	Button,
 	FormControl,
@@ -10,15 +9,10 @@ import {
 	InputGroup,
 	InputLeftAddon,
 	InputRightAddon,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	ModalProps,
-	useBreakpoint,
+	useBreakpointValue,
 	useToast,
+	VStack,
 } from "@chakra-ui/react"
 import { Field, FieldProps, Form, Formik, FormikHelpers } from "formik"
 import { useRouter } from "next/router"
@@ -26,6 +20,7 @@ import React from "react"
 import * as Yup from "yup"
 import { useCreateStoreMutation } from "../../lib/hooks/store"
 import { FieldError } from "../../lib/types"
+import { BottomPaper } from "../BottomPaper"
 import { Card } from "../Card"
 
 interface CreateStoreFormValues {
@@ -85,59 +80,51 @@ export const CreateStoreModal: React.FC<Omit<ModalProps, "children">> = (props) 
 		}
 	}
 
-	const breakpoint = useBreakpoint() ?? ""
+	const isSmallScreen = useBreakpointValue({ base: true, md: false })
 
 	return (
-		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Create New Store</ModalHeader>
-				<ModalCloseButton />
-				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-					{(formikProps) => (
-						<Form>
-							<ModalBody>
-								<Card>
-									<Field name="storeId">
-										{({ field, form }: FieldProps<string>) => (
-											<FormControl isInvalid={Boolean(form.errors.storeId)}>
-												<FormLabel htmlFor="storeId">Store Id</FormLabel>
-												<InputGroup>
-													{!/base|sm/.test(breakpoint) && (
-														<InputLeftAddon fontSize="sm" fontWeight="black">
-															https://
-														</InputLeftAddon>
-													)}
-													<Input {...field} id="storeId" placeholder="eg. my_store" />
-													{!/base|sm/.test(breakpoint) && (
-														<InputRightAddon fontSize="sm" fontWeight="black">
-															.myconfig.store/api/v1
-														</InputRightAddon>
-													)}
-												</InputGroup>
-												{/base|sm/.test(breakpoint) && (
-													<FormHelperText fontSize="sm" fontWeight="black">
-														https://{field.value || "{store_id}"}.myconfig.store/api/v1
-													</FormHelperText>
-												)}
-												<FormErrorMessage>
-													<FormErrorIcon />
-													{form.errors.storeId}
-												</FormErrorMessage>
-											</FormControl>
+		<BottomPaper title="Create New Store" {...props}>
+			<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+				{(formikProps) => (
+					<VStack as={Form} w="full" spacing="8" px="2">
+						<Card>
+							<Field name="storeId">
+								{({ field, form }: FieldProps<string>) => (
+									<FormControl isInvalid={Boolean(form.errors.storeId)}>
+										<FormLabel htmlFor="storeId">Store Id</FormLabel>
+										<InputGroup>
+											{!isSmallScreen && (
+												<InputLeftAddon fontSize="sm" fontWeight="black">
+													https://
+												</InputLeftAddon>
+											)}
+											<Input {...field} id="storeId" placeholder="eg. my_store" autoComplete="off" />
+											{!isSmallScreen && (
+												<InputRightAddon fontSize="sm" fontWeight="black">
+													.myconfig.store/api/v1
+												</InputRightAddon>
+											)}
+										</InputGroup>
+										{isSmallScreen && (
+											<FormHelperText fontSize="sm" fontWeight="black" wordBreak="break-all">
+												https://{field.value || "{store_id}"}.myconfig.store/api/v1
+											</FormHelperText>
 										)}
-									</Field>
-								</Card>
-							</ModalBody>
-							<ModalFooter>
-								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Create Store
-								</Button>
-							</ModalFooter>
-						</Form>
-					)}
-				</Formik>
-			</ModalContent>
-		</Modal>
+										<FormErrorMessage>
+											<FormErrorIcon />
+											{form.errors.storeId}
+										</FormErrorMessage>
+									</FormControl>
+								)}
+							</Field>
+						</Card>
+
+						<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
+							Create Store
+						</Button>
+					</VStack>
+				)}
+			</Formik>
+		</BottomPaper>
 	)
 }

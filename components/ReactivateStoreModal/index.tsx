@@ -1,4 +1,3 @@
-import { ModalContent } from "@chakra-ui/modal"
 import {
 	Button,
 	FormControl,
@@ -7,19 +6,15 @@ import {
 	FormHelperText,
 	FormLabel,
 	Input,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	ModalProps,
 	useToast,
+	VStack,
 } from "@chakra-ui/react"
 import { useReactivateStoreMutation } from "@hooks"
 import { Field, FieldProps, Form, Formik } from "formik"
 import React from "react"
 import * as Yup from "yup"
+import { BottomPaper } from "../BottomPaper"
 import { Card } from "../Card"
 
 interface ReactivateStoreFormValues {
@@ -70,42 +65,33 @@ export const ReactivateStoreModal: React.FC<Omit<ModalProps, "children"> & { sto
 	}
 
 	return (
-		<Modal motionPreset="slideInBottom" closeOnOverlayClick={false} blockScrollOnMount scrollBehavior="inside" {...props}>
-			<ModalOverlay />
-			<ModalContent>
-				<ModalHeader>Reactivate Store</ModalHeader>
-				<ModalCloseButton />
-				<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-					{(formikProps) => (
-						<Form>
-							<ModalBody>
-								<Card>
-									<Field name="storeId">
-										{({ field, form }: FieldProps<string>) => (
-											<FormControl isInvalid={Boolean(form.errors.storeId)}>
-												<FormLabel htmlFor="storeId">
-													Type <code>&quot;{storeId}&quot;</code> to reactivate this store.
-												</FormLabel>
-												<Input {...field} id="storeId" />
-												<FormErrorMessage>
-													<FormErrorIcon />
-													{form.errors.storeId}
-												</FormErrorMessage>
-												<FormHelperText>You will be able to access all products from this store as usual.</FormHelperText>
-											</FormControl>
-										)}
-									</Field>
-								</Card>
-							</ModalBody>
-							<ModalFooter>
-								<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
-									Reactivate Store
-								</Button>
-							</ModalFooter>
-						</Form>
-					)}
-				</Formik>
-			</ModalContent>
-		</Modal>
+		<BottomPaper title="Reactivate Store" {...props}>
+			<Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+				{(formikProps) => (
+					<VStack as={Form} w="full" spacing="8" px="2">
+						<Card>
+							<Field name="storeId">
+								{({ field, form }: FieldProps<string>) => (
+									<FormControl isInvalid={Boolean(form.errors.storeId)}>
+										<FormLabel htmlFor="storeId">
+											Type <code>&quot;{storeId}&quot;</code> to reactivate this store.
+										</FormLabel>
+										<Input {...field} id="storeId" autoComplete="off" />
+										<FormErrorMessage>
+											<FormErrorIcon />
+											{form.errors.storeId}
+										</FormErrorMessage>
+										<FormHelperText>You will be able to access all products from this store as usual.</FormHelperText>
+									</FormControl>
+								)}
+							</Field>
+						</Card>
+						<Button type="submit" isLoading={formikProps.isSubmitting} isDisabled={!formikProps.isValid}>
+							Reactivate Store
+						</Button>
+					</VStack>
+				)}
+			</Formik>
+		</BottomPaper>
 	)
 }

@@ -42,6 +42,10 @@ export const Modal: ReturnType<typeof extendTheme>["components"]["Modal"] = {
 				top: "60px",
 				bottom: "0px",
 			},
+			dialog: {
+				alignSelf: "flex-end",
+				m: 0,
+			},
 		},
 	},
 	defaultProps: {
