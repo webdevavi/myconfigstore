@@ -1,8 +1,8 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { IProduct, ProductJSON } from "@models"
 import crypto from "crypto"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../../lib/middlewares"
-import { IProduct, ProductJSON } from "../../../../../../../lib/models"
 
 const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	if (req.method === "POST") {
@@ -17,18 +17,16 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 			return res.status(400).json({ message: "A valid product id is required." })
 		}
 
-		const db = new HarperDB("dev")
-
-		const [product] = await db.findByConditions<ProductJSON>(
-			"and",
+		const {
+			records: [product],
+		} = (await harperdb.searchByConditions(
 			[
-				{ attribute: "ownerId", type: "equals", value: req.session.id as string },
-				{ attribute: "storeId", type: "equals", value: storeId as string },
-				{ attribute: "productId", type: "equals", value: productId as string },
+				{ searchAttribute: "ownerId", searchType: "equals", searchValue: req.session.id as string },
+				{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+				{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 			],
-
-			{ table: "products" }
-		)
+			{ schema: "dev", table: "products" }
+		)) as unknown as { records: ProductJSON[] }
 
 		if (!product) {
 			return res.status(400).json({ message: "No product exists with the provided product id." })
@@ -41,7 +39,7 @@ const updateProductSettings = async (req: NextApiRequestWithAuth, res: NextApiRe
 		}
 
 		try {
-			await db.update({ table: "products", records: [{ id: product.id as string, isPrivate, isUsingStoreKey, productKey }] })
+			await harperdb.updateOne({ id: product.id as string, isPrivate, isUsingStoreKey, productKey }, { schema: "dev", table: "products" })
 			return res.status(201).json({ message: `Settings for product ${productId} updated successfully.` })
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })

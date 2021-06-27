@@ -1,8 +1,8 @@
 import add from "date-fns/add"
+import { HarperDB } from "harperdbjs"
 import { Account, Profile } from "next-auth"
 import { Adapter } from "next-auth/adapters"
 import pricing from "../../pricing.json"
-import { HarperDB } from "../harperDB"
 import { AppUser, AppUserJSON, IAppUser, PaymentStatus, Plans } from "../models"
 
 // @ts-expect-error
@@ -26,40 +26,52 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 						},
 					}
 
-					const [userId] = await db.insert<Omit<AppUserJSON, "id">>({
+					const { inserted_hashes } = await db.insert<Omit<AppUserJSON, "id">>(user, {
+						schema: "dev",
 						table: "users",
-						records: [user],
 					})
+
+					if (!inserted_hashes?.[0]) {
+						return null
+					}
+
+					const [userId] = inserted_hashes
 
 					return AppUser.fromJSON({ id: userId, ...user })
 				},
 
 				async getUser(id) {
-					const [user] = await db.findByIds<AppUserJSON>([id], { table: "users" })
+					const {
+						records: [user],
+					} = await db.searchByHash([id], { schema: "dev", table: "users" })
 
 					if (!user) return null
 
-					return AppUser.fromJSON(user)
+					return AppUser.fromJSON(user as AppUserJSON)
 				},
 
 				async getUserByEmail(email) {
 					if (!email) return null
 
-					const [user] = await db.findByValue<AppUserJSON>("email", email, { table: "users" })
+					const {
+						records: [user],
+					} = await db.searchByValue("email", email, { schema: "dev", table: "users" })
 
 					if (!user) return null
 
-					return AppUser.fromJSON(user)
+					return AppUser.fromJSON(user as AppUserJSON)
 				},
 
 				async getUserByProviderAccountId(providerId, providerAccountId) {
-					const [accountSnapshot] = await db.findByConditions<Account>(
-						"and",
+					const {
+						records: [accountSnapshot],
+					} = await db.searchByConditions(
 						[
-							{ attribute: "providerId", type: "equals", value: providerId },
-							{ attribute: "providerAccountId", type: "equals", value: providerAccountId },
+							{ searchAttribute: "providerId", searchType: "equals", searchValue: providerId },
+							{ searchAttribute: "providerAccountId", searchType: "equals", searchValue: providerAccountId },
 						],
 						{
+							schema: "dev",
 							table: "accounts",
 							limit: 1,
 						}
@@ -67,28 +79,31 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 
 					if (!accountSnapshot) return null
 
-					const userId = accountSnapshot?.userId as string
+					const userId = (accountSnapshot as Account)?.userId as string
 
 					if (!userId) return null
 
-					const [user] = await db.findByIds<AppUserJSON>([userId], { table: "users" })
+					const {
+						records: [user],
+					} = await db.searchByHash([userId], { schema: "dev", table: "users" })
 
 					if (!user) return null
 
-					return AppUser.fromJSON(user)
+					return AppUser.fromJSON(user as AppUserJSON)
 				},
 
 				async updateUser(user) {
-					await db.update<AppUserJSON>({
+					await db.updateOne<AppUserJSON>(new AppUser(user).toJSON(), {
+						schema: "dev",
 						table: "users",
-						records: [new AppUser(user).toJSON()],
 					})
 
 					return user
 				},
 
 				async deleteUser(userId) {
-					await db.delete([userId], {
+					await db.deleteOne(userId, {
+						schema: "dev",
 						table: "users",
 					})
 				},
@@ -104,23 +119,25 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 						accessTokenExpires,
 					}
 
-					await db.insert({
+					await db.insert(account, {
+						schema: "dev",
 						table: "accounts",
-						records: [account],
 					})
 
 					return account
 				},
 
 				async unlinkAccount(userId, providerId, providerAccountId) {
-					const [account] = await db.findByConditions<Account>(
-						"and",
+					const {
+						records: [account],
+					} = await db.searchByConditions(
 						[
-							{ attribute: "userId", type: "equals", value: userId },
-							{ attribute: "providerId", type: "equals", value: providerId },
-							{ attribute: "providerAccountId", type: "equals", value: providerAccountId },
+							{ searchAttribute: "userId", searchType: "equals", searchValue: userId },
+							{ searchAttribute: "providerId", searchType: "equals", searchValue: providerId },
+							{ searchAttribute: "providerAccountId", searchType: "equals", searchValue: providerAccountId },
 						],
 						{
+							schema: "dev",
 							table: "accounts",
 							limit: 1,
 						}
@@ -128,9 +145,9 @@ export const HarperDBAdapter: Adapter<HarperDB, never, IAppUser, Profile> = (db)
 
 					if (!account) return null
 
-					const accountId = account.id
+					const accountId = (account as Account).id
 
-					return db.delete([accountId], { table: "accounts" })
+					return db.deleteOne(accountId, { schema: "dev", table: "accounts" })
 				},
 
 				// next-auth throws error if these functions aren't defined

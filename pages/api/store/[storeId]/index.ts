@@ -1,25 +1,24 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { ProductJSON, Store, StoreJSON } from "@models"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../lib/middlewares"
-import { IAppUser, ProductJSON, Store, StoreJSON } from "../../../../lib/models"
 
 const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { storeId } = req.query
-	const db = new HarperDB("dev")
 
 	const { user, method } = req
 
 	if (method === "GET") {
 		try {
-			const [store] = await db.findByConditions<StoreJSON>(
-				"and",
+			const {
+				records: [store],
+			} = (await harperdb.searchByConditions(
 				[
-					{ attribute: "ownerId", type: "equals", value: user.id },
-					{ attribute: "storeId", type: "equals", value: storeId as string },
+					{ searchAttribute: "ownerId", searchType: "equals", searchValue: user.id },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
 				],
-
-				{ table: "stores" }
-			)
+				{ schema: "dev", table: "stores" }
+			)) as unknown as { records: StoreJSON[] }
 
 			if (!store) {
 				return res.status(404).json({ message: "No store exists with the provided store id." })
@@ -32,21 +31,27 @@ const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	} else if (method === "DELETE") {
 		try {
 			// finding the store with the storeId if its owned by the current user
-			const [store] = await db.findByConditions<StoreJSON>(
-				"and",
+			const {
+				records: [store],
+			} = (await harperdb.searchByConditions(
 				[
-					{ attribute: "ownerId", type: "equals", value: user.id },
-					{ attribute: "storeId", type: "equals", value: storeId as string },
+					{ searchAttribute: "ownerId", searchType: "equals", searchValue: user.id },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
 				],
-
-				{ table: "stores" }
-			)
+				{ schema: "dev", table: "stores" }
+			)) as unknown as { records: StoreJSON[] }
 
 			if (!store) {
 				return res.status(404).json({ message: "No store exists with the provided store id." })
 			}
 
-			const [deletedStoreId] = await db.delete([store.id as string], { table: "stores" })
+			const { deleted_hashes } = await harperdb.deleteOne(store.id as string, { schema: "dev", table: "stores" })
+
+			if (!deleted_hashes || !deleted_hashes?.[0]) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			const deletedStoreId = deleted_hashes[0]
 
 			if (!deletedStoreId) {
 				return res.status(500).json({ message: "Some unexpected error occurred." })
@@ -57,39 +62,42 @@ const getStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 
 			// if store has products inside it, we will delete them as well
 			if (store.products) {
-				const products = await db.findByValue<ProductJSON>("storeId", store.storeId, { table: "products" })
+				const { records: products } = (await harperdb.searchByValue("storeId", store.storeId, { schema: "dev", table: "products" })) as unknown as {
+					records: ProductJSON[]
+				}
 
 				if (products.length) {
-					const deletedProductsIds = await db.delete(
+					const { deleted_hashes: del_hashes } = await harperdb.deleteMany(
 						products.map(({ id }) => id!),
-						{ table: "products" }
+						{ schema: "dev", table: "products" }
 					)
 
-					if (deletedProductsIds.length) {
+					if (del_hashes?.length) {
 						deletedFieldsCount = products
-							.filter(({ id }) => deletedProductsIds.includes(id!))
+							.filter(({ id }) => del_hashes.includes(id!))
 							.map(({ fields }) => fields?.length ?? 0)
 							.reduce((prev, curr) => prev + curr)
 
-						deletedProductsCount = deletedProductsIds.length
+						deletedProductsCount = del_hashes.length
 					}
 				}
 			}
 
-			await db.update<IAppUser>({
-				table: "users",
-				records: [
-					{
-						id: user.id,
-						usage: {
-							...(user.usage ?? {}),
-							stores: (user.usage?.stores ?? 1) - 1,
-							products: (user.usage?.products ?? deletedProductsCount) - deletedProductsCount,
-							fields: (user.usage?.fields ?? deletedFieldsCount) - deletedFieldsCount,
-						},
+			await harperdb.updateOne(
+				{
+					id: user.id,
+					usage: {
+						...(user.usage ?? {}),
+						stores: (user.usage?.stores ?? 1) - 1,
+						products: (user.usage?.products ?? deletedProductsCount) - deletedProductsCount,
+						fields: (user.usage?.fields ?? deletedFieldsCount) - deletedFieldsCount,
 					},
-				],
-			})
+				},
+				{
+					schema: "dev",
+					table: "users",
+				}
+			)
 
 			return res.status(200).json({ message: `Store ${storeId} destroyed.` })
 		} catch (err) {

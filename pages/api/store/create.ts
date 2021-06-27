@@ -1,9 +1,9 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { Store, StoreJSON } from "@models"
+import { FieldError } from "@types"
 import * as crypto from "crypto"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../lib/middlewares"
-import { IAppUser, Store } from "../../../lib/models"
-import { FieldError } from "../../../lib/types"
 
 const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const fieldErrors: FieldError[] = []
@@ -24,9 +24,9 @@ const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 			fieldErrors.push({ field: "storeId", error: "Only alphabets, numbers and underscore is allowed." })
 		}
 
-		const db = new HarperDB("dev")
-
-		const stores = await db.findByValue("storeId", storeId!, { table: "stores" })
+		const { records: stores } = (await harperdb.searchByValue("storeId", storeId!, { schema: "dev", table: "stores" })) as unknown as {
+			records: StoreJSON[]
+		}
 
 		if (stores && stores.length > 0) {
 			fieldErrors.push({ field: "storeId", error: "This store id is not available." })
@@ -41,7 +41,13 @@ const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const store = new Store({ storeId: storeId!, ownerId: user.id, storeKey, isActive: true })
 
 		try {
-			const [newStoreId] = await db.insert({ table: "stores", records: [store] })
+			const { inserted_hashes } = await harperdb.insert(store, { schema: "dev", table: "stores" })
+
+			if (!inserted_hashes || !inserted_hashes?.[0]) {
+				return res.status(500).json({ message: "Some unexpected error occurred." })
+			}
+
+			const newStoreId = inserted_hashes?.[0]
 
 			if (!newStoreId) {
 				return res.status(500).json({ message: "Some unexpected error occurred." })
@@ -49,10 +55,13 @@ const createStore = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 
 			res.status(201).json({ message: `Store ${storeId} created successfully.` })
 
-			return await db.update<IAppUser>({
-				table: "users",
-				records: [{ id: user.id, usage: { ...(user.usage ?? {}), stores: (user.usage?.stores ?? 0) + 1 } }],
-			})
+			return await harperdb.updateOne(
+				{ id: user.id, usage: { ...(user.usage ?? {}), stores: (user.usage?.stores ?? 0) + 1 } },
+				{
+					schema: "dev",
+					table: "users",
+				}
+			)
 		} catch (err) {
 			return res.status(500).json({ message: "Some unexpected error occurred." })
 		}

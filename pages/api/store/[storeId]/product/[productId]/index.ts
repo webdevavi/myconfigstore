@@ -1,26 +1,24 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
+import { Product, ProductJSON, StoreJSON } from "@models"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../../../../lib/middlewares"
-import { IAppUser, IStore, Product, ProductJSON } from "../../../../../../lib/models"
 
 const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const { storeId, productId } = req.query
-	const db = new HarperDB("dev")
-
 	const { user, method } = req
 
 	if (method === "GET") {
 		try {
-			const [product] = await db.findByConditions<ProductJSON>(
-				"and",
+			const {
+				records: [product],
+			} = (await harperdb.searchByConditions(
 				[
-					{ attribute: "ownerId", type: "equals", value: user.id },
-					{ attribute: "storeId", type: "equals", value: storeId as string },
-					{ attribute: "productId", type: "equals", value: productId as string },
+					{ searchAttribute: "ownerId", searchType: "equals", searchValue: user.id },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+					{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 				],
-
-				{ table: "products" }
-			)
+				{ schema: "dev", table: "products" }
+			)) as unknown as { records: ProductJSON[] }
 
 			if (!product) {
 				return res.status(400).json({ message: "No product exists with the provided product id." })
@@ -32,46 +30,49 @@ const getProduct = async (req: NextApiRequestWithAuth, res: NextApiResponse) => 
 		}
 	} else if (method === "DELETE") {
 		try {
-			const [product] = await db.findByConditions<ProductJSON>(
-				"and",
+			const {
+				records: [product],
+			} = (await harperdb.searchByConditions(
 				[
-					{ attribute: "ownerId", type: "equals", value: user.id },
-					{ attribute: "storeId", type: "equals", value: storeId as string },
-					{ attribute: "productId", type: "equals", value: productId as string },
+					{ searchAttribute: "ownerId", searchType: "equals", searchValue: user.id },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+					{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 				],
-
-				{ table: "products" }
-			)
+				{ schema: "dev", table: "products" }
+			)) as unknown as { records: ProductJSON[] }
 
 			if (!product) {
 				return res.status(400).json({ error: "No product exists with the provided product id." })
 			}
 
-			const [deletedProductId] = await db.delete([product.id as string], { table: "products" })
+			const { deleted_hashes } = await harperdb.deleteOne(product.id as string, { schema: "dev", table: "products" })
 
-			if (!deletedProductId) {
+			if (!deleted_hashes || !deleted_hashes[0]) {
 				return res.status(500).json({ message: "Some unexpected error occurred." })
 			}
 
 			const deletedFieldsCount = product.fields?.length ?? 0
 
-			const [store] = await db.findByValue<IStore>("storeId", storeId as string, { table: "stores" })
+			const {
+				records: [store],
+			} = (await harperdb.searchByValue("storeId", storeId as string, { schema: "dev", table: "stores" })) as unknown as { records: StoreJSON[] }
 
-			if (store) await db.update<IStore>({ table: "stores", records: [{ id: store.id as string, products: (store?.products ?? 1) - 1 }] })
+			if (store) await harperdb.updateOne({ id: store.id as string, products: (store?.products ?? 1) - 1 }, { schema: "dev", table: "stores" })
 
-			await db.update<IAppUser>({
-				table: "users",
-				records: [
-					{
-						id: user.id,
-						usage: {
-							...(user.usage ?? {}),
-							products: (user.usage?.products ?? 1) - 1,
-							fields: (user.usage?.fields ?? deletedFieldsCount) - deletedFieldsCount,
-						},
+			await harperdb.updateOne(
+				{
+					id: user.id,
+					usage: {
+						...(user.usage ?? {}),
+						products: (user.usage?.products ?? 1) - 1,
+						fields: (user.usage?.fields ?? deletedFieldsCount) - deletedFieldsCount,
 					},
-				],
-			})
+				},
+				{
+					schema: "dev",
+					table: "users",
+				}
+			)
 
 			return res.status(200).json({ message: `Product ${productId} destroyed.` })
 		} catch (err) {

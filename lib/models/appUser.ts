@@ -4,7 +4,7 @@ import { IUsage, Usage } from "./usage"
 import pricing from "../../pricing.json"
 
 export interface IAppUser {
-	id: string
+	id: string | number
 	name?: string
 	email?: string
 	isEmailVerified?: boolean
@@ -16,7 +16,7 @@ export interface IAppUser {
 export type AppUserJSON = Omit<IAppUser, "subscription"> & { subscription: SubscriptionJSON }
 
 export class AppUser implements IAppUser {
-	id: string
+	id: string | number
 
 	name?: string | undefined
 

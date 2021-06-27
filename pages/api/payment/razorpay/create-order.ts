@@ -28,7 +28,7 @@ const createOrder = async (req: NextApiRequestWithAuth, res: NextApiResponse) =>
 		const notes = {
 			plan,
 			description: `Payment for ${plan.toUpperCase()} plan`,
-			user: user.id,
+			user: String(user.id),
 		}
 
 		if (coupon) {

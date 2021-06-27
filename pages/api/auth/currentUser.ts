@@ -1,7 +1,6 @@
+import { harperdb } from "@lib/harperDB"
+import { NextApiRequestWithAuth, withAuthentication } from "@lib/middlewares"
 import { NextApiHandler, NextApiResponse } from "next"
-import { HarperDB } from "../../../lib/harperDB"
-import { NextApiRequestWithAuth, withAuthentication } from "../../../lib/middlewares"
-import { IAppUser } from "../../../lib/models"
 
 const getCurrentUser = async (req: NextApiRequestWithAuth, res: NextApiResponse) => {
 	const {
@@ -10,9 +9,9 @@ const getCurrentUser = async (req: NextApiRequestWithAuth, res: NextApiResponse)
 
 	if (req.method === "GET") {
 		try {
-			const db = new HarperDB("dev")
-
-			const [user] = await db.findByIds<IAppUser>([id as string], { table: "users" })
+			const {
+				records: [user],
+			} = await harperdb.searchByHash([id as string], { schema: "dev", table: "users" })
 
 			if (!user) {
 				return res.status(404).json({ code: 404, message: "User doesn't exist" })

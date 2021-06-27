@@ -1,4 +1,4 @@
-import { HarperDB } from "@lib/harperDB"
+import { harperdb } from "@lib/harperDB"
 import { AppUser, AppUserJSON, Product, ProductJSON, StoreJSON } from "@models"
 import * as crypto from "crypto"
 import { NextApiHandler } from "next"
@@ -10,7 +10,6 @@ const handleProduct: NextApiHandler = async (req, res) => {
 		origin: "*",
 	})
 
-	const db = new HarperDB("dev")
 	const { productId } = req.query
 
 	if (req.method === "GET") {
@@ -38,13 +37,17 @@ const handleProduct: NextApiHandler = async (req, res) => {
 				return res.status(400).json({ error: { code: "400", message: "Store Id is required" } })
 			}
 
-			const [store] = await db.findByValue<StoreJSON>("storeId", storeId, { table: "stores" })
+			const {
+				records: [store],
+			} = (await harperdb.searchByValue("storeId", storeId, { schema: "dev", table: "stores" })) as unknown as { records: StoreJSON[] }
 
 			if (!store || !store.isActive) {
 				return res.status(404).json({ error: { code: "404", message: "No store exists with the provided store id or the store might be inactive." } })
 			}
 
-			const [user] = await db.findByIds<AppUserJSON>([store.ownerId], { table: "users" })
+			const {
+				records: [user],
+			} = (await harperdb.searchByHash([store.ownerId], { schema: "dev", table: "users" })) as unknown as { records: AppUserJSON[] }
 
 			if (!user) {
 				return res.status(404).json({ error: { code: "404", message: "The owner of this store does not exist anymore." } })
@@ -58,15 +61,16 @@ const handleProduct: NextApiHandler = async (req, res) => {
 				})
 			}
 
-			const [product] = await db.findByConditions<ProductJSON>(
-				"and",
+			const {
+				records: [product],
+			} = (await harperdb.searchByConditions(
 				[
-					{ attribute: "storeId", type: "equals", value: storeId as string },
-					{ attribute: "productId", type: "equals", value: productId as string },
+					{ searchAttribute: "storeId", searchType: "equals", searchValue: storeId as string },
+					{ searchAttribute: "productId", searchType: "equals", searchValue: productId as string },
 				],
 
-				{ table: "products" }
-			)
+				{ schema: "dev", table: "products" }
+			)) as unknown as { records: ProductJSON[] }
 
 			if (!product || !product.isActive) {
 				return res
