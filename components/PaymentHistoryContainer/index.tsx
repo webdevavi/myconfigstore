@@ -1,4 +1,4 @@
-import { Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react"
+import { Box, Center, CircularProgress, Flex, Table, Tbody, Td, Th, Thead, Tr, VStack } from "@chakra-ui/react"
 import { Card, HeadingWithIcon } from "@components"
 import { useGetAllPaymentsQuery } from "@lib/hooks"
 import numeral from "numeral"
